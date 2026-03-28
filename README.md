@@ -32,20 +32,20 @@
   - [✓] Lifecycle rules
   - [✓] Signed URLs
   - [✓] Uniform vs fine‑grained access
-- [ ] **Cloud SQL**
-  - [ ] Backups
-  - [ ] Failover replicas
-  - [ ] Read replicas
-- [ ] **Cloud Spanner**
-  - [ ] Regional vs multi‑regional
-  - [ ] Horizontal scaling
+- [✓] [**Cloud SQL**](./cloud_sql.md)
+  - [✓] Backups
+  - [✓] Failover replicas
+  - [✓] Read replicas
+- [✓] [**Cloud Spanner**](./cloud_spanner.md)
+  - [✓] Regional vs multi‑regional
+  - [✓] Horizontal scaling
 - [✓] [**Firestore / Datastore**](./firestore.md)
   - [✓] Native vs Datastore mode
-- [ ] **Bigtable**
-  - [ ] Wide‑column NoSQL basics
-- [ ] **BigQuery**
-  - [ ] Datasets, tables, partitions
-  - [ ] Pricing model (storage + queries)
+- [✓] [**Bigtable**](./bigtable.md)
+  - [✓] Wide‑column NoSQL basics
+- [✓] [**BigQuery**](./bigquery.md)
+  - [✓] Datasets, tables, partitions
+  - [✓] Pricing model (storage + queries)
 - [✓] [**Memorystore**](./memorystore.md)
   - [✓] Redis / Valkey tiers
   - [✓] Memcached basics
@@ -137,8 +137,8 @@
 - [ ] Cloud Run
 - [ ] Cloud Functions
 - [ ] GKE
-- [ ] Cloud SQL
-- [ ] BigQuery
+- [✓] [Cloud SQL](./cloud_sql.md)
+- [✓] [BigQuery](./bigquery.md)
 - [ ] Cloud Logging
 - [ ] Cloud Monitoring
 - [ ] Load Balancers
