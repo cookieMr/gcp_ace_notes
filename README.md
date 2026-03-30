@@ -2,26 +2,26 @@
 
 ## ☁️ Compute Services
 
-- [ ] **Compute Engine**
-  - [ ] Instance templates
-  - [ ] Managed instance groups (MIGs)
-  - [ ] Persistent disks & snapshots
-  - [ ] Local SSD
-  - [ ] Sole‑tenant nodes
-- [ ] **Google Kubernetes Engine (GKE)**
-  - [ ] Node pools
-  - [ ] Autoscaling
-  - [ ] Cluster networking basics
-- [ ] **Cloud Run**
-  - [ ] Revisions
-  - [ ] Traffic splitting
-  - [ ] VPC connectors
-- [ ] **Cloud Functions**
-  - [ ] Event triggers
-  - [ ] VPC connectors
-- [ ] **App Engine**
-  - [ ] Standard vs Flexible
-  - [ ] Versions & traffic splitting
+- [✓] [**Compute Engine**](./compute_engine.md)
+  - [✓] Instance templates
+  - [✓] Managed instance groups (MIGs)
+  - [✓] Persistent disks & snapshots
+  - [✓] Local SSD
+  - [✓] Sole‑tenant nodes
+- [✓] [**Google Kubernetes Engine (GKE)**](./gke.md)
+  - [✓] Node pools
+  - [✓] Autoscaling
+  - [✓] Cluster networking basics
+- [✓] [**Cloud Run**](./cloud_run.md)
+  - [✓] Revisions
+  - [✓] Traffic splitting
+  - [✓] VPC connectors
+- [✓] [**Cloud Functions**](./cloud_functions.md)
+  - [✓] Event triggers
+  - [✓] VPC connectors
+- [✓] [**App Engine**](./app_engine.md)
+  - [✓] Standard vs Flexible
+  - [✓] Versions & traffic splitting
 
 ---
 
@@ -57,22 +57,22 @@
 
 ## 🔗 Networking
 
-- [ ] **VPC Networks**
-  - [ ] Subnets (regional)
-  - [ ] Routes
-  - [ ] Firewall rules
-- [ ] **VPC Peering**
-  - [ ] Shared VPC
-- [ ] **Cloud NAT**
-- [ ] **Cloud VPN**
-- [ ] **Cloud Interconnect**
-- [ ] **Load Balancers**
-  - [ ] HTTP(S)
-  - [ ] TCP/UDP
-  - [ ] Internal / External
-- [ ] **Cloud CDN**
-- [ ] **Cloud DNS**
-- [ ] **Serverless VPC Access**
+- [✓] [**VPC Networks**](./vpc_networks.md)
+  - [✓] Subnets (regional)
+  - [✓] Routes
+  - [✓] Firewall rules
+- [✓] [**VPC Peering**](./vpc_peering.md)
+  - [✓] Shared VPC
+- [✓] [**Cloud NAT**](./cloud_nat.md)
+- [✓] [**Cloud VPN**](./cloud_vpn.md)
+- [✓] [**Cloud Interconnect**](./cloud_interconnect.md)
+- [✓] [**Load Balancers**](./load_balancers.md)
+  - [✓] HTTP(S)
+  - [✓] TCP/UDP
+  - [✓] Internal / External
+- [✓] [**Cloud CDN**](./cloud_cdn.md)
+- [✓] [**Cloud DNS**](./cloud_dns.md)
+- [✓] [**Serverless VPC Access**](./serverless_vpc_access.md)
 
 ---
 
@@ -92,21 +92,21 @@
 
 ## 🛠️ DevOps, Monitoring & Management
 
-- [ ] **Cloud Logging**
-  - [ ] Log sinks
-  - [ ] Log‑based metrics
-- [ ] **Cloud Monitoring**
-  - [ ] Dashboards
-  - [ ] Alerts
-- [ ] **Cloud Trace**
-- [ ] **Cloud Profiler**
-- [ ] **Error Reporting**
-- [ ] **Cloud Build**
-- [ ] **Artifact Registry**
-- [ ] **Deployment Manager**
-- [ ] **Cloud Scheduler**
-- [ ] **Pub/Sub**
-- [ ] **Eventarc**
+- [✓] [**Cloud Logging**](./cloud_logging.md)
+  - [✓] Log sinks
+  - [✓] Log‑based metrics
+- [✓] [**Cloud Monitoring**](./cloud_monitoring.md)
+  - [✓] Dashboards
+  - [✓] Alerts
+- [✓] [**Cloud Trace**](./cloud_trace.md)
+- [✓] [**Cloud Profiler**](./cloud_profiler.md)
+- [✓] [**Error Reporting**](./error_reporting.md)
+- [✓] [**Cloud Build**]
+- [✓] [**Artifact Registry**](./artifact_registry.md)
+- [✓] [**Deployment Manager**](./deployment_manager.md)
+- [✓] [**Cloud Scheduler**](./cloud_scheduler.md)
+- [✓] [**Pub/Sub**](./pubsub.md)
+- [✓] [**Eventarc**](./eventarc.md)
 
 ---
 
@@ -130,23 +130,23 @@
 
 # ⭐ Top 20 Most Tested (High Priority)
 
-- [ ] Compute Engine
+- [✓] [Compute Engine](./compute_engine.md)
 - [✓] [Cloud Storage](./cloud_storage.md)
-- [ ] VPC Networking
+- [✓] [VPC Networking](./vpc_networks.md)
 - [ ] IAM
-- [ ] Cloud Run
-- [ ] Cloud Functions
-- [ ] GKE
+- [✓] [Cloud Run](./cloud_run.md)
+- [✓] [Cloud Functions](./cloud_functions.md)
+- [✓] [GKE](./gke.md)
 - [✓] [Cloud SQL](./cloud_sql.md)
 - [✓] [BigQuery](./bigquery.md)
-- [ ] Cloud Logging
-- [ ] Cloud Monitoring
-- [ ] Load Balancers
-- [ ] Cloud NAT
-- [ ] Cloud VPN
-- [ ] Cloud Interconnect
+- [✓] [Cloud Logging](./cloud_logging.md)
+- [✓] [Cloud Monitoring](./cloud_monitoring.md)
+- [✓] [Load Balancers](./load_balancers.md)
+- [✓] [Cloud NAT](./cloud_nat.md)
+- [✓] [Cloud VPN](./cloud_vpn.md)
+- [✓] [Cloud Interconnect](./cloud_interconnect.md)
 - [✓] [Memorystore](./memorystore.md)
-- [ ] Pub/Sub
-- [ ] Cloud Build
-- [ ] Artifact Registry
+- [✓] [Pub/Sub](./pubsub.md)
+- [✓] [Cloud Build](./cloud_build.md)
+- [✓] [Artifact Registry](./artifact_registry.md)
 - [ ] Service Accounts
