@@ -1,10 +1,12 @@
+# Google Cloud Associate Cloud Engineer (ACE) Study Guide
+
+- [Introduction](README.md)
 - [Compute Services](./summary_compute_services.md)
     - [Compute Engine](./compute_engine.md)
     - [Google Kubernetes Engine (GKE)](./gke.md)
     - [Cloud Run](./cloud_run.md)
     - [Cloud Functions](./cloud_functions.md)
     - [App Engine](./app_engine.md)
-
 - [Storage & Databases](./summary_cstorage_and_databases.md)
     - [Cloud Storage](./cloud_storage.md)
     - [Cloud SQL](./cloud_sql.md)
@@ -14,7 +16,6 @@
     - [BigQuery](./bigquery.md)
     - [Memorystore](./memorystore.md)
     - [Filestore](./filestore.md)
-
 - [Networking](./summary_networking.md)
     - [VPC Networks](./vpc_networks.md)
     - [VPC Peering](./vpc_peering.md)
@@ -25,7 +26,6 @@
     - [Cloud CDN](./cloud_cdn.md)
     - [Cloud DNS](./cloud_dns.md)
     - [Serverless VPC Access](./serverless_vpc_access.md)
-
 - [Identity & Security](./summary_identity_and_security.md)
     - [IAM](./iam.md)
     - [Cloud KMS](./cloud_kms.md)
@@ -33,7 +33,6 @@
     - [Organization Policies](./organization_policies.md)
     - [VPC Service Controls](./vpc_service_controls.md)
     - [Cloud Armor](./cloud_armor.md)
-
 - [DevOps, Monitoring & Management](./summary_devops_monitoring_and_management.md)
     - [Cloud Logging](./cloud_logging.md)
     - [Cloud Monitoring](./cloud_monitoring.md)
@@ -46,12 +45,10 @@
     - [Cloud Scheduler](./cloud_scheduler.md)
     - [Pub/Sub](./pubsub.md)
     - [Eventarc](./eventarc.md)
-
 - [Migration & Hybrid](./summary_migration_and_hybrid.md)
     - [Migrate to Virtual Machine](./migrate_to_virtual_machines.md)
     - [Database Migration Service](./database_migration_service.md)
     - [Storage Transfer Service](./storage_transfer_service.md)
     - [Transfer Appliance](./transfer_appliance.md)
-
 - [AI & ML (Light Coverage)](./summary_ai_and_ml.md)
     - [Vertex AI](./vertex_ai.md)
