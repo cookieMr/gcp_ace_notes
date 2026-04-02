@@ -1,6 +1,6 @@
 # Google Cloud Associate Cloud Engineer (ACE) Study Guide
 
-- [Introduction](README.md)
+- [Introduction](../README.md)
 - [Compute Services](./summary_compute_services.md)
     - [Compute Engine](./compute_engine.md)
     - [Google Kubernetes Engine (GKE)](./gke.md)
