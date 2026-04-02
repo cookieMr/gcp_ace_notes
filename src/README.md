@@ -6,7 +6,7 @@
 
 The notes in this repository are compiled into a highly readable, searchable online book using **mdBook**. 
 
-**[Read the live study guide here](https://cookieMr.github.io/<your-repo-name>/)**
+**[Read the live study guide here](https://cookieMr.github.io/gcp_ace_notes/)**
 
 ## Project Structure
 
