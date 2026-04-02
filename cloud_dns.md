@@ -1,6 +1,6 @@
-# GCP Cloud DNS: ACE Exam Study Guide (2026)
+# Cloud DNS: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. Cloud DNS Overview
 
@@ -11,6 +11,7 @@ Cloud DNS is a high-performance, resilient, and managed Domain Name System (DNS)
   - **Global Scope:** DNS is a global service; managed zones are accessible from anywhere.
   - **Low Latency:** Uses Google's global network of Anycast name servers.
   - **100% Availability SLA:** Google guarantees 100% availability for its authoritative name servers.
+  - **Gemini for DNS:** Use Gemini for automated DNS record creation, troubleshooting complex resolution issues, and policy generation.
 
 ## 2. Managed Zones
 
@@ -35,8 +36,8 @@ Cloud DNS supports common DNS record types:
 
 ## 4. DNS Forwarding and Peering
 
-- **Inbound Query Forwarding:** Allows on-premises clients to resolve GCP private DNS records. Requires an **Inbound Forwarding Policy** on the VPC.
-- **Outbound Query Forwarding:** Allows GCP instances to resolve on-premises DNS records. Accomplished via **Forwarding Zones**.
+- **Inbound Query Forwarding:** Allows on-premises clients to resolve GCP private DNS records. Requires an *Inbound Forwarding Policy* on the VPC.
+- **Outbound Query Forwarding:** Allows GCP instances to resolve on-premises DNS records. Accomplished via *Forwarding Zones*.
 - **DNS Peering:** Connects the DNS namespace of two VPCs. Unlike VPC Peering, this only affects DNS resolution, not network connectivity.
 
 ## 5. DNS Policies
@@ -45,11 +46,12 @@ DNS policies allow you to control how the VPC handles DNS queries.
 
 - **Server Policies:** Can enable inbound DNS forwarding or specify alternative DNS servers for the VPC.
 - **Client Policies:** Can be used to apply specific DNS settings to VM instances.
+- **DNS over HTTPS (DoH):** Support for encrypted DNS queries between clients and Cloud DNS to enhance privacy and security.
 
 ## 6. Security
 
 - **DNSSEC (DNS Security Extensions):** Protects your domains from spoofing and cache poisoning by digitally signing DNS records.
-  - _Exam Tip:_ DNSSEC is available for **Public Zones** only.
+  - _Exam Tip:_ DNSSEC is available for *Public Zones* only.
 - **IAM Roles:**
   - `roles/dns.admin`: Full control over Cloud DNS resources.
   - `roles/dns.reader`: View access only.
@@ -69,11 +71,11 @@ DNS policies allow you to control how the VPC handles DNS queries.
 
 ## 8. Exam Tips
 
-- **Visibility:** Always distinguish between **Public** (Internet) and **Private** (VPC only) zones.
+- **Visibility:** Always distinguish between Public (Internet) and Private (VPC only) zones.
 - **Forwarding vs. Peering:**
-  - Use **Forwarding** for GCP <-> On-Premises.
-  - Use **Peering** for GCP VPC <-> GCP VPC.
+  - Use Forwarding for GCP <-> On-Premises.
+  - Use Peering for GCP VPC <-> GCP VPC.
 - **Split-Horizon DNS:** Cloud DNS supports split-horizon, where you have a public zone and a private zone with the same name but different records.
-- **Registration:** Cloud DNS is **not** a domain registrar. You buy the domain elsewhere (or through Google Domains/Squarespace) and use Cloud DNS for management.
+- **Registration:** Cloud DNS is not a domain registrar. You buy the domain elsewhere (or through Google Domains/Squarespace) and use Cloud DNS for management.
 
-[Back to root](./README.md)
+[Back to README](README.md)

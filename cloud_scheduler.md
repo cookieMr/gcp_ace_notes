@@ -1,6 +1,6 @@
-# GCP Cloud Scheduler: ACE Exam Study Guide (2026)
+# Cloud Scheduler: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. Cloud Scheduler Overview
 
@@ -11,6 +11,7 @@ Cloud Scheduler is a fully managed enterprise-grade cron job service. It allows 
   - **Reliability:** Guaranteed at-least-once delivery to your targets.
   - **Unified:** Provides a single interface to manage all your scheduled jobs.
   - **PaaS Nature:** It is a serverless product; you pay per job per month.
+  - **Gemini Integration:** Use Gemini in the Cloud Console to generate cron schedules from natural language descriptions (e.g., "every first Monday of the month at 4 AM").
 
 ## 2. Target Types (How it triggers work)
 
@@ -33,6 +34,7 @@ Cloud Scheduler uses the standard Unix cron format: `* * * * *` (Minute, Hour, D
 
 - **Example:** `0 9 * * 1` runs every Monday at 9:00 AM.
 - **Timezone:** You can specify a timezone for the job (e.g., `UTC`, `America/New_York`). If not specified, it defaults to `UTC`.
+- **Natural Language:** With Gemini, you can now input "Daily at midnight" and have it automatically converted to `0 0 * * *`.
 
 ## 4. Reliability and Retries
 
@@ -74,4 +76,4 @@ Cloud Scheduler uses the standard Unix cron format: `* * * * *` (Minute, Hour, D
 - **App Engine Region:** Cloud Scheduler requires an App Engine application to be initialized in the project (it uses the same underlying location). You cannot change this location later.
 - **Cron Format:** Be familiar with the 5-field cron syntax for basic scheduling questions.
 
-[Back to root](./README.md)
+[Back to README](README.md)

@@ -1,6 +1,6 @@
-# GCP Cloud Armor: ACE Exam Study Guide
+# Cloud Armor: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. Cloud Armor Overview
 
@@ -9,6 +9,7 @@ Cloud Armor is Google Cloud's network security service that provides Web Applica
 - **Primary Purpose:** Protect web applications and services from common internet-based threats, including DDoS attacks and application-layer (Layer 7) attacks.
 - **Integration:** Cloud Armor security policies are applied to **Backend Services** of a **Global External HTTP(S) Load Balancer** (Classic or Envoy-based).
 - **Enforcement:** Traffic is inspected and filtered at the Google Cloud edge, before it reaches your backend instances.
+- **Gemini in Cloud Armor:** Can help analyze attack patterns, suggest security policy improvements, and assist in interpreting security logs.
 
 ## 2. Security Policies and Rules
 
@@ -69,4 +70,4 @@ Cloud Armor includes preconfigured WAF rules to protect against common web attac
 - **Update a Rule:** `gcloud compute security-policies rules update [PRIORITY] --security-policy=[POLICY] --action="allow"`
 - **Attach to Backend Service:** `gcloud compute backend-services update [BACKEND_SERVICE] --security-policy=[POLICY] --global`
 
-[Back to root](./README.md)
+[Back to README](README.md)

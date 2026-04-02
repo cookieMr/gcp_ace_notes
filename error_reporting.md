@@ -1,6 +1,6 @@
-# GCP Error Reporting: ACE Exam Study Guide (2026)
+# Error Reporting: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. Error Reporting Overview
 
@@ -9,6 +9,7 @@ Cloud Error Reporting aggregates and displays errors from your running cloud ser
 - **Primary Purpose:** To provide a centralized view of application errors, crash reports, and exceptions to help you identify, prioritize, and resolve issues quickly.
 - **Automatic Aggregation:** It automatically groups similar errors based on their stack traces and context.
 - **Real-time Alerts:** You can receive notifications (Email, SMS, Mobile) when a new error is detected or an existing error occurs frequently.
+- **Gemini Integration:** Use Gemini in the Cloud Console to summarize error groups and suggest potential fixes based on stack traces and documentation.
 
 ## 2. Key Concepts
 
@@ -53,6 +54,7 @@ Error Reporting supports major languages including:
 - **Cloud Logging:** The most common way to ingest errors is by parsing logs.
 - **Cloud Monitoring:** You can create alerting policies based on error frequencies.
 - **Issue Trackers:** You can link an error group to an external issue tracker (like Jira or GitHub Issues) directly from the console.
+- **Gemini for Google Cloud:** Leverage AI-powered insights to correlate error spikes with recent deployments or configuration changes.
 
 ## 7. Essential gcloud Commands
 
@@ -66,7 +68,7 @@ Error Reporting supports major languages including:
   - **Error Reporting:** "What bugs are in my code?" (Aggregated stack traces and exceptions).
 - **Troubleshooting:** If an exam question asks for a centralized way to track and manage application crashes or exceptions, the answer is **Error Reporting**.
 - **Automatic Groups:** Remember that Error Reporting doesn't just list every error; it **groups** them intelligently based on their stack trace, which saves developers from wading through redundant logs.
-- **Notification:** To get an email when a _new_ type of error occurs, use the built-in notification feature of Error Reporting.
+- **Notification:** To get an email when a new type of error occurs, use the built-in notification feature of Error Reporting.
 - **Issue Linking:** The ability to link errors to external bug trackers is a specific feature that frequently appears in management-related questions.
 
-[Back to root](./README.md)
+[Back to README](README.md)

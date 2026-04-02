@@ -1,6 +1,6 @@
 # GCP Pub/Sub: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. Pub/Sub Overview
 
@@ -83,4 +83,4 @@ Pub/Sub supports several ways to deliver messages:
 - **Fan-out:** One topic can have many subscriptions. Each subscription receives a copy of every message published to the topic.
 - **Push vs Pull:** Use **Push** for low-latency webhooks and serverless. Use **Pull** for high-volume worker fleets.
 
-[Back to root](./README.md)
+[Back to README](README.md)

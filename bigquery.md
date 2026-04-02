@@ -1,6 +1,6 @@
-# GCP BigQuery: Associate Cloud Engineer (ACE) Study Guide
+# BigQuery: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. Core Overview
 
@@ -8,6 +8,7 @@
 - **Workload Type:** Designed specifically for OLAP (Online Analytical Processing) and massive data analytics, rather than transactional (OLTP) application workloads.
 - **Scale:** Can query terabytes in seconds and petabytes in minutes.
 - **Architecture:** Utilizes a columnar storage format and completely separates the compute processing from the underlying storage.
+- **Gemini in BigQuery:** Provides AI-powered SQL assistance, query optimization, and data insights directly within the console.
 
 ## 2. Interacting with BigQuery
 
@@ -24,8 +25,8 @@ For the ACE exam, you are expected to know how to interact with BigQuery beyond 
 
 The exam frequently tests your ability to run queries efficiently without generating unexpected costs.
 
-- **Columnar Architecture:** BigQuery charges by the amount of data _scanned_, not the amount of data returned. Using `SELECT *` is a bad practice. Selecting only specific columns reduces costs.
-- **The LIMIT Clause:** Adding `LIMIT 10` does **not** reduce costs. BigQuery scans the entire column first.
+- **Columnar Architecture:** BigQuery charges by the amount of data scanned, not the amount of data returned. Using `SELECT *` is a bad practice. Selecting only specific columns reduces costs.
+- **The LIMIT Clause:** Adding `LIMIT 10` does *not* reduce costs. BigQuery scans the entire column first.
 - **Cost Estimation:** Use the **--dry_run** flag in the `bq` CLI or the "Query Validator" in the Console to see how many bytes a query will scan *before* running it.
 - **Partitioning:** Segments tables by time (e.g., `_PARTITIONTIME`), date, or integer range. Drastically reduces costs by "pruning" partitions.
 - **Clustering:** Sorts data based on specific columns (up to 4). Best for queries using filters (`WHERE`) or aggregations (`GROUP BY`). Unlike partitioning, clustering is "best effort" but highly effective for high-cardinality columns.
@@ -43,9 +44,9 @@ The exam frequently tests your ability to run queries efficiently without genera
 
 Understanding the separation of access roles is a frequent exam topic.
 
-- `roles/bigquery.dataViewer`: Allows a user to read data and metadata from tables, but **cannot** run a query.
+- `roles/bigquery.dataViewer`: Allows a user to read data and metadata from tables, but *cannot* run a query.
 - `roles/bigquery.jobUser`: Allows a user to run jobs (like query executions) within the project, but does not grant access to view the actual data.
-- **Crucial Exam Scenario:** If a user needs to run a query against a dataset, they must be assigned _both_ the `bigquery.dataViewer` role (to access the data) and the `bigquery.jobUser` role (to execute the job).
+- **Crucial Exam Scenario:** If a user needs to run a query against a dataset, they must be assigned *both* the `bigquery.dataViewer` role (to access the data) and the `bigquery.jobUser` role (to execute the job).
 - `roles/bigquery.dataEditor`: Allows a user to edit table data and create new tables.
 - `roles/bigquery.admin`: Grants full control over all BigQuery resources.
 
@@ -61,14 +62,14 @@ When reading an exam question, look for these specific identifiers:
 - Petabyte-scale analytics and reporting.
 - Enterprise Data Warehousing.
 - Complex SQL queries on historical data (e.g., analyzing three years of global sales data).
-- Machine learning via SQL (`BigQuery ML`).
+- Machine learning via SQL (BigQuery ML).
 
 ## 8. Essential Administrative & Management Tasks
 
-- **Dataset Location:** Must be chosen at creation (e.g., `US` multi-region or `europe-west1` region). **Cannot be changed** later. To move data, you must recreate the dataset and copy tables.
-- **Table Expiration:** Can be set at the **Dataset level** to automatically delete tables after a certain number of days (useful for temporary/staging data).
+- **Dataset Location:** Must be chosen at creation (e.g., `US` multi-region or `europe-west1` region). *Cannot be changed* later. To move data, you must recreate the dataset and copy tables.
+- **Table Expiration:** Can be set at the *Dataset level* to automatically delete tables after a certain number of days (useful for temporary/staging data).
 - **Data Transfer Service:** Use this to automate data movement from SaaS apps (Google Ads, YouTube) or other clouds (Amazon S3, Azure Blob) into BigQuery.
 - **BigQuery ML:** Allows creating and executing machine learning models using standard SQL directly inside BigQuery.
 - **Connected Sheets:** Allows users to analyze billions of rows of BigQuery data directly from Google Sheets.
 
-[Back to root](./README.md)
+[Back to README](README.md)

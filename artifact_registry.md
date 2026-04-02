@@ -1,6 +1,6 @@
-# GCP Artifact Registry: ACE Exam Study Guide (2026)
+# Artifact Registry: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. Artifact Registry Overview
 
@@ -30,7 +30,8 @@ Artifact Registry is the evolution of Container Registry (GCR), providing a sing
 - **Vulnerability Scanning:** Automatically scans container images for known security vulnerabilities.
 - **Binary Authorization:** Integration with GKE ensures only trusted, scanned images are deployed.
 - **CMEK (Customer-Managed Encryption Keys):** Allows you to encrypt your artifacts with your own keys from Cloud KMS.
-- **Fine-grained IAM:** Permissions can be granted at the **repository level**, whereas GCR permissions were tied to the underlying Cloud Storage bucket.
+- **Fine-grained IAM:** Permissions can be granted at the *repository level*, whereas GCR permissions were tied to the underlying Cloud Storage bucket.
+- **Gemini Integration:** Gemini can assist in analyzing vulnerability scan results and providing remediation advice.
 
 ## 5. Repository Structure (Naming)
 
@@ -63,4 +64,4 @@ For Docker images, the format is:
 - **Multi-format:** If a question mentions storing npm or Python packages in Google Cloud, the answer is always **Artifact Registry**.
 - **Cleanup Policies:** You can define policies to automatically delete old versions of packages to save costs.
 
-[Back to root](./README.md)
+[Back to README](README.md)

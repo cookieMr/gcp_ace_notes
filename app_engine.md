@@ -1,6 +1,6 @@
-# GCP App Engine: ACE Exam Study Guide (2026)
+# App Engine: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. App Engine Overview
 
@@ -11,6 +11,7 @@ App Engine is a fully managed Platform as a Service (PaaS) for building and depl
   - **Application-Centric:** Focus on code, not infrastructure.
   - **Regional Resource:** An App Engine application is created within a specific region and cannot be moved once created.
   - **Max One App per Project:** You can only have one App Engine application per Google Cloud project.
+  - **Gemini Integration:** Use Gemini Code Assist to generate app.yaml configurations and optimize runtime code.
 
 ## 2. Standard vs. Flexible Environment
 
@@ -28,6 +29,7 @@ _This is the most frequent exam topic for App Engine._
 
 - **Speed:** Starts in minutes (uses Compute Engine VMs). No scale-to-zero.
 - **Infrastructure:** Runs your code in Docker containers. You can use any language or version.
+- **Machine Types:** Supports modern N4 and C4 machine types for high-performance workloads.
 - **Capabilities:** You can modify the OS, access the local filesystem, and use SSH.
 - **Connectivity:** Can access resources in your VPC more easily than Standard.
 - **Cost:** More expensive; at least one instance must always be running.
@@ -82,4 +84,4 @@ Understanding the relationship between components is essential for resource mana
 - **Versioning:** Always deploy a new version for major changes. This allows for instant rollbacks if things go wrong.
 - **Region Lock:** You cannot change an App Engine app's region after it is created. You must create a new project to change the region.
 
-[Back to root](./README.md)
+[Back to README](README.md)

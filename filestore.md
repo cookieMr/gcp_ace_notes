@@ -1,6 +1,6 @@
-# Google Cloud Filestore — ACE Exam Study Guide
+# Filestore: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 Google Cloud Filestore is a **managed NFS file storage service** designed for applications that require a **POSIX‑compliant shared filesystem**.  
 It is commonly used with **GKE**, **Compute Engine**, and workloads that need shared file access.
@@ -180,4 +180,4 @@ _\*Note: Multi-writer PD exists but is highly specialized (Block storage)._
 - **No in-place tier upgrades.**
 - IAM = Instance management; NFS/POSIX = File-level access.
 
-[Back to root](./README.md)
+[Back to README](README.md)

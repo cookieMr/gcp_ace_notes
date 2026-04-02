@@ -1,6 +1,6 @@
-# GCP Cloud Functions: ACE Exam Study Guide (2026)
+# Cloud Functions: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. Cloud Functions Overview
 
@@ -10,20 +10,21 @@ Cloud Functions is a serverless, event-driven compute platform for executing sni
   - **Serverless:** No infrastructure management; automatic scaling.
   - **Single-purpose:** Best for small, independent units of logic.
   - **Ephemeral:** Instances are created, perform work, and are destroyed.
-- **Generations (2nd Gen vs. 1st Gen):**
+  - **Gemini for Code:** Use Gemini to generate boilerplate code, optimize logic, and write unit tests for your functions.
+- **Generations (2nd Gen is now the Default):**
   - **2nd Generation (Built on Cloud Run):**
     - Higher concurrency (up to 1000 requests per instance).
     - Longer processing times (up to 60 minutes for HTTP).
-    - Larger instance sizes (up to 16GB RAM / 4 vCPUs).
+    - Larger instance sizes (up to 16GB RAM / 4 vCPUs) and support for C4 machine types.
     - Traffic splitting between revisions.
-  - **1st Generation:** Traditional model, limited concurrency (1 request per instance).
+  - **1st Generation:** Legacy model, limited concurrency (1 request per instance).
 
 ## 2. Triggers and Events
 
 Cloud Functions run in response to specific events.
 
 - **HTTP Triggers:** Triggered via a direct URL (standard for webhooks or simple APIs).
-- **Event-Driven Triggers (via Eventarc in 2nd Gen):**
+- **Event-Driven Triggers (via Eventarc):**
   - **Cloud Storage:** Triggered by file creation, deletion, or metadata updates.
   - **Pub/Sub:** Triggered when a message is published to a specific topic.
   - **Firestore:** Triggered by document creation, updates, or deletions.
@@ -36,7 +37,7 @@ Cloud Functions run in response to specific events.
   - Local machine via `gcloud`.
   - Source repositories (GitHub, Bitbucket).
   - Cloud Storage (ZIP file).
-- **Cloud Build:** When you deploy, Cloud Build automatically packages the function and stores it as a container image in **Artifact Registry**.
+- **Cloud Build:** When you deploy, Cloud Build automatically packages the function and stores it as a container image in *Artifact Registry*.
 
 ## 4. Scaling and Concurrency
 
@@ -48,8 +49,8 @@ Cloud Functions run in response to specific events.
 ## 5. Networking
 
 - **Ingress Settings:** Control whether the function is public or internal-only.
-- **VPC Access:** Use a **Serverless VPC Access Connector** to allow the function to reach internal resources (e.g., Cloud SQL with private IP, Redis).
-- **Static Outbound IP:** Requires a VPC Connector and **Cloud NAT**.
+- **VPC Access:** Use a Serverless VPC Access Connector to allow the function to reach internal resources (e.g., Cloud SQL with private IP, Redis).
+- **Static Outbound IP:** Requires a VPC Connector and Cloud NAT.
 
 ## 6. Security and IAM
 
@@ -57,8 +58,8 @@ Cloud Functions run in response to specific events.
   - `roles/cloudfunctions.invoker`: Allows calling/triggering the function.
   - `roles/cloudfunctions.admin`: Full control over functions.
 - **Service Accounts:**
-  - **Runtime Service Account:** The identity the function uses when it runs (default is the App Engine default service account). Best practice: Use a **Custom Service Account** with minimal permissions.
-- **Secrets:** Integrate with **Secret Manager** to securely provide API keys or credentials.
+  - **Runtime Service Account:** The identity the function uses when it runs (default is the App Engine default service account). Best practice: Use a *Custom Service Account* with minimal permissions.
+- **Secrets:** Integrate with *Secret Manager* to securely provide API keys or credentials.
 
 ## 7. Monitoring and Logging
 
@@ -80,4 +81,4 @@ Cloud Functions run in response to specific events.
 - **Cold Starts:** Occur when a new instance is spun up from zero. Mitigated by setting a `min-instances` value.
 - **Idempotency:** _Critical._ Event-driven functions should be idempotent (running the same event multiple times should produce the same result) to handle retries correctly.
 
-[Back to root](./README.md)
+[Back to README](README.md)

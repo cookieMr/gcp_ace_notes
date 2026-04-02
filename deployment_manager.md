@@ -1,6 +1,6 @@
-# GCP Deployment Manager: ACE Exam Study Guide (2026)
+# Deployment Manager: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. Deployment Manager Overview
 
@@ -78,4 +78,4 @@ Templates allow you to abstract logic and make configurations more dynamic.
 - **Preview Mode:** Always use the `--preview` flag to validate changes before applying them to production.
 - **Resource Types:** Familiarize yourself with the syntax for types like `compute.v1.instance` or `storage.v1.bucket`.
 
-[Back to root](./README.md)
+[Back to README](README.md)

@@ -1,6 +1,6 @@
 # GCP VPC Service Controls: ACE Exam Study Guide
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. VPC Service Controls Overview
 
@@ -67,4 +67,4 @@ If you see a `403 Forbidden` error with a reason like `RESOURCES_NOT_IN_PERIMETE
 - The service is being protected by the perimeter.
 - The user's request meets the criteria of the attached Access Level (e.g., correct IP address).
 
-[Back to root](./README.md)
+[Back to README](README.md)

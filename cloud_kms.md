@@ -1,6 +1,6 @@
-# GCP Cloud Key Management Service (Cloud KMS): ACE Exam Study Guide
+# Cloud KMS: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. Cloud KMS Overview
 
@@ -13,6 +13,7 @@ Cloud KMS is a managed service that allows you to create, import, and manage cry
   - **Key Ring:** A logical grouping of keys for easier management and permissioning.
   - **CryptoKey:** A named resource that contains one or more key versions.
   - **CryptoKeyVersion:** The actual material used for cryptographic operations.
+- **KMS Autokey (2026 Update):** A newer feature that simplifies CMEK by allowing services to request keys on-demand, with KMS automatically handling the creation and assignment of keys according to best practices.
 
 ## 2. Key Management Operations
 
@@ -36,20 +37,20 @@ CMEK is a major exam topic. It allows you to use your own Cloud KMS keys to encr
 
 - **Default Encryption:** By default, Google Cloud encrypts all data at rest using Google-managed keys.
 - **CMEK Integration:**
-  - **Cloud Storage:** Set a default KMS key for a bucket. Any new object uploaded will be encrypted with that key.
-  - **Compute Engine:** Encrypt Persistent Disks (PDs) using a KMS key during VM creation.
+  - **Cloud Storage:** Set a default KMS key for a bucket.
+  - **Compute Engine:** Encrypt Persistent Disks (PDs) on standard, N4, and C4 machine types.
   - **BigQuery:** Encrypt datasets and tables using a KMS key.
 - **Service Agent Permissions:**
-  - To use CMEK, the **Service Agent** for the specific service (e.g., `service-[PROJECT_NUMBER]@gs-project-accounts.iam.gserviceaccount.com` for GCS) must be granted the `roles/cloudkms.cryptoKeyEncrypterDecrypter` role on the KMS key.
+  - To use CMEK, the **Service Agent** for the specific service must be granted the `roles/cloudkms.cryptoKeyEncrypterDecrypter` role on the KMS key.
 
 ## 4. IAM Roles for Cloud KMS
 
 The ACE exam focuses on the Principle of Least Privilege and Separation of Duties.
 
-- **Cloud KMS Admin (`roles/cloudkms.admin`):** Allows creating, deleting, and managing key rings and keys. It does **not** allow using keys for encryption/decryption.
+- **Cloud KMS Admin (`roles/cloudkms.admin`):** Allows managing key rings and keys. It does **not** allow using keys for encryption/decryption.
 - **Cloud KMS CryptoKey Encrypter/Decrypter (`roles/cloudkms.cryptoKeyEncrypterDecrypter`):** Allows using keys to encrypt and decrypt data.
 - **Cloud KMS Viewer (`roles/cloudkms.viewer`):** Allows viewing key rings and keys without the ability to use or manage them.
-- **Best Practice:** Grant the `EncrypterDecrypter` role to the specific **Service Agent** that needs it, not to individual users.
+- **Best Practice:** Grant the `EncrypterDecrypter` role to the specific **Service Agent** that needs it.
 
 ## 5. KMS vs. Secret Manager vs. CSEK
 
@@ -57,13 +58,16 @@ You must distinguish between these three concepts for the exam.
 
 - **Cloud KMS:** Used for managing encryption keys (to encrypt large files, disks, or database entries).
 - **Secret Manager:** Used for managing sensitive strings like API keys, passwords, and database credentials.
-- **Customer-Supplied Encryption Keys (CSEK):** You provide the raw key material to Google Cloud. Google does not store the key on disk. If you lose the key, Google cannot recover your data. (Contrast with CMEK, where Google stores the key in Cloud KMS).
+- **Customer-Supplied Encryption Keys (CSEK):** You provide the raw key material. Google does not store the key.
 
-## 6. Essential gcloud Commands
+## 6. Gemini Integration (2026 Update)
+
+- **Gemini for Cloud KMS:** Use Gemini to help generate least-privilege IAM policies for keys and troubleshoot key access issues. Gemini can also assist in explaining key rotation schedules and auditing key usage via Cloud Logging.
+
+## 7. Essential gcloud Commands
 
 - **Create a Key Ring:** `gcloud kms keyrings create [NAME] --location [LOCATION]`
 - **Create a Key:** `gcloud kms keys create [NAME] --keyring [RING] --location [LOCATION] --purpose encryption`
 - **Add IAM Policy Binding:** `gcloud kms keys add-iam-policy-binding [KEY] --location [LOCATION] --keyring [RING] --member [MEMBER] --role roles/cloudkms.cryptoKeyEncrypterDecrypter`
-- **List Keys:** `gcloud kms keys list --location [LOCATION] --keyring [RING]`
 
-[Back to root](./README.md)
+[Back to README](README.md)

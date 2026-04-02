@@ -1,6 +1,6 @@
 # GCP VPC Peering and Shared VPC: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. VPC Network Peering
 
@@ -56,4 +56,4 @@ Shared VPC allows an organization to connect resources from multiple projects to
 - **Quotas:** Both Peering and Shared VPC have limits on the number of connections/projects.
 - **Troubleshooting:** If two peered VMs can't talk, check for **overlapping subnets** first, then **firewall rules**, then verify that the peering is in the `ACTIVE` state on **both** sides.
 
-[Back to root](./README.md)
+[Back to README](README.md)

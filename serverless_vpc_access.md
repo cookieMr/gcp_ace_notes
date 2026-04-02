@@ -1,6 +1,6 @@
-# GCP Serverless VPC Access: ACE Exam Study Guide (2026)
+# Serverless VPC Access: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. Overview
 
@@ -22,7 +22,8 @@ Serverless VPC Access allows your Google Cloud serverless services to communicat
 - **Managed Connector:** It acts as a bridge between the serverless environment and your VPC.
 - **Regional Resource:** A connector is created in a specific region and can only be used by serverless services in that same region.
 - **Dedicated Subnet:** Each connector requires a dedicated `/28` subnet range that does not overlap with any existing ranges in your VPC.
-- **Throughput:** You can scale the connector's throughput by specifying the minimum and maximum number of instances (each instance provides ~200 Mbps or 300 Mbps depending on machine type).
+- **Throughput:** You can scale the connector's throughput by specifying the minimum and maximum number of instances.
+- **Machine Types:** In 2026, connectors can leverage newer machine types (like N4) for improved performance and cost-efficiency.
 
 ## 3. Architecture and Configuration
 
@@ -52,7 +53,12 @@ Serverless VPC Access supports Shared VPC, but with specific requirements:
   - `roles/vpcaccess.viewer`: View-only access.
 - **Firewall Rules:** You must ensure that the VPC's firewall allows ingress traffic from the connector's `/28` subnet to the target resources (e.g., allow port 3306 for Cloud SQL).
 
-## 6. Essential gcloud Commands
+## 6. Gemini and Troubleshooting
+
+- **Gemini for Network Intelligence:** Use Gemini in the Cloud Console to troubleshoot connectivity issues between your serverless application and VPC resources.
+- **Connectivity Tests:** Integrate with Network Intelligence Center to run automated tests from the connector to the destination IP/port.
+
+## 7. Essential gcloud Commands
 
 - **Create a Connector:**
   `gcloud compute vpc-access connectors create [NAME] --network=[VPC] --region=[REGION] --range=[CIDR_28]`
@@ -61,11 +67,11 @@ Serverless VPC Access supports Shared VPC, but with specific requirements:
 - **Deploy Cloud Run with Connector:**
   `gcloud run deploy [SERVICE_NAME] --image [IMAGE] --vpc-connector [CONNECTOR_NAME]`
 
-## 7. Exam Tips
+## 8. Exam Tips
 
 - **The "When to use" question:** If you see "Cloud Run" + "Cloud SQL Private IP" or "Memorystore," the answer is almost always **Serverless VPC Access Connector**.
 - **The Subnet Rule:** Remember it must be exactly a **`/28`** CIDR block and must not overlap with any existing subnets.
 - **The Cost:** Connectors incur costs even when not in use because they are backed by small, underlying VM instances.
 - **Static IP for Cloud Run:** To give Cloud Run a static IP for a third-party firewall, you MUST use a VPC Connector with "All Traffic" egress and a **Cloud NAT** gateway.
 
-[Back to root](./README.md)
+[Back to README](README.md)

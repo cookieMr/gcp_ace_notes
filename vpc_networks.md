@@ -1,6 +1,6 @@
 # GCP VPC Networks: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. VPC Fundamentals
 
@@ -75,4 +75,4 @@ Firewall rules allow you to control which packets are allowed to or from your VM
 - **IAP for SSH:** Remember the range `35.235.240.0/20` must be allowed for IAP TCP forwarding.
 - **Networking Costs:** Egress traffic usually incurs costs; Ingress is usually free. Traffic within the same Zone is usually free; traffic between Zones in the same Region has a cost.
 
-[Back to root](./README.md)
+[Back to README](README.md)

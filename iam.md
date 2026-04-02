@@ -1,6 +1,6 @@
-# GCP Identity and Access Management (IAM): ACE Exam Study Guide
+# Identity and Access Management (IAM): ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. IAM Overview
 
@@ -56,9 +56,10 @@ The Principle of Least Privilege states that a principal should have only the mi
   - Use **Predefined Roles** instead of Basic Roles.
   - Apply roles at the **lowest possible level** in the resource hierarchy.
   - Use **IAM Conditions** to restrict access based on attributes like time, resource name, or IP address.
-  - Regularly audit permissions using the **IAM Recommender** to identify and remove unused roles.
+  - **IAM Recommender:** Regularly audit permissions using the AI-powered IAM Recommender to identify and remove unused roles.
+  - **Policy Troubleshooter:** Use the Policy Troubleshooter to understand why a user has or doesn't have a specific permission.
 
-## 5. Resource Hierarchy & Inheritance
+## 5. Resource Hierarchy and Inheritance
 
 IAM policies are hierarchical and permissions are inherited.
 
@@ -69,6 +70,7 @@ IAM policies are hierarchical and permissions are inherited.
 
 ## 6. IAM Best Practices for 2026
 
+- **Gemini for IAM:** Leverage Gemini in the Google Cloud Console to explain complex IAM policies and suggest the most restrictive roles for a given set of permissions.
 - **Use Groups:** Always assign roles to Google Groups rather than individual users to simplify management.
 - **Audit Logs:** Use Cloud Audit Logs to track "Who did what, where, and when."
 - **Avoid Default Service Accounts:** Create custom service accounts with specific roles instead of using the broad default accounts.
@@ -82,4 +84,4 @@ IAM policies are hierarchical and permissions are inherited.
 - **Create Service Account:** `gcloud iam service-accounts create [SA_NAME] --display-name="[DISPLAY_NAME]"`
 - **List Service Accounts:** `gcloud iam service-accounts list`
 
-[Back to root](./README.md)
+[Back to README](README.md)

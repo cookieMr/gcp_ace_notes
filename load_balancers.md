@@ -1,62 +1,58 @@
-# GCP Load Balancing: ACE Exam Study Guide (2026)
+# Load Balancing: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. Load Balancing Overview
 
 Google Cloud Load Balancing is a fully managed, software-defined service. It is not instance-based, so you don't need to manage infrastructure or scale it manually.
 
-- **Key Characteristics:**
-  - **External vs. Internal:** Determines if the load balancer is internet-facing or private within your VPC.
-  - **Global vs. Regional:** Determines if the load balancer can distribute traffic across multiple regions or is confined to a single region.
-  - **Traffic Type:** Layer 7 (HTTP/S) vs. Layer 4 (TCP/UDP).
+- Key Characteristics:
+  - External vs. Internal: Internet-facing or private within your VPC.
+  - Global vs. Regional: Traffic distribution across multiple regions or a single region.
+  - Traffic Type: Layer 7 (HTTP/S) vs. Layer 4 (TCP/UDP).
 
 ## 2. External Load Balancers
 
-These are used to distribute traffic from the Internet to your Google Cloud resources.
-
 ### Global External Application Load Balancer (HTTP/S)
 
-- **Layer:** Layer 7 (HTTP, HTTPS, HTTP/2).
-- **Scope:** Global. Distributes traffic to the closest available backend across multiple regions.
-- **Features:** URL maps (path-based routing), SSL termination, Google Cloud Armor integration, and Cloud CDN support.
-- **Backends:** Instance Groups (MIGs/ZIGs), Network Endpoint Groups (NEGs) for GKE/Serverless.
+- Layer: Layer 7 (HTTP, HTTPS, HTTP/2).
+- Scope: Global. Distributes traffic to the closest available backend.
+- Features: URL maps (path-based routing), SSL termination, Cloud Armor integration, and Cloud CDN support.
+- Backends: MIGs/ZIGs, NEGs for GKE/Serverless.
 
 ### External Proxy Network Load Balancer (TCP/SSL)
 
-- **Layer:** Layer 4 (TCP with SSL termination support).
-- **Scope:** Global (Regional version also available).
-- **Use Case:** Non-HTTP traffic that requires SSL termination or proxying.
+- Layer: Layer 4 (TCP with SSL termination).
+- Scope: Global (Regional version available).
+- Use Case: Non-HTTP traffic that requires SSL termination or proxying.
 
 ### External Passthrough Network Load Balancer (TCP/UDP)
 
-- **Layer:** Layer 4 (TCP, UDP, ICMP).
-- **Scope:** Regional.
-- **Nature:** Passthrough (not a proxy). It preserves the source IP address of the client.
-- **Use Case:** Simple TCP/UDP traffic where low latency is critical and proxying is not required.
+- Layer: Layer 4 (TCP, UDP, ICMP).
+- Scope: Regional.
+- Nature: Passthrough. Preserves the source IP address of the client.
+- Use Case: Simple TCP/UDP traffic where low latency is critical.
 
 ## 3. Internal Load Balancers
 
-These distribute traffic between resources _within_ your Google Cloud VPC or from on-premises via VPN/Interconnect.
-
 ### Internal Application Load Balancer (HTTP/S)
 
-- **Layer:** Layer 7.
-- **Scope:** Regional.
-- **Use Case:** Microservices communication within a VPC requiring path-based routing.
+- Layer: Layer 7.
+- Scope: Regional.
+- Use Case: Microservices communication within a VPC requiring path-based routing.
 
 ### Internal Proxy Network Load Balancer (TCP)
 
-- **Layer:** Layer 4.
-- **Scope:** Regional.
-- **Use Case:** Internal TCP traffic requiring proxying services.
+- Layer: Layer 4.
+- Scope: Regional.
+- Use Case: Internal TCP traffic requiring proxying services.
 
 ### Internal Passthrough Network Load Balancer (TCP/UDP)
 
-- **Layer:** Layer 4.
-- **Scope:** Regional.
-- **Nature:** Passthrough. Very low latency.
-- **Use Case:** Database clusters (e.g., SQL Server Always On), legacy applications inside the VPC.
+- Layer: Layer 4.
+- Scope: Regional.
+- Nature: Passthrough. Very low latency.
+- Use Case: Database clusters, legacy applications inside the VPC.
 
 ## 4. Summary Table for the Exam
 
@@ -71,25 +67,31 @@ These distribute traffic between resources _within_ your Google Cloud VPC or fro
 
 ## 5. Components of a Load Balancer
 
-- **Forwarding Rule:** Directs traffic based on IP, protocol, and port to a target proxy or pool.
-- **Target Proxy:** (For Proxy LBs) Terminates the connection and forwards it to the URL map or backend service.
-- **URL Map:** (For App LBs) Defines path-based routing rules (e.g., `/images` goes to one backend, `/api` to another).
-- **Backend Service:** Manages health checks, session affinity, and the backend pools (Instance Groups/NEGs).
-- **Health Check:** Regularly polls backends to ensure they are healthy. Traffic is not sent to unhealthy backends.
+- Forwarding Rule: Directs traffic based on IP, protocol, and port.
+- Target Proxy: Terminates the connection and forwards it to the URL map.
+- URL Map: Defines path-based routing rules (e.g., /images vs /api).
+- Backend Service: Manages health checks, session affinity, and backend pools.
+- Health Check: Regularly polls backends to ensure they are healthy.
 
-## 6. Essential gcloud Commands
+## 6. Gemini and Load Balancing
 
-- **Create a health check:** `gcloud compute health-checks create http [NAME] --port 80`
-- **Create a backend service:** `gcloud compute backend-services create [NAME] --protocol=HTTP --health-checks=[HC_NAME] --global`
-- **Add backends to service:** `gcloud compute backend-services add-backend [NAME] --instance-group=[GROUP_NAME] --global`
-- **Create a URL map:** `gcloud compute url-maps create [MAP_NAME] --default-service=[BACKEND_NAME]`
+- Gemini for Network Intelligence: Use Gemini to analyze traffic patterns across your load balancers and detect anomalies or potential DDoS attacks.
+- SSL Certificate Management: Leverage Gemini to receive alerts and automated renewal recommendations for SSL certificates managed by your load balancers.
+- Troubleshooting: Use Gemini in the Cloud Console to troubleshoot backend latency and health check failures with natural language queries.
 
-## 7. Exam Tips
+## 7. Essential gcloud Commands
 
-- **Preserving Client IP:** If you need to see the original client IP at the instance level for L4 traffic, use the **External Passthrough Network Load Balancer**.
-- **Path-based Routing:** Only **Application Load Balancers (L7)** support URL maps and path-based routing.
-- **SSL Termination:** Proxy-based load balancers (App LB, Proxy Net LB) handle SSL certificates at the load balancer level, reducing load on your VMs.
-- **Cloud Armor/CDN:** These services only integrate with the **Global External Application Load Balancer**.
-- **Session Affinity:** Use this if a client needs to stick to the same backend instance during their session (e.g., for shopping carts).
+- Create a health check: `gcloud compute health-checks create http [NAME] --port 80`
+- Create a backend service: `gcloud compute backend-services create [NAME] --protocol=HTTP --health-checks=[HC_NAME] --global`
+- Add backends to service: `gcloud compute backend-services add-backend [NAME] --instance-group=[GROUP_NAME] --global`
+- Create a URL map: `gcloud compute url-maps create [MAP_NAME] --default-service=[BACKEND_NAME]`
 
-[Back to root](./README.md)
+## 8. Exam Tips
+
+- Preserving Client IP: For L4 traffic, use the External Passthrough Network Load Balancer.
+- Path-based Routing: Only Application Load Balancers (L7) support URL maps.
+- SSL Termination: Proxy-based load balancers (App LB, Proxy Net LB) handle SSL at the load balancer level.
+- Cloud Armor/CDN: These integrate only with the Global External Application Load Balancer.
+- Session Affinity: Use if a client needs to stick to the same backend instance.
+
+[Back to README](README.md)

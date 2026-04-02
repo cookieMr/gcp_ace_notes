@@ -1,66 +1,70 @@
-# GCP Google Kubernetes Engine (GKE): ACE Exam Study Guide
+# GKE: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. GKE Fundamentals
 
 Google Kubernetes Engine (GKE) is a managed environment for deploying, managing, and scaling containerized applications using Google infrastructure.
 
-- **Managed Kubernetes:** Google manages the Kubernetes Control Plane (Master nodes), while you manage the worker nodes (in Standard mode).
-- **Cluster Types (The most important exam distinction):**
-  - **Autopilot:** Fully managed. Google manages the nodes, scaling, and security. You pay only for the pods you run. Best for most use cases where you don't need low-level node customization.
-  - **Standard:** You manage the node infrastructure. You have full control over the nodes, including SSH access and custom machine types. You pay for the underlying Compute Engine VMs.
+- Managed Kubernetes: Google manages the Kubernetes Control Plane, while you manage worker nodes in Standard mode.
+- Cluster Types:
+  - Autopilot: The default and recommended mode for 2026. Fully managed; Google manages nodes, scaling, and security. You pay only for running pods.
+  - Standard: You manage the node infrastructure. Full control over nodes, SSH access, and custom machine types.
 
 ## 2. Cluster Configurations
 
-- **Regional Clusters:** The Control Plane and nodes are replicated across multiple zones within a region. Provides higher availability (99.95% SLA).
-- **Zonal Clusters:** The Control Plane and nodes are in a single zone. Less expensive but vulnerable to a single zone failure (99.5% SLA).
-- **Private Clusters:** Nodes have only internal IP addresses. Communication with the Control Plane happens via VPC peering. Requires a NAT Gateway (Cloud NAT) for outbound internet access.
+- Regional Clusters: Control Plane and nodes replicated across multiple zones. Higher availability (99.95% SLA).
+- Zonal Clusters: Control Plane and nodes in a single zone. Less expensive (99.5% SLA).
+- Private Clusters: Nodes have internal IP addresses only. Communication with Control Plane via VPC peering. Requires Cloud NAT for outbound internet access.
 
-## 3. Node Management & Scaling
+## 3. Node Management and Scaling
 
-- **Node Pools:** A group of nodes within a cluster that all have the same configuration (machine type, labels, etc.). A cluster can have multiple node pools (e.g., one with GPUs, one with high-memory).
-- **Cluster Autoscaler:** Automatically adds or removes nodes from node pools based on the resource demands (CPU/Memory) of the pods.
-- **Horizontal Pod Autoscaler (HPA):** Scales the number of pod replicas based on CPU utilization or custom metrics.
-- **Vertical Pod Autoscaler (VPA):** Recommends or automatically adjusts the CPU and memory reservations for your pods.
+- Node Pools: A group of nodes with the same configuration. Support for N4 and C4 machine types in 2026 for optimized performance.
+- Cluster Autoscaler: Automatically adds or removes nodes based on resource demands.
+- Horizontal Pod Autoscaler (HPA): Scales pod replicas based on CPU or custom metrics.
+- Vertical Pod Autoscaler (VPA): Adjusts CPU and memory reservations for pods.
 
 ## 4. GKE Networking
 
-- **Services:**
-  - **ClusterIP:** Default. Exposes the service on an internal IP only.
-  - **NodePort:** Exposes the service on each Node's IP at a static port.
-  - **LoadBalancer:** Creates an external Google Cloud Load Balancer (TCP/UDP) to route traffic to the pods.
-- **Ingress:** A Kubernetes resource that manages external access to services, typically HTTP/HTTPS. It creates a Google Cloud HTTP(S) Load Balancer and provides features like SSL termination and path-based routing.
-- **Container-Native Load Balancing:** Uses Network Endpoint Groups (NEGs) to route traffic directly to pods rather than nodes, reducing latency.
+- Services:
+  - ClusterIP: Internal IP only.
+  - NodePort: Exposes service on each Node's IP at a static port.
+  - LoadBalancer: Creates an external Google Cloud Load Balancer.
+- Ingress: Manages external access (HTTP/HTTPS) and creates a Google Cloud App Load Balancer.
+- Container-Native Load Balancing: Uses Network Endpoint Groups (NEGs) to route traffic directly to pods.
 
 ## 5. Storage in GKE
 
-- **Persistent Volumes (PV):** A piece of storage in the cluster (e.g., a Persistent Disk).
-- **Persistent Volume Claims (PVC):** A request for storage by a user/pod.
-- **Storage Classes:** Used to define the type of storage (e.g., standard HDD vs. SSD). GKE provides a default storage class that automatically provisions Persistent Disks.
+- Persistent Volumes (PV) and Persistent Volume Claims (PVC): Managed storage for stateful applications.
+- Storage Classes: Defines storage types (e.g., standard HDD, SSD, or Balanced PD).
+- Hyperdisk: Support for Google Cloud Hyperdisk in 2026 for high-performance GKE workloads.
 
 ## 6. GKE Security
 
-- **Workload Identity:** _Critical Exam Topic._ The recommended way for GKE workloads to access Google Cloud services (GCS, BigQuery, etc.). It links a Kubernetes Service Account (KSA) to a Google Cloud Service Account (GSA).
-- **Binary Authorization:** Ensures only trusted container images are deployed to your cluster.
-- **RBAC (Role-Based Access Control):** Manages permissions _inside_ the Kubernetes cluster (e.g., who can create pods).
-- **IAM:** Manages permissions _outside_ the cluster (e.g., who can create or delete the cluster).
-- **Shielded GKE Nodes:** Provides verifiable node identity and integrity to protect against rootkits and boot-level malware.
+- Workload Identity: The recommended way for GKE workloads to access Google Cloud services.
+- Binary Authorization: Ensures only trusted container images are deployed.
+- RBAC: Manages permissions inside the cluster.
+- IAM: Manages permissions outside the cluster (e.g., cluster creation).
+- Shielded GKE Nodes: Provides node identity and integrity.
 
-## 7. Essential gcloud & kubectl Commands
+## 7. Gemini and Observability
 
-- **Create a Cluster:** `gcloud container clusters create [CLUSTER_NAME] --zone [ZONE] --num-nodes [NUMBER]`
-- **Get Credentials:** _High Probability._ Necessary to configure `kubectl` to talk to a specific cluster.
-  `gcloud container clusters get-credentials [CLUSTER_NAME] --zone [ZONE]`
-- **Resize a Cluster:** `gcloud container clusters resize [CLUSTER_NAME] --node-pool [POOL_NAME] --num-nodes [NEW_SIZE]`
-- **Deploy an Application:** `kubectl apply -f [FILENAME.YAML]`
-- **Check Pod Status:** `kubectl get pods`
-- **Expose a Deployment:** `kubectl expose deployment [NAME] --type=LoadBalancer --port=80`
+- Gemini in GKE: Use Gemini for AI-powered troubleshooting, log summarization, and cluster health monitoring.
+- GKE Enterprise: Advanced fleet management and AI-driven cost optimization powered by Gemini.
+- Gemini Code Assist: Use to generate Kubernetes manifests and Helm charts from natural language.
 
-## 8. Exam Tips & Gotchas
+## 8. Essential gcloud and kubectl Commands
 
-- **Control Plane Upgrade:** Google automatically upgrades the Control Plane. You can define **Maintenance Windows** and **Exclusions** to control when upgrades happen.
-- **Preemptible/Spot VMs in GKE:** You can use Spot VMs for node pools to save costs, but ensure your workloads are fault-tolerant.
-- **Logging:** GKE integrates with Cloud Logging and Cloud Monitoring automatically. You can view container logs in the Google Cloud Console.
+- Create a Cluster: `gcloud container clusters create [CLUSTER_NAME] --zone [ZONE] --num-nodes [NUMBER]`
+- Get Credentials: `gcloud container clusters get-credentials [CLUSTER_NAME] --zone [ZONE]`
+- Resize a Cluster: `gcloud container clusters resize [CLUSTER_NAME] --node-pool [POOL_NAME] --num-nodes [NEW_SIZE]`
+- Deploy an Application: `kubectl apply -f [FILENAME.YAML]`
+- Check Pod Status: `kubectl get pods`
 
-[Back to root](./README.md)
+## 9. Exam Tips and Gotchas
+
+- Control Plane Upgrade: Google automatically upgrades the Control Plane. Define Maintenance Windows and Exclusions.
+- Preemptible/Spot VMs: Use for cost savings in fault-tolerant workloads.
+- Autopilot vs Standard: Choose Autopilot for reduced operational overhead unless specific node customization is required.
+
+[Back to README](README.md)

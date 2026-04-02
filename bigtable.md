@@ -1,12 +1,13 @@
-# GCP Cloud Bigtable: Associate Cloud Engineer (ACE) Study Guide
+# Cloud Bigtable: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. Core Overview
 * **Database Type:** Fully managed, wide-column NoSQL database.
 * **Scale:** Designed for massive datasets (Terabytes to Petabytes).
 * **Performance:** Offers single-digit millisecond latency and extremely high throughput for both read and write operations.
 * **Compatibility:** Natively exposes an Apache HBase API.
+* **Gemini Integration:** Gemini can provide assistance with schema design, row key optimization, and performance troubleshooting.
 
 ## 2. When to Choose Cloud Bigtable (Exam Scenarios)
 * **Time-Series Data:** IoT sensor readings, server telemetry, and monitoring metrics.
@@ -19,11 +20,11 @@
 
 ## 4. Architecture and Performance
 
-- **Compute and Storage Separation:** Nodes handle compute, while data resides on Colossus. This allows you to scale nodes up or down with **zero downtime** without migrating data.
-- **Storage Types (Crucial):**
+- **Compute and Storage Separation:** Nodes handle compute, while data resides on Colossus. This allows you to scale nodes up or down with zero downtime without migrating data.
+- **Storage Types:**
   - **SSD:** Default choice. For high-performance, low-latency workloads.
   - **HDD:** For massive amounts of data (>10 TB) where latency is not critical (e.g., batch processing).
-  - **Immutability:** You **cannot change** the storage type (SSD/HDD) after the instance is created.
+  - **Immutability:** You *cannot change* the storage type (SSD/HDD) after the instance is created.
 - **Row Key Design (Tested):**
   - **Avoid Hotspotting:** Do NOT use sequential IDs or timestamps as the start of a row key.
   - **Best Practice:** Use "tall and skinny" tables. Use hashed values, reverse domain names (e.g., `com.google.cloud`), or salted keys to ensure data is distributed evenly across nodes.
@@ -42,7 +43,7 @@
 ## 7. Administrative Tasks and Scaling
 
 - **Scaling:** You can increase or decrease the number of nodes in a cluster via the Console or `gcloud` while the cluster is serving traffic (zero downtime).
-- **Monitoring:** Use **Key Visualizer** (a tool within the GCP Console) to identify "hotspots" and troubleshoot performance issues visually.
-- **Backups:** Bigtable allows you to take "Backups" of tables. These are stored **within the Bigtable service (in the same region)**, NOT in Cloud Storage. They can only be used to "Restore" to a **new table**.
+- **Monitoring:** Use *Key Visualizer* (a tool within the GCP Console) to identify *hotspots* and troubleshoot performance issues visually.
+- **Backups:** Bigtable allows you to take *Backups* of tables. These are stored within the Bigtable service (in the same region), NOT in Cloud Storage. They can only be used to *Restore* to a new table.
 
-[Back to root](./README.md)
+[Back to README](README.md)

@@ -1,6 +1,6 @@
-# GCP Storage Transfer Service (STS) Study Guide
+# Storage Transfer Service: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. Overview and Use Cases
 
@@ -40,7 +40,7 @@ Storage Transfer Service (STS) is a fully managed service for moving large volum
 - Data Integrity: STS automatically performs checksum validation (CRC32C) to ensure data is not corrupted during transit.
 - Encryption: Data is encrypted in transit using HTTPS/TLS and at rest in GCS using default or Customer-Managed Encryption Keys (CMEK).
 
-## 6. Key Exam "Gotchas" and Tips
+## 6. Key Exam Tips and Gotchas
 
 - Incremental Transfers: STS only copies new or changed objects (based on checksums and file size) to save time and cost.
 - Event-Driven Transfers: STS can be triggered by events (e.g., a new file appearing in an S3 bucket), reducing latency for real-time workflows.
@@ -50,8 +50,8 @@ Storage Transfer Service (STS) is a fully managed service for moving large volum
 
 ## 7. 2026 Updates
 
-- Gemini Integration: Use Gemini to assist in troubleshooting failed transfer jobs or generating `gcloud transfer` commands based on natural language.
+- Gemini Integration: Use Gemini in the Cloud Console to assist in troubleshooting failed transfer jobs or generating `gcloud transfer` commands based on natural language.
 - Event-Driven Transfers: Now a standard feature for real-time synchronization between cloud providers.
 - OIDC Adoption: Moving away from static credentials for cross-cloud transfers.
 
-[Back to root](./README.md)
+[Back to README](README.md)

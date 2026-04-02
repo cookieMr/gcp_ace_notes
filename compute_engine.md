@@ -1,114 +1,69 @@
-# GCP Compute Engine: ACE Exam Study Guide
+# Compute Engine: ACE Exam Study Guide (2026)
 
-[Back to root](./README.md)
+[Back to README](README.md)
 
 ## 1. Compute Engine Overview
 
 Compute Engine is Google Cloud's Infrastructure as a Service (IaaS) offering, providing customizable Virtual Machines (VMs).
 
-- **Machine Families:**
-  - **General-purpose:** Best price-performance. Includes **E2** (cost-effective, no GPU/local SSD support), **N2/N2D**, and **T2D (Tau)** (best performance/price for scale-out).
-  - **Compute-optimized:** High performance per core (e.g., **C2, C3**). Ideal for gaming, HPC, and media transcoding.
-  - **Memory-optimized:** High memory/vCPU ratio (e.g., **M1, M2, M3**). Best for SAP HANA and large in-memory DBs.
-  - **Accelerator-optimized:** GPUs attached (e.g., **A2, A3**). Best for ML and parallel processing.
-- **Pricing and Discounts:**
-  - **Cost of Stopped VMs:** _Exam Tip:_ If you stop a VM, you **stop paying for CPU/RAM**, but you **still pay** for attached Persistent Disks and any reserved Static External IPs.
-  - **Sustained Use Discounts (SUD):** Automatic (N1, N2, M1).
-  - **Committed Use Discounts (CUD):** 1 or 3-year commitment (VCPUs/RAM).
-- **Spot VMs:** Up to 91% discount. Can be terminated at any time.
-  - _Exam Tip:_ Use for fault-tolerant, stateless batch jobs. If a Spot VM is terminated, it is a **preemption**, not a crash.
+- **Machine Families (2026 Standards):**
+  - **General-purpose:** Best price-performance. Includes **E2**, **N2**, and the new **N4** (optimized for modern workloads with flexible sizing).
+  - **Compute-optimized:** High performance per core. Includes **C2**, **C3**, and **C4** (the latest generation for high-performance computing).
+  - **Memory-optimized:** High memory/vCPU ratio. Includes **M1**, **M2**, and **M3**.
+  - **Accelerator-optimized:** GPUs attached (e.g., **A2**, **A3**).
+- **Gemini Integration:** Gemini in Compute Engine provides AI-assisted instance type selection, performance optimization tips, and troubleshooting for VM startup issues.
 
-## 2. Instance Templates
+## 2. Pricing and Discounts
 
-An instance template is an API resource used to define VM instance properties (machine type, boot disk image, zone, labels, network interfaces).
+- **Cost of Stopped VMs:** If you stop a VM, you stop paying for CPU and RAM, but you still pay for attached Persistent Disks and any reserved Static External IPs.
+- **Sustained Use Discounts (SUD):** Automatic discounts for running instances for a significant portion of the month (N1, N2).
+- **Committed Use Discounts (CUD):** 1 or 3-year commitment for a predictable workload.
+- **Spot VMs:** Up to 91% discount. These can be terminated by Google at any time with a 30-second notice. Best for fault-tolerant, stateless batch jobs.
 
-- **Immutability:** Instance templates are **immutable**. Once created, they cannot be updated or changed. To make a change, you must create a new template and apply it to your instance group.
-- **Global Resource:** Templates are global resources, meaning a single template can be used to create VMs in any zone or region across your project.
-- **Primary Use Case:** Used almost exclusively to create VMs in Managed Instance Groups (MIGs).
+## 3. Instance Templates and Managed Instance Groups (MIGs)
 
-## 3. Managed Instance Groups (MIGs)
+- **Instance Templates:** Immutable resources that define VM properties (machine type, image, labels). Used to create MIGs.
+- **Managed Instance Groups (MIGs):** A collection of identical VMs that offer high availability and scalability.
+  - **Auto-healing:** Automatically recreates VMs that fail health checks.
+  - **Auto-scaling:** Dynamically adds or removes VMs based on CPU utilization, load balancing capacity, or custom metrics.
+  - **Regional MIGs:** Highly recommended for production as they distribute VMs across multiple zones in a region.
 
-MIGs manage a collection of identical VMs created from a single instance template. This is how you achieve high availability and scalability in Compute Engine.
+## 4. Persistent Disks, Snapshots and Images
 
-- **Auto-healing:** MIGs maintain the desired number of instances. If a VM crashes or fails a health check, the MIG automatically recreates it.
-- **Auto-scaling:** MIGs can dynamically add or remove VMs based on specific metrics:
-  - Average CPU utilization.
-  - HTTP load balancing capacity.
-  - Cloud Monitoring custom metrics.
-- **Zonal vs. Regional MIGs:**
-  - _Zonal:_ All VMs are in a single zone.
-  - _Regional:_ VMs are distributed across multiple zones within the same region, protecting against single-zone failures (highly recommended for production).
-- **Updating MIGs:** Updates are done via **Rolling Updates**. You apply a new instance template, and the MIG replaces the old VMs with new ones gradually to ensure zero downtime.
+- **Persistent Disks (PD):** Durable network storage. You can resize a disk up but never down.
+- **Snapshots:** Incremental backups of disks, stored globally. Best for disaster recovery.
+- **Custom Images:** A "Gold Master" boot disk with your OS and software pre-installed. Best for consistent deployments in MIGs.
+- **Local SSD:** Physical drives attached directly to the host. Data is ephemeral and lost if the VM is stopped or deleted.
 
-## 4. Persistent Disks, Snapshots & Images
+## 5. Sole-Tenant Nodes
 
-Persistent Disks (PD) are durable network storage devices.
+- **Definition:** Physical Compute Engine servers dedicated entirely to hosting your project's VMs.
+- **Use Cases:** Compliance, security isolation, and specific licensing (BYOL) that requires physical hardware.
+- **Node Groups:** Nodes are organized into groups, and you use node affinity labels to ensure VMs boot on these specific servers.
 
-- **Types of PDs:** Standard (HDD), Balanced (SSD), Performance/Extreme (SSD).
-- **Disk Operations:**
-  - You can resize a disk **up** on the fly, but never **down**.
-  - A disk can be attached to multiple VMs in **Read-Only** mode (multi-writer requires specific setup).
-- **Snapshots vs. Custom Images:**
-  - **Snapshots:** Used for **backups and disaster recovery**. They are incremental and stored globally.
-  - **Custom Images:** Used to create a **"Gold Master"** boot disk with your OS and software pre-installed. Best for consistent deployments in MIGs.
-  - _Exam Tip:_ To create a Custom Image from a running VM, it is best practice to stop the VM first to ensure data consistency.
+## 6. Connecting to Instances
 
-## 5. Local SSD
+- **SSH Access:** `gcloud compute ssh [VM_NAME]`.
+- **Identity-Aware Proxy (IAP):** The recommended way to SSH into a VM that has **no external IP address**.
+- **Firewall Rule for IAP:** You must allow ingress traffic from the IP range `35.235.240.0/20` on port 22.
 
-Local SSDs are physical solid-state drives attached directly to the server hosting your VM instance.
+## 7. Service Accounts and Metadata
 
-- **Performance:** Offers extremely high IOPS and very low latency compared to standard Persistent Disks because they are not network-attached.
-- **Ephemeral Nature:** Data on a Local SSD is **ephemeral** (temporary). If you stop or delete the VM instance, the data on the Local SSD is permanently lost.
-- **Exam Constraints:**
-  - You cannot use a Local SSD as a boot disk.
-  - Always fixed at 375 GB increments per attached drive (up to 24 partitions, totaling 9 TB).
-  - Best for scratch disks, temporary caching, or intermediate processing data where data loss is acceptable.
+- **Service Accounts:** VMs use these to authenticate to other Google Cloud services (GCS, BigQuery). Always use custom service accounts with "Least Privilege" for production.
+- **Metadata:** Used to pass configuration data. Startup scripts are automated scripts that run every time the VM boots.
+- **Metadata Server:** Accessible at `http://metadata.google.internal/computeMetadata/v1/`.
 
-## 6. Sole-Tenant Nodes
+## 8. Essential gcloud Commands
 
-A sole-tenant node is a physical Compute Engine server dedicated entirely to hosting only your project's VMs.
+- **Create a VM:** `gcloud compute instances create [NAME] --zone=[ZONE] --machine-type=[TYPE]`
+- **Resize a MIG:** `gcloud compute instance-groups managed resize [NAME] --size=[NEW_SIZE]`
+- **List Instances:** `gcloud compute instances list`
 
-- **Use Cases:**
-  - **Compliance/Security:** Strict regulatory requirements demanding physical isolation from other Google Cloud customers.
-  - **Licensing (BYOL):** "Bring Your Own License" scenarios (like Windows Server or SQL Server) that require hardware-based licensing tied to physical cores or sockets.
-  - **Performance:** Avoiding "noisy neighbors" on shared hardware.
-- **Node Groups:** Nodes are organized into node groups. You can specify a node affinity label in your instance template to ensure specific VMs only boot on your sole-tenant nodes.
+## 9. Exam Tips
 
-## 7. Connecting to Instances & Security
+- **Preemption:** If a Spot VM is terminated, it is a preemption, not a system crash.
+- **Zonal vs. Regional MIG:** Choose Regional MIG for the highest availability.
+- **Metadata Header:** Requests to the metadata server require the header `Metadata-Flavor: Google`.
+- **Machine Type Selection:** If a question asks for the best cost-performance for a general workload, consider **E2** or **N4**. For high-performance databases, consider **C4** or **M3**.
 
-How you access your VMs is a major exam topic.
-
-- **SSH Access:**
-  - **Standard:** `gcloud compute ssh [VM_NAME]`. Requires port 22 to be open and an external IP.
-  - **IAP (Identity-Aware Proxy):** _High Probability Exam Question._ Allows you to SSH into a VM that has **no external IP address**.
-  - **Firewall Rule for IAP:** You must allow ingress traffic from the IP range `35.235.240.0/20` on port 22.
-- **Network Tags:** Apply tags (e.g., `web-server`) to VMs to selectively apply firewall rules (e.g., "Allow port 80 to instances with tag `web-server`").
-
-## 8. VM Lifecycle & Operations
-
-- **States:**
-  - **Provisioning/Staging:** Resources are being acquired.
-  - **Running:** VM is active.
-  - **Stopping:** Transitioning to terminated.
-  - **Terminated:** VM is stopped. No CPU/RAM charges.
-- **Operations:**
-  - **Reset:** Like a hard power cycle (wipes memory, does not stop billing).
-  - **Stop:** Shuts down the OS and stops CPU/RAM billing.
-  - **Suspend:** Saves the instance state to disk (like closing a laptop). You pay for the storage of the saved state.
-
-## 9. Service Accounts & Metadata
-
-- **Service Accounts:** VMs use Service Accounts to authenticate to other GCP services (GCS, BigQuery) without needing to store secret keys in the code.
-  - _Exam Tip:_ The **Default Compute Service Account** has broad "Editor" permissions by default. In production, use a **Custom Service Account** with "Least Privilege".
-- **Metadata:** Used to pass configuration data to the VM.
-  - **Startup Scripts:** Automated scripts that run every time the VM boots.
-  - **Metadata Server:** Accessible from within the VM at `http://metadata.google.internal/computeMetadata/v1/`.
-  - Requires the header: `Metadata-Flavor: Google`.
-
-## 10. Essential gcloud Commands
-
-- Create a VM: `gcloud compute instances create [NAME] --zone=[ZONE] --machine-type=[TYPE]`
-- Resize a MIG: `gcloud compute instance-groups managed resize [NAME] --size=[NEW_SIZE]`
-- Create a Template: `gcloud compute instance-templates create [NAME] --source-instance=[VM]`
-
-[Back to root](./README.md)
+[Back to README](README.md)
