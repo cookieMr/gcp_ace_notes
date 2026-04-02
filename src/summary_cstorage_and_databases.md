@@ -1,0 +1,8 @@
+- [Cloud Storage](./cloud_storage.md)
+- [Cloud SQL](./cloud_sql.md)
+- [Cloud Spanner](./cloud_spanner.md)
+- [Firestore / Datastore](./firestore.md)
+- [Bigtable](./bigtable.md)
+- [BigQuery](./bigquery.md)
+- [Memorystore](./memorystore.md)
+- [Filestore](./filestore.md)
