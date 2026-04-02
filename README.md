@@ -78,15 +78,15 @@
 
 ## 🔐 Identity & Security
 
-- [ ] **IAM**
-  - [ ] Roles (basic, predefined, custom)
-  - [ ] Service accounts
-  - [ ] Least privilege
-- [ ] **Cloud KMS**
-- [ ] **Secret Manager**
-- [ ] **Organization Policies**
-- [ ] **VPC Service Controls**
-- [ ] **Cloud Armor**
+- [✓] [**IAM**](./iam.md)
+  - [✓] Roles (basic, predefined, custom)
+  - [✓] Service accounts
+  - [✓] Least privilege
+- [✓] [**Cloud KMS**](./cloud_kms.md)
+- [✓] [**Secret Manager**](./secret_manager.md)
+- [✓] [**Organization Policies**](./organization_policies.md)
+- [✓] [**VPC Service Controls**](./vpc_service_controls.md)
+- [✓] [**Cloud Armor**](./cloud_armor.md)
 
 ---
 
@@ -112,19 +112,19 @@
 
 ## 🔄 Migration & Hybrid
 
-- [ ] **Migrate for Compute Engine**
-- [ ] **Database Migration Service**
-- [ ] **Storage Transfer Service**
-- [ ] **Transfer Appliance**
+- [✓] [**Migrate to Virtual Machine**](./migrate_to_virtual_machines.md)
+- [✓] [**Database Migration Service**](./database_migration_service.md)
+- [✓] [**Storage Transfer Service**](./storage_transfer_service.md)
+- [✓] [**Transfer Appliance**](./transfer_appliance.md)
 
 ---
 
 ## 🤖 AI & ML (Light Coverage)
 
-- [ ] **Vertex AI** (high‑level only)
-  - [ ] Vision API
-  - [ ] Speech‑to‑Text
-  - [ ] Translation API
+- [✓] [**Vertex AI**](./vertex_ai.md) (high‑level only)
+  - [✓] Vision API
+  - [✓] Speech‑to‑Text
+  - [✓] Translation API
 
 ---
 
@@ -133,7 +133,7 @@
 - [✓] [Compute Engine](./compute_engine.md)
 - [✓] [Cloud Storage](./cloud_storage.md)
 - [✓] [VPC Networking](./vpc_networks.md)
-- [ ] IAM
+- [✓] [IAM](./iam.md)
 - [✓] [Cloud Run](./cloud_run.md)
 - [✓] [Cloud Functions](./cloud_functions.md)
 - [✓] [GKE](./gke.md)
@@ -149,4 +149,4 @@
 - [✓] [Pub/Sub](./pubsub.md)
 - [✓] [Cloud Build](./cloud_build.md)
 - [✓] [Artifact Registry](./artifact_registry.md)
-- [ ] Service Accounts
+- [✓] [Service Accounts](./iam.md#3-service-accounts)
