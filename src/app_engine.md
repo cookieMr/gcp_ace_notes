@@ -1,5 +1,8 @@
 # App Engine: ACE Exam Study Guide (2026)
 
+![App Engine Architecture Diagram](images/app_engine.png)
+*Image source: Google Cloud Documentation*
+
 ## 1. App Engine Overview
 
 App Engine is a fully managed Platform as a Service (PaaS) for building and deploying web applications and APIs.

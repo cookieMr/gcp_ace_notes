@@ -6,7 +6,7 @@ on:
       - main 
 
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -26,8 +26,18 @@ jobs:
         with:
           mdbook-version: 'latest'
 
+      - name: Install mdbook-epub
+        run: cargo install mdbook-epub
+
       - name: Build mdBook
         run: mdbook build
+
+      - name: Publish EPUB to Releases
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete latest --cleanup-tag -y || true
+          gh release create latest "./book/epub/GCP ACE Study Guide (2026).epub" --notes "Automated EPUB build of the latest study guide."
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v6

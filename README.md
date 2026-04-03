@@ -8,6 +8,10 @@ The notes in this repository are compiled into a highly readable, searchable onl
 
 **[Read the live study guide here](https://cookieMr.github.io/gcp_ace_notes/)**
 
+### e-book
+
+If you preffer the offline mode you can download [epub](https://github.com/cookieMr/gcp_ace_notes/releases/download/latest/gcp-ace-study-guide.epub) file.
+
 ## Project Structure
 
 The study material is organized into specific Google Cloud services and concepts. All source material is written in Markdown and located in the `src/` directory. Key areas covered include:
@@ -24,7 +28,7 @@ If you want to run this book locally to study offline or modify the notes, you w
 
 1. **Install mdBook** (requires the Rust toolchain):
    ```bash
-   cargo install mdbook
+   cargo install mdbook mdbook-epub
    ```
 2. **Serve the book locally**:
    ```bash
