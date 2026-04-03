@@ -10,7 +10,7 @@ The notes in this repository are compiled into a highly readable, searchable onl
 
 ### e-book
 
-If you preffer the offline mode you can download [epub](https://github.com/cookieMr/gcp_ace_notes/releases/download/latest/gcp-ace-study-guide.epub) file.
+If you preffer the offline mode you can download [epub](https://github.com/cookieMr/gcp_ace_notes/releases/download/latest/GCP.ACE.Study.Guide.2026.epub) file.
 
 ## Project Structure
 
