@@ -5,6 +5,6 @@ src = "src"
 title = "GCP ACE Study Guide (2026)"
 
 [output.html]
-additional-css = ["custom.css"]
+# additional-css = ["custom.css"]
 
 [output.epub]
