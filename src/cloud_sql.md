@@ -115,7 +115,7 @@ spring:
     driver-class-name: org.postgresql.Driver
   ```
 
-## Exam Tip
+## 10. Exam Tip
 
 - **Private IP** → Best for production inside a VPC (GKE, GCE, Cloud Run + VPC connector)
 - **Auth Proxy** → Easiest secure option for local dev or simple setups

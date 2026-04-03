@@ -1,108 +1,116 @@
 # Memorystore: ACE Exam Study Guide (2026)
 
+![Memorystore](images/memorystore.png)
+
+_Image source: Google Cloud Documentation_
+
 ## 1. Memorystore Overview
 
-Memorystore is Google Cloud’s fully managed in-memory data store service. It provides two main engines:
+Memorystore is Google Cloud’s fully managed in-memory data store service. It is used for low-latency caching, session storage, and real-time data access.
 
-- Redis/Valkey: Feature-rich, persistent, HA-capable.
-- Memcached: Simple, ephemeral, horizontally scalable cache.
+## 2. Quick Summary: Redis/Valkey vs. Memcached
 
-Memorystore is used for low-latency caching, session storage, pub/sub, rate limiting, and real-time data access.
+| Feature         | Redis/Valkey                               | Memcached              |
+| :-------------- | :----------------------------------------- | :--------------------- |
+| **Use Case**    | Advanced (Sessions, Pub/Sub, HA)           | Simple Key/Value Cache |
+| **Persistence** | Optional (RDB/AOF)                         | **No** (Ephemeral)     |
+| **Scaling**     | Vertical (Standard) / Horizontal (Cluster) | Horizontal (Node pool) |
+| **Networking**  | PSA (Standard) / PSC (Cluster)             | PSA (VPC Peering)      |
+| **Auth/TLS**    | Yes (Redis AUTH)                           | **No**                 |
+| **Availability**| HA with Failover (Standard Tier)           | No HA/Replication      |
 
-## 2. Supported Engines
+## 3. Supported Engines
 
-### Redis/Valkey
-
-- Sub-millisecond latency.
-- Optional persistence (RDB snapshots).
-- Supports replication and failover (Standard Tier).
-- Supports Redis AUTH.
-- Use cases: Caching, session storage, Pub/Sub, rate limiting, and distributed locks.
-- Valkey: The 2026 standard for open-source high-performance caching in Google Cloud.
+### Redis & Valkey
+- **Latency:** Sub-millisecond.
+- **Persistence:** Supports RDB snapshots and point-in-time recovery.
+- **Valkey:** The 2026 standard for open-source high-performance caching.
+- **Tiers:** 
+  - **Basic:** Single node (dev/test).
+  - **Standard:** Primary + Replica with automatic failover (Production).
 
 ### Memcached
+- **Architecture:** Horizontally scalable node pools.
+- **Behavior:** Data is lost on restart or node failure. Best for large, simple web caches.
 
-- Simple, in-memory cache.
-- No persistence, no replication, no authentication.
-- Horizontally scalable node pools.
-- Use cases: Ephemeral caching, high-throughput simple key/value workloads.
+## 4. Networking and Connectivity
 
-## 3. Networking and Connectivity
-
-Memorystore instances are VPC-only (no public IP).
+Memorystore instances are **VPC-only** (no public IPs).
 
 ### Connecting Serverless (Cloud Run / Functions)
-
-- Direct VPC Egress (Recommended): Lowest latency, scales to zero cost, no VM management.
-- Serverless VPC Access Connector: Legacy method; requires managing hidden connector VMs.
+- **Direct VPC Egress (Recommended):** Lowest latency and cost.
+- **Serverless VPC Access Connector:** Legacy method.
 
 ### Networking Models
-
-- Standard/Basic Tiers: Use Private Service Access (PSA) (VPC Peering).
-- Cluster/Valkey Tiers: Use Private Service Connect (PSC). Clients connect to a single IP (the discovery endpoint) in their own VPC.
+- **Standard/Basic Tiers:** Use Private Service Access (PSA).
+- **Cluster/Valkey Tiers:** Use **Private Service Connect (PSC)**. Clients connect to a single IP (discovery endpoint) in their own VPC.
 
 | Service          | Can connect? | Requirements                 |
 | ---------------- | ------------ | ---------------------------- |
 | Compute Engine   | Yes          | Same VPC                     |
 | GKE              | Yes          | Same VPC                     |
-| Cloud Run        | Yes          | Direct VPC Egress (Rec)      |
-| Cloud Functions  | Yes          | Direct VPC Egress (Rec)      |
+| Cloud Run        | Yes          | Direct VPC Egress            |
 | External clients | Yes          | Only via VPN or Interconnect |
 
-## 4. Tiers and Availability
+## 5. Scaling and TTL
 
-### Redis / Valkey Tiers
+- **Scaling:**
+  - **Vertical:** Increasing memory on Basic/Standard tiers causes brief downtime.
+  - **Horizontal:** Adding shards (Cluster/Valkey) or nodes (Memcached) has zero downtime.
+- **TTL (Time-to-Live):** Essential for cache management.
+  - `SET key value EX 60` (Set on write)
+  - `EXPIRE key 60` (Set after write)
 
-- Basic Tier: Single node, no replication, no failover. Good for dev/test.
-- Standard Tier: Primary + replica, automatic failover. Recommended for production.
+## 6. Authentication and Monitoring
 
-### Memcached Tiers
+- **Security:**
+  - **IAM:** Controls management plane (creating/deleting instances).
+  - **Redis AUTH:** Application-level password (not IAM-based). Must be enabled at creation.
+- **Gemini for Memorystore:** Provides AI-driven recommendations for sharding and memory usage patterns.
 
-- Node pools with horizontal scaling. No persistence or failover.
+## 7. Common ACE Exam Scenarios
 
-## 5. Scaling Behavior
+- **Scenario**: Connect Cloud Run to Redis with lowest cost? → Use **Direct VPC Egress**.
+- **Scenario**: Scale Redis to 10TB+ with zero downtime? → Use **Redis Cluster** or **Valkey**.
+- **Scenario**: Need High Availability (HA)? → Use **Standard Tier** (Primary + Replica).
+- **Scenario**: Ephemeral cache for simple KV pairs? → Use **Memcached**.
+- **Scenario**: Avoid VPC Peering limits? → Use **Private Service Connect (PSC)**.
 
-- Basic/Standard Tiers: Support Vertical Scaling (increase memory). This causes brief downtime.
-- Cluster/Valkey Tiers: Support Horizontal Scaling (Sharding). You can add shards with zero downtime.
-- Memcached: Scaled by adding/removing nodes from the pool.
+## 8. Using Memorystore in Spring Boot (Examples)
 
-## 6. Persistence and Backups
+### Redis / Valkey
+```yaml
+spring:
+  data:
+    redis:
+      host: 10.0.0.5
+      port: 6379
+      password: ${sm://projects/PROJECT_ID/secrets/REDIS_AUTH_TOKEN/versions/latest}
+```
 
-- Redis / Valkey: Supports RDB snapshots and point-in-time recovery (depending on tier). Persistence is optional.
-- Memcached: No persistence; data is lost on restart or node failure.
+```java
+@Service
+@RequiredArgsConstructor
+public class CacheService {
 
-## 7. Authentication and IAM
+    private final StringRedisTemplate redis;
 
-- IAM: Controls who can create/manage Memorystore instances.
-- Redis AUTH: Optional password protection for clients.
-- Memcached: No authentication.
+    public void save(String key, String value) {
+        redis.opsForValue().set(key, value, Duration.ofMinutes(60));
+    }
+}
+```
 
-## 8. Gemini and Monitoring
+> **Note:** Memorystore Redis AUTH tokens are generated by GCP and only displayed once at creation. Secure them in **Secret Manager**.
 
-- Gemini for Memorystore: Use Gemini in the Cloud Console to analyze memory usage patterns and receive sharding recommendations for Redis/Valkey clusters.
-- Cloud Monitoring: Integrate with Cloud Monitoring to track memory usage, CPU, connections, and evictions.
+### Memcached
+```java
+@Configuration
+public class MemcachedConfig {
 
-## 9. Common ACE Exam Scenarios
-
-- Scenario: Connect Cloud Run to Redis with lowest cost/latency? Use Direct VPC Egress.
-- Scenario: Scale Redis to 10TB+ with no downtime? Use Memorystore for Valkey or Redis Cluster.
-- Scenario: Need high availability (HA)? Use Standard Tier (Primary + Replica).
-- Scenario: Ephemeral cache with horizontal scaling? Use Memcached.
-- Scenario: Running out of IPs in a peered VPC? Use PSC.
-
-## 10. TTL (Time-to-Live)
-
-TTL defines how long a key lives before Redis deletes it. It is essential for caching, sessions, and rate limiting.
-
-- Set TTL on write: `SET key value EX 60`
-- Set TTL after write: `EXPIRE key 60`
-
-## 11. Quick Summary Table
-
-| Feature         | Redis/Valkey                               | Memcached              |
-| :-------------- | :----------------------------------------- | :--------------------- |
-| **Persistence** | Yes (RDB/AOF)                              | No                     |
-| **Scaling**     | Vertical (Standard) / Horizontal (Cluster) | Horizontal (Node pool) |
-| **Networking**  | PSA (Standard) / PSC (Cluster)             | PSA                    |
-| **Auth/TLS**    | Yes                                        | No                     |
-| **Use Case**    | Advanced (Sessions, Pub/Sub, HA)           | Simple Key/Value Cache |
+    @Bean
+    public MemcachedClient memcachedClient() throws Exception {
+        return new MemcachedClient(new InetSocketAddress("10.0.0.6", 11211));
+    }
+}
+```
