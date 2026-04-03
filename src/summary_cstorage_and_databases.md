@@ -1,3 +1,9 @@
+# Storage & Databases
+
+![Database & Storage](images/Databases-512-color.png)
+
+_Image source: Google Cloud Documentation_
+
 - [Cloud Storage](./cloud_storage.md)
 - [Cloud SQL](./cloud_sql.md)
 - [Cloud Spanner](./cloud_spanner.md)
