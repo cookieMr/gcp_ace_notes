@@ -1,5 +1,9 @@
 # Firestore: ACE Exam Study Guide (2026)
 
+![Firestore](images/firestore.png)
+
+_Image source: Google Cloud Documentation_
+
 ## 1. What Firestore Is
 
 Firestore is:
@@ -70,7 +74,9 @@ Firestore enforces:
 - 1 write per second per document
 - High-frequency writes require:
   - Sharded counters
+    > A counter is split into multiple shard documents. Each write updates a random shard and reads combine all shard values. This avoids hitting the write limit of a single document and prevents hotspots during heavy traffic.
   - Randomized document IDs
+    > Firestore auto generated IDs distribute documents evenly across storage. Randomized keys avoid sequential hotspots and improve write throughput for high volume collections.
 
 This appears frequently in scenario questions.
 
@@ -152,8 +158,8 @@ To avoid hotspots:
 Firestore supports:
 
 - Range, Compound, and Collection group queries.
-- Server-side Aggregations: COUNT(), SUM(), and AVG().
-- Note: Aggregations are highly efficient; COUNT() costs 1 index read per 1,000 documents.
+- Server-side Aggregations: `COUNT()`, `SUM()`, and `AVG()`.
+  > Aggregations are highly efficient; `COUNT()` costs 1 index read per 1,000 documents.
 - Vector Search: Supports similarity searches (KNN) for GenAI/LLM embeddings.
 - Gemini Integration: Use Gemini to generate complex Firestore queries from natural language.
 
@@ -182,7 +188,7 @@ Firestore supports:
 
 ### Named Databases
 
-- You can create multiple Firestore databases in one project (e.g., (default), test-db, prod-db).
+- You can create multiple Firestore databases in one project (e.g., (`default`), `test-db`, `prod-db`).
 - Databases can be in different locations and even different modes (Native vs. Datastore).
 
 ## 15. Using in a Spring Boot App (Example)
@@ -192,6 +198,7 @@ Add the dependency: `com.google.cloud:spring-cloud-gcp-starter-data-firestore`.
 ```java
 @Service
 public class FirestoreService {
+
     private final Firestore db;
 
     public void addDocument(String coll, String id, Map<String, Object> data) {
@@ -210,7 +217,7 @@ public class FirestoreService {
 - Scenario: Automate deletion of 30-day-old logs? Use TTL on a timestamp field.
 - Scenario: Recover data from a mistake made 4 hours ago? Use PITR (7-day window).
 - Scenario: Isolate Dev/Prod data in one project? Use Named Databases.
-- Scenario: Count 1 million documents cheaply? Use the native COUNT() aggregation query.
+- Scenario: Count 1 million documents cheaply? Use the native `COUNT()` aggregation query.
 - Scenario: Build a GenAI chatbot with Firestore? Use Vector Search for embeddings.
 - Scenario: Migrate legacy Datastore app? Firestore in Datastore mode.
 - Scenario: Native vs Datastore mode? Choose Native for mobile/web (real-time/offline).
@@ -236,4 +243,4 @@ public class FirestoreService {
 - Named Databases allow multiple DBs per project.
 - Native mode is for mobile/web; Datastore mode is for high-volume server apps.
 - Location is permanent once the database is created.
-- Aggregations (COUNT, SUM, AVG) are now built-in and server-side.
+- Aggregations (`COUNT`, `SUM`, `AVG`) are now built-in and server-side.

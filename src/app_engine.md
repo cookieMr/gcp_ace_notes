@@ -1,7 +1,8 @@
 # App Engine: ACE Exam Study Guide (2026)
 
-![App Engine Architecture Diagram](images/app_engine.png)
-*Image source: Google Cloud Documentation*
+![App Engine](images/app_engine.png)
+
+_Image source: Google Cloud Documentation_
 
 ## 1. App Engine Overview
 

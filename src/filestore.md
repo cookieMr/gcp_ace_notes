@@ -1,7 +1,13 @@
 # Filestore: ACE Exam Study Guide (2026)
 
+![Filestore](images/filestore.png)
+
+*Image source: Google Cloud Documentation*
+
 Google Cloud Filestore is a **managed NFS file storage service** designed for applications that require a **POSIX‑compliant shared filesystem**.  
 It is commonly used with **GKE**, **Compute Engine**, and workloads that need shared file access.
+
+> **POSIX** is a standard that defines how UNIX‑like systems should behave. It ensures portability by unifying system calls, file and process handling, threading, permissions, and signals. Linux, macOS, and many UNIX systems follow POSIX, so software written for one often works on the others.
 
 ---
 
@@ -33,7 +39,8 @@ Common use cases:
 
 ## 3. Filestore Tiers (Updated for 2026)
 
-Filestore tiers determine performance, availability, and capacity limits. **Note:** You cannot change tiers in-place; you must migrate data to a new instance.
+Filestore tiers determine performance, availability, and capacity limits.
+> **Note:** You cannot change tiers in-place; you must migrate data to a new instance.
 
 | Tier           | Availability        | Capacity           | Use Case                                           |
 | :------------- | :------------------ | :----------------- | :------------------------------------------------- |
@@ -41,7 +48,7 @@ Filestore tiers determine performance, availability, and capacity limits. **Note
 | **Basic SSD**  | Single Zone         | 2.5 TiB – 63.9 TiB | General purpose, legacy apps, read-heavy.          |
 | **Zonal**      | Single Zone (99.9%) | 1 TiB – 100 TiB    | HPC, AI/ML, High throughput (formerly High Scale). |
 | **Regional**   | Multi-Zone (99.99%) | 100 GiB – 100 TiB  | Mission-critical apps, DR-ready.                   |
-| **Enterprise** | Multi-Zone (99.99%) | 1 TiB – 10 TiB     | **GKE Multishares**, high availability, NFSv4.1.   |
+| **Enterprise** | Multi-Zone (99.99%) | 1 TiB – 10 TiB     | **GKE Multishares**, high availability, **NFSv4.1**.   |
 
 - **ACE Tip:** Choose **Zonal** for performance, **Regional/Enterprise** for HA, and **Basic** for cost-sensitive dev workloads.
 
@@ -101,8 +108,7 @@ Filestore security includes:
 - NFS-level permissions (POSIX)
 - CMEK support for some tiers (Enterprise)
 
-Important:  
-IAM **does not** control file‑level access — NFS permissions do.
+> Important: IAM **does not** control file‑level access — NFS permissions do.
 
 ---
 
@@ -128,6 +134,7 @@ Filestore is mounted as a local directory. In Spring Boot, you simply use the st
 ```java
 @Service
 public class FileService {
+
     private final Path mountPoint = Paths.get("/mnt/filestore/data");
 
     public void saveFile(String fileName, byte[] content) throws IOException {
@@ -144,13 +151,13 @@ public class FileService {
 
 ## 10. Common ACE Exam Scenarios
 
-- **Scenario: Shared POSIX for GKE?** → Filestore.
-- **Scenario: Many small (10GB) shares for GKE pods?** → Filestore **Enterprise (Multishares)**.
-- **Scenario: Mount shared storage to Cloud Run?** → Filestore + **Direct VPC Egress**.
-- **Scenario: Scale performance and capacity independently?** → **Zonal** tier.
-- **Scenario: In-place tier upgrade?** → **Not possible** (must create new and migrate).
-- **Scenario: Regional High Availability (99.99% SLA)?** → **Regional** or **Enterprise** tier.
-- **Scenario: Global object storage?** → **Cloud Storage** (not Filestore).
+- Scenario: Shared POSIX for GKE? → **Filestore**.
+- Scenario: Many small (10GB) shares for GKE pods? → Filestore **Enterprise (Multishares)**.
+- Scenario: Mount shared storage to Cloud Run? → Filestore + **Direct VPC Egress**.
+- Scenario: Scale performance and capacity independently? → **Zonal** tier.
+- Scenario: In-place tier upgrade? → **Not possible** (must create new and migrate).
+- Scenario: Regional High Availability (99.99% SLA)? → **Regional** or **Enterprise** tier.
+- Scenario: Global object storage? → **Cloud Storage** (not Filestore).
 
 ---
 
@@ -164,7 +171,7 @@ public class FileService {
 | **Cloud Run**     | ✔️ (via Gen2)       | ✔️                    | ❌                    |
 | **HA**            | Regional Tier       | Regional/Multi-Reg    | Regional PD           |
 
-_\*Note: Multi-writer PD exists but is highly specialized (Block storage)._
+> Note: Multi-writer PD exists but is highly specialized (Block storage).
 
 ---
 
