@@ -44,4 +44,4 @@ The core content and technical facts within these Markdown files were initially 
 
 This project is licensed under the [GNU General Public License v3.0 (GPLv3)](https://www.gnu.org/licenses/gpl-3.0.en.html#license-text).
 
-You are free to use, modify, and distribute this study guide, provided that any modifications or derivative works are also distributed under the same open-source GPLv3 license. See the LICENSE file for more details.
+You are free to use, modify, and distribute this study guide, provided that any modifications or derivative works are also distributed under the same open-source GPLv3 license. See the [LICENSE](./LICENSE) file for more details.
