@@ -19,25 +19,16 @@ Firestore is the next generation of Cloud Datastore.
 
 ## 2. Firestore Modes
 
-Firestore has two modes:
+| Feature         | Native Mode                | Datastore Mode                     |
+| :-------------- | :------------------------- | :--------------------------------- |
+| **Best For**    | Mobile & Web apps          | Server-side workloads              |
+| **Real-time**   | Yes (Listeners)            | No                                 |
+| **Offline**     | Yes (Caching)              | No                                 |
+| **Queries**     | Collection Group Queries   | No Collection Group Queries        |
+| **Consistency** | Strong Consistency         | Strong Consistency (2026 standard) |
+| **Use Case**    | Real-time dashboards, chat | High-throughput backend services   |
 
-### Native Mode
-
-- Real-time updates
-- Hierarchical data model
-- Best for mobile/web apps
-- Supports offline caching
-- Supports collection group queries
-
-### Datastore Mode
-
-- No real-time listeners
-- More rigid schema behavior
-- Best for server workloads
-- No offline mode
-- No collection group queries
-
-ACE exam often asks which mode to choose: Native mode unless you need Datastore compatibility.
+> **ACE Tip:** Choose **Native Mode** unless you specifically need backwards compatibility with legacy Cloud Datastore applications.
 
 ## 3. Data Model
 
@@ -214,14 +205,14 @@ public class FirestoreService {
 
 ## 16. Common ACE Exam Scenarios
 
-- Scenario: Automate deletion of 30-day-old logs? Use TTL on a timestamp field.
-- Scenario: Recover data from a mistake made 4 hours ago? Use PITR (7-day window).
-- Scenario: Isolate Dev/Prod data in one project? Use Named Databases.
-- Scenario: Count 1 million documents cheaply? Use the native `COUNT()` aggregation query.
-- Scenario: Build a GenAI chatbot with Firestore? Use Vector Search for embeddings.
-- Scenario: Migrate legacy Datastore app? Firestore in Datastore mode.
-- Scenario: Native vs Datastore mode? Choose Native for mobile/web (real-time/offline).
-- Scenario: Change database location after creation? Not possible (must recreate).
+- **Scenario**: Automate deletion of 30-day-old logs? → Use TTL on a timestamp field.
+- **Scenario**: Recover data from a mistake made 4 hours ago? → Use PITR (7-day window).
+- **Scenario**: Isolate Dev/Prod data in one project? → Use Named Databases.
+- **Scenario**: Count 1 million documents cheaply? → Use the native `COUNT()` aggregation query.
+- **Scenario**: Build a GenAI chatbot with Firestore? → Use Vector Search for embeddings.
+- **Scenario**: Migrate legacy Datastore app? → Firestore in Datastore mode.
+- **Scenario**: Native vs Datastore mode? → Choose Native for mobile/web (real-time/offline).
+- **Scenario**: Change database location after creation? → Not possible (must recreate).
 
 ## 17. Quick Summary Table
 
