@@ -2,134 +2,85 @@
 
 ![Filestore](images/filestore.png)
 
-*Image source: Google Cloud Documentation*
+_Image source: Google Cloud Documentation_
 
-Google Cloud Filestore is a **managed NFS file storage service** designed for applications that require a **POSIX‑compliant shared filesystem**.  
-It is commonly used with **GKE**, **Compute Engine**, and workloads that need shared file access.
+Google Cloud Filestore is a **managed NFS file storage service** (POSIX‑compliant) designed for applications that require a shared filesystem. It is a regional resource that offers both zonal and multi-zonal availability tiers.
 
-> **POSIX** is a standard that defines how UNIX‑like systems should behave. It ensures portability by unifying system calls, file and process handling, threading, permissions, and signals. Linux, macOS, and many UNIX systems follow POSIX, so software written for one often works on the others.
+> **POSIX** is a standard that ensures portability by unifying system calls, file and process handling, and permissions. Linux and macOS follow POSIX, so software written for one typically works on Filestore without modification.
 
----
+## 1. Filestore Use Cases
 
-## 1. What Filestore Is
+- Shared storage for **GKE** and **Compute Engine** workloads.
+- Content management systems (CMS) and media processing.
+- Machine learning workloads needing shared datasets.
+- Home directories for Linux users.
+- **Serverless:** Cloud Run (Gen 2) can mount Filestore via **Direct VPC Egress**.
 
-Filestore is:
+## 2. Filestore Tiers (Updated for 2026)
 
-- A **managed NFSv3** file server
-- Provides **shared file storage** accessible by multiple VMs or containers
-- Designed for **low‑latency**, **high‑throughput** workloads
-- Regional service (data stored in a single region)
+Tiers determine performance, availability, and capacity.
 
-Filestore is **not** object storage (Cloud Storage) and **not** block storage (Persistent Disk).
+> **Note:** You cannot change tiers in-place. You must migrate data to a new instance.
 
----
+| Tier           | Availability        | Capacity           | Use Case                                             |
+| :------------- | :------------------ | :----------------- | :--------------------------------------------------- |
+| **Basic HDD**  | Single Zone         | 1 TiB – 63.9 TiB   | Low-cost, sequential workloads, dev/test.            |
+| **Basic SSD**  | Single Zone         | 2.5 TiB – 63.9 TiB | General purpose, legacy apps, read-heavy.            |
+| **Zonal**      | Single Zone (99.9%) | 1 TiB – 100 TiB    | HPC, AI/ML, High throughput (formerly High Scale).   |
+| **Regional**   | Multi-Zone (99.99%) | 100 GiB – 100 TiB  | Mission-critical apps, DR-ready.                     |
+| **Enterprise** | Multi-Zone (99.99%) | 1 TiB – 10 TiB     | **GKE Multishares**, high availability, **NFSv4.1**. |
 
-## 2. Filestore Use Cases
-
-Common use cases:
-
-- Shared storage for **GKE** workloads
-- Shared filesystem for **Compute Engine** instances
-- Content management systems
-- Media processing pipelines
-- Machine learning workloads needing shared datasets
-- Home directories for Linux users
-
----
-
-## 3. Filestore Tiers (Updated for 2026)
-
-Filestore tiers determine performance, availability, and capacity limits.
-> **Note:** You cannot change tiers in-place; you must migrate data to a new instance.
-
-| Tier           | Availability        | Capacity           | Use Case                                           |
-| :------------- | :------------------ | :----------------- | :------------------------------------------------- |
-| **Basic HDD**  | Single Zone         | 1 TiB – 63.9 TiB   | Low-cost, sequential workloads, dev/test.          |
-| **Basic SSD**  | Single Zone         | 2.5 TiB – 63.9 TiB | General purpose, legacy apps, read-heavy.          |
-| **Zonal**      | Single Zone (99.9%) | 1 TiB – 100 TiB    | HPC, AI/ML, High throughput (formerly High Scale). |
-| **Regional**   | Multi-Zone (99.99%) | 100 GiB – 100 TiB  | Mission-critical apps, DR-ready.                   |
-| **Enterprise** | Multi-Zone (99.99%) | 1 TiB – 10 TiB     | **GKE Multishares**, high availability, **NFSv4.1**.   |
-
-- **ACE Tip:** Choose **Zonal** for performance, **Regional/Enterprise** for HA, and **Basic** for cost-sensitive dev workloads.
-
----
-
-## 4. Networking & Connectivity
+## 3. Networking & Connectivity
 
 - Deployed into a **VPC network** via a private IP.
 - Must be in the **same VPC and region** as clients (or connected via VPC Peering/VPN).
-- **Serverless Support (Critical):** Cloud Run (Gen 2) **can** mount Filestore using **Direct VPC Egress**.
-- **Service Networking API:** Filestore uses VPC Peering internally to connect to your network.
+- **Mounting:**
+  - **GKE:** Use the Filestore CSI driver for automatic provisioning.
+  - **Cloud Run (Gen 2):** Use `--add-volume=type=nfs` and `--vpc-egress=all-traffic`.
 
-Clients can be:
+## 4. Capacity & Scaling
 
-- Compute Engine VMs
-- GKE nodes
-- Cloud Run (Gen 2)
-- Bare-metal hybrid via VPN/Interconnect
+- **Increase Only:** You can increase capacity, but you **cannot decrease** it.
+- **Downtime:** Scaling may cause brief downtime on Basic/Zonal tiers.
+- **Online Scaling:** The **Enterprise** tier supports **online scaling** with zero downtime, making it the preferred choice for mission-critical GKE applications.
+- **Independent Scaling:** The **Zonal** tier allows scaling performance and capacity independently.
 
----
+## 5. Data Protection: Backups & Snapshots
 
-## 5. Mounting Filestore
+Understanding the difference is critical for disaster recovery (DR).
 
-### On Compute Engine / GKE:
+### Filestore Backups
 
-Standard NFS mounting applies. Use the **Filestore CSI driver** for GKE to provision volumes automatically.
+- **What:** A point-in-time copy of the entire share, stored separately from the instance.
+- **Scope:** Can be stored in the same region or **different regions** (Multi-regional).
+- **Restore:** You MUST restore a backup to a **new Filestore instance**. You cannot restore in-place.
+- **Use Case:** Disaster recovery or moving data to a new region/tier.
 
-### On Cloud Run (Gen 2):
+### Filestore Snapshots
 
-Use the `--add-volume` flag with type `nfs`.
+- **What:** Fast, local point-in-time copies of the filesystem.
+- **Availability:** Supported on **Enterprise**, **Zonal**, and **Regional** tiers.
+- **Restore:** Allows for quick recovery of individual files or the entire share.
+- **Use Case:** Protecting against accidental deletions or rolling back local changes.
 
-```bash
-gcloud run services update [SERVICE] \
-  --add-volume=name=fs-vol,type=nfs,location=[IP]:/[SHARE] \
-  --add-volume-mount=volume=fs-vol,mount-path=/mnt/data \
-  --vpc-egress=all-traffic --network=[VPC] --subnet=[SUBNET]
-```
+| Feature                | Backup                      | Snapshot                   |
+| :--------------------- | :-------------------------- | :------------------------- |
+| **Location**           | Separate from instance      | Local to instance          |
+| **Storage Cost**       | Per GB (Regional/Multi-reg) | Uses instance capacity     |
+| **Restore Path**       | New instance only           | In-place recovery possible |
+| **Performance Impact** | Brief degradation possible  | Near-zero impact           |
 
----
+## 6. Security
 
-## 6. Capacity & Scaling
+- **IAM:** Controls **instance management** (create, delete, backup).
+- **POSIX/NFS:** Controls **file-level access** (UID/GID, read/write permissions).
+- **Network:** Isolated within your VPC; supports CMEK on Enterprise tiers.
 
-- Minimum capacity depends on tier
-- Basic tiers scale **capacity and performance together**
-- High Scale SSD scales **independently**
-- You can **increase** capacity but **cannot decrease** it
-- Scaling may cause **brief downtime** (except Enterprise tier)
+> **Important:** IAM does NOT control who can read or write individual files inside the share; that is handled by NFS permissions.
 
----
+## 7. Using in a Spring Boot App (Example)
 
-## 7. Security
-
-Filestore security includes:
-
-- VPC‑level isolation
-- IAM for **instance management**, not file access
-- NFS-level permissions (POSIX)
-- CMEK support for some tiers (Enterprise)
-
-> Important: IAM **does not** control file‑level access — NFS permissions do.
-
----
-
-## 8. Monitoring & Logging
-
-Filestore integrates with:
-
-- **Cloud Monitoring** (IOPS, throughput, capacity usage)
-- **Cloud Logging** (audit logs)
-
-You should know how to troubleshoot:
-
-- High latency
-- Running out of capacity
-- NFS mount failures
-
----
-
-## 9. Using in a Spring Boot App (Example)
-
-Filestore is mounted as a local directory. In Spring Boot, you simply use the standard `java.nio.file` API to read and write files.
+Filestore is mounted as a local directory. Use the `java.nio.file` API.
 
 ```java
 @Service
@@ -137,31 +88,23 @@ public class FileService {
 
     private final Path mountPoint = Paths.get("/mnt/filestore/data");
 
-    public void saveFile(String fileName, byte[] content) throws IOException {
+    public void save(String fileName, byte[] content) throws IOException {
         Files.write(mountPoint.resolve(fileName), content);
-    }
-
-    public byte[] readFile(String fileName) throws IOException {
-        return Files.readAllBytes(mountPoint.resolve(fileName));
     }
 }
 ```
 
----
+## 8. Common ACE Exam Scenarios
 
-## 10. Common ACE Exam Scenarios
+- **Scenario**: Shared POSIX for GKE? → **Filestore**.
+- **Scenario**: Many small (10GB) shares for GKE pods? → Filestore **Enterprise (Multishares)**.
+- **Scenario**: Mount shared storage to Cloud Run? → Filestore + **Direct VPC Egress**.
+- **Scenario**: Scale performance and capacity independently? → **Zonal** tier.
+- **Scenario**: In-place tier upgrade? → **Not possible** (must create new and migrate).
+- **Scenario**: Regional High Availability (99.99% SLA)? → **Regional** or **Enterprise** tier.
+- **Scenario**: Global object storage? → **Cloud Storage** (not Filestore).
 
-- Scenario: Shared POSIX for GKE? → **Filestore**.
-- Scenario: Many small (10GB) shares for GKE pods? → Filestore **Enterprise (Multishares)**.
-- Scenario: Mount shared storage to Cloud Run? → Filestore + **Direct VPC Egress**.
-- Scenario: Scale performance and capacity independently? → **Zonal** tier.
-- Scenario: In-place tier upgrade? → **Not possible** (must create new and migrate).
-- Scenario: Regional High Availability (99.99% SLA)? → **Regional** or **Enterprise** tier.
-- Scenario: Global object storage? → **Cloud Storage** (not Filestore).
-
----
-
-## 11. Quick Summary Table
+## 9. Quick Summary Table
 
 | Feature           | Filestore           | Cloud Storage         | Persistent Disk       |
 | :---------------- | :------------------ | :-------------------- | :-------------------- |
@@ -172,15 +115,3 @@ public class FileService {
 | **HA**            | Regional Tier       | Regional/Multi-Reg    | Regional PD           |
 
 > Note: Multi-writer PD exists but is highly specialized (Block storage).
-
----
-
-## Final ACE Tips
-
-- Filestore = **managed NFS** (POSIX compliant).
-- **Zonal** = High Performance (formerly High Scale).
-- **Regional/Enterprise** = High Availability (99.99% SLA).
-- Cloud Run (Gen 2) **can** mount Filestore via Direct VPC Egress.
-- **Multishares** (Enterprise) allow many small shares on one instance.
-- **No in-place tier upgrades.**
-- IAM = Instance management; NFS/POSIX = File-level access.
