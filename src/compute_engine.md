@@ -41,9 +41,17 @@ Compute Engine is Google Cloud's Infrastructure as a Service (IaaS) offering, pr
 
 ## 6. Connecting to Instances
 
-- **SSH Access:** `gcloud compute ssh [VM_NAME]`.
-- **Identity-Aware Proxy (IAP):** The recommended way to SSH into a VM that has **no external IP address**.
-- **Firewall Rule for IAP:** You must allow ingress traffic from the IP range `35.235.240.0/20` on port 22.
+- **SSH Access**: `gcloud compute ssh [VM_NAME]`
+  - Uses a **direct SSH connection** to the VM’s **public IP**
+  - Requires the VM to **have an external IP**
+  - Firewall must allow TCP on port `22` from your client
+  - Your machine connects **over the public internet**
+- **Identity-Aware Proxy (IAP)**: `gcloud compute ssh VM_NAME --zone=ZONE --tunnel-through-iap`
+  - Uses **IAP TCP Tunneling** (Zero‑Trust access)
+  - Works even when the VM has **no external IP**
+  - Requires IAM role: `roles/iap.tunnelResourceAccessor`
+  - Firewall must allow TCP on port `22` from **IAP’s IP range `35.235.240.0/20`**
+  - SSH traffic goes through Google’s secure IAP tunnel to the VM’s **internal IP**
 
 ## 7. Service Accounts and Metadata
 

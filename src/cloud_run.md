@@ -1,65 +1,133 @@
 # Cloud Run: ACE Exam Study Guide (2026)
 
+![Cloud Run](images/cloud_run.png)
+
+_Image source: Google Cloud Documentation_
+
 ## 1. Cloud Run Overview
 
-Cloud Run is a managed compute platform that enables you to run containerized applications that are stateless and request-aware. It is built on **Knative**, an open-source standard for serverless.
+Cloud Run is a fully managed, serverless compute platform that enables you to run containerized applications that are stateless, request-driven. It is built on **Knative**, an open-source standard for serverless.
 
 - **Key Characteristics:**
   - **Serverless:** No infrastructure to manage. It scales automatically based on incoming requests.
   - **Scale to Zero:** If there is no traffic, Cloud Run scales down to zero instances.
   - **Stateless:** Containers must be stateless. Persistent data should be stored in Cloud Storage, Filestore, or a database.
-  - **Concurrency:** Cloud Run can handle multiple concurrent requests per container instance (up to 1000).
-- **Gemini for Cloud Run (2026 Update):** Gemini is now integrated for real-time deployment assistance, container optimization suggestions, and log-based troubleshooting.
+  - **Concurrency:** Cloud Run can handle multiple concurrent requests per container instance (default is 80, up to 1000).
 
-## 2. Deployment Methods
+## 2. Deployment & Sidecars (2026)
 
-- **Deploy from Container Image:** Provide a URL to an image in **Artifact Registry**.
-- **Deploy from Source:** Cloud Run uses **Cloud Build** and **Buildpacks** to automatically create an image and deploy it.
-- **Sidecar Containers (2026 Update):** Support for multiple containers in a single pod (sidecars) for tasks like logging, monitoring, or acting as a local proxy.
+- **Methods:**
+  - **Deploy from Container Image:** Provide a URL to an image in **Artifact Registry**.
+  - **Deploy from Source:** Cloud Run uses **Cloud Build** to automatically create an image and deploy it.
+- **Sidecar Containers:** Support for multiple containers in a single pod.
+  - **Use Case:** Running a **Cloud SQL Auth Proxy** alongside your app to handle database connections securely.
+  - **Use Case:** Running a logging or monitoring agent (e.g., OpenTelemetry) without modifying the main app code.
 - **Jobs vs. Services:**
   - **Cloud Run Services:** For code that handles requests (HTTP/gRPC).
-  - **Cloud Run Jobs:** For code that performs work and exits when finished.
+    - e.g. a Spring Boot application handling REST calls.
+  - **Cloud Run Jobs:** For code that performs work (data processing, backups) and exits when finished.
+    - e.g. a Spring Boot application with a `CommandLineRunner` (see [interface JavaDoc](https://docs.spring.io/spring-boot/api/java/org/springframework/boot/CommandLineRunner.html)).
 
 ## 3. Revisions and Traffic Management
 
 - **Revisions:** Every time you deploy a change, Cloud Run creates a new **immutable** revision.
-- **Traffic Splitting:** Split traffic between multiple revisions for Canary testing.
-- **Tagging:** Assign a specific URL to a revision using tags for testing before routing main traffic.
+- **Traffic Splitting:** Simultaneously route percentages of traffic to different versions (e.g., 50/50 for A/B testing or 1% for Canary testing).
+- **Tagging:** Assign a specific URL to a revision for testing before routing main traffic.
 - **Rollbacks:** Instantly roll back to a previous revision by shifting 100% of traffic.
 
-## 4. Scaling and Resources
+### Deployment Strategies: Blue‑Green vs Canary
+
+#### **Blue‑Green Deployment**
+
+Two identical environments exist: **Blue (current)** and **Green (new)**.
+
+- Deploy the new version to the **Green** environment.
+- Test Green without affecting users.
+- Switch 100% of traffic from Blue → Green in one action.
+- Rollback is instant by switching traffic back to Blue.
+
+**Use cases:** zero‑downtime releases, fast rollback, predictable behavior.
+
+#### **A/B Testing**
+Two versions run **simultaneously**, each receiving a portion of traffic.
+- Version A = baseline.
+- Version B = experimental variant.
+- Users are split (e.g., 50/50 or 90/10).
+- Compare metrics: conversions, latency, errors, user behavior.
+
+**Purpose:** Experimentation and data‑driven decision‑making.  
+**Traffic behavior:** Parallel traffic to both versions for comparison.
+
+#### **Canary Deployment**
+
+Gradually roll out a new version to a small subset of users.
+
+- Start with a small percentage (e.g., 1%).
+- Monitor errors, latency, logs.
+- Increase traffic gradually (e.g., 1% → 10% → 50% → 100%).
+- Rollback by shifting traffic back to the stable version.
+
+**Use cases:** risk‑reduction, real‑world testing, incremental rollout.
+
+### Summary
+
+- **Blue‑Green:** Two full environments. Switch traffic all at once. Best for fast rollback.
+- **A/B Testing:** Runs two versions in parallel to compare user behavior and performance metrics for data‑driven decisions.
+- **Canary:** Gradual traffic shifting. Best for testing new versions with minimal risk.
+
+## 4. Scaling, Resources & Probes
 
 - **Maximum Instances:** Limits how far the service can scale up (prevents runaway costs).
-- **Minimum Instances (Warm Start):** Keeps instances running to avoid "cold start" latency.
-- **CPU Allocation:** CPU can be allocated only during request processing or always allocated.
-- **GPU Support (2026 Update):** Cloud Run now supports GPU acceleration for AI/ML inference and data processing workloads.
+- **Minimum Instances:** Keeps instances "warm" to eliminate **cold start** latency.
+- **CPU Allocation:** CPU can be allocated only during request processing or "always allocated" for background tasks.
+- **Probes (Health Checks):**
+  - **Startup Probe:** Checks if the app is ready to serve traffic (prevents 503 errors during scale-up).
+  - **Liveness Probe:** Restarts the container if it becomes unhealthy or hangs.
+  - In Spring Boot this is achieved with an Actuator.
+- **GPU Support:** Cloud Run now supports GPU acceleration for AI/ML inference workloads.
 
 ## 5. Networking and Ingress
 
-- **Ingress Settings:** All (internet), Internal (VPC only), or Load Balancing only.
-- **Direct VPC Egress (2026 Update):** A faster, more direct way to connect to a VPC without requiring a Serverless VPC Access Connector.
-- **Static Outbound IP:** Route traffic through a VPC and use **Cloud NAT**.
+- **Ingress Settings:** `All` (Public), `Internal` (VPC only), or `Internal and Cloud Load Balancing`.
+- **Direct VPC Egress:** A faster, more direct way to connect to a VPC without requiring a Serverless VPC Access Connector.
+- **Static Outbound IP:** Route traffic through a VPC and use **Cloud NAT** to give your service a fixed external IP.
 
-## 6. Security and IAM
+## 6. Security and Authentication
 
-- **Invoker Role:** `roles/run.invoker` is required to call a service. Public access is granted via the `allUsers` principal.
-- **Service Account:** Assign a **Custom Service Account** with minimal permissions.
-- **Secrets:** Use **Secret Manager** to mount secrets as environment variables or volumes.
+- **IAM Roles:**
+  - `roles/run.invoker`: Required to call/trigger a service.
+  - `roles/run.admin`: Full control over services and revisions.
+- **Service Account:** Always assign a **Custom Service Account** with minimal permissions for production.
+- **Private Authentication (Critical):**
+  - To call a private Cloud Run service, the requester must provide a **Google-signed ID Token** (not an Access Token).
+    ```bash
+    curl --header "Authorization: Bearer $(gcloud auth print-identity-token)" [SERVICE_URL]
+    ```
+- **Secrets:** Use **Secret Manager** to mount sensitive data as environment variables or volumes.
 
-## 7. Storage
+## 7. Storage Options
 
-- **In-memory:** Ephemeral filesystem limited by RAM.
-- **Cloud Storage FUSE:** Mount a Cloud Storage bucket as a local volume.
-- **NFS (Filestore):** Use VPC egress to mount a Filestore instance for high-performance shared storage.
+- **In-memory:** Ephemeral filesystem limited by allocated RAM.
+- **Cloud Storage FUSE:** Mount a Cloud Storage bucket as a local volume (best for large media files).
+- **NFS (Filestore):** Use VPC egress to mount a Filestore instance for high-performance shared POSIX storage.
 
-## 8. Essential gcloud Commands
+## 8. Common ACE Exam Scenarios
 
-- **Deploy from Image:** `gcloud run deploy [SERVICE_NAME] --image [IMAGE_URL]`
-- **Deploy from Source:** `gcloud run deploy [SERVICE_NAME] --source .`
-- **Update Traffic:** `gcloud run services update-traffic [SERVICE_NAME] --to-revisions [REV1=PERCENT,REV2=PERCENT]`
+- **Scenario**: Call a private service from a local script? → Use `gcloud auth print-identity-token` to get a bearer token.
+- **Scenario**: Prevent _Cold Start_ for a critical API? → Set `min-instances` to at least 1.
+- **Scenario**: Connect to Cloud SQL securely without hardcoded IPs? → Use a **Sidecar** with the _Cloud SQL Auth Proxy_.
+- **Scenario**: Deploy a background task that runs for 2 hours? → Use **Cloud Run Jobs** (not Services).
+  > By default, each task runs for a maximum of 10 minutes: you can change this to a shorter time or a longer time up to 168 hours (7 days). For tasks using GPUs, the maximum available timeout is 1 hour.
+  > 
+  > Souorce: [Set task timeout for jobs | Cloud Run](https://docs.cloud.google.com/run/docs/configuring/task-timeout)
+- **Scenario**: Split traffic 10/90 for a new feature? → Use **Traffic Splitting** across revisions.
+- **Scenario**: Mount a 1TB shared drive for multiple instances? → Use **Filestore** via Direct VPC Egress.
 
-## 9. Exam Tips & Comparison
+## 9. Essential gcloud Commands
 
-- **Cloud Run vs. GKE:** Use Cloud Run for simplicity and scale-to-zero. Use GKE for full Kubernetes control.
-- **Gemini Usage:** Use Gemini to optimize your Dockerfile or to explain why a container failed to start.
-- **Sidecars:** If an exam question asks for a way to run a logging agent alongside your app, the answer is **Sidecars**.
+- **Deploy from Image:** `gcloud run deploy [SERVICE] --image [IMAGE_URL]`
+- **Update Traffic:** `gcloud run services update-traffic [SERVICE] --to-revisions [REV1=10,REV2=90]`
+- **List Revisions:** `gcloud run revisions list --service [SERVICE]`
+- **Describe Service:** `gcloud run services describe [SERVICE]`
+
+> **Final ACE Tip:** Cloud Run is the preferred choice for modern, containerized microservices that need to **scale to zero**. Use Sidecars for infrastructure logic and ID Tokens for private service-to-service communication.

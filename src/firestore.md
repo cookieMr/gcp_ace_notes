@@ -50,13 +50,20 @@ Key points:
 Firestore provides:
 
 - Strong consistency for reads, writes, and queries
-- ACID transactions (document-level)
+- **ACID** transactions (document-level)
 - Automatic retries for transactions
 
 Two write types:
 
 - Transactions: read and write, atomic
 - Batch writes: write-only, atomic
+
+> _ACID_ — Atomicity, Consistency, Isolation, Durability — four properties that ensure database transactions are processed reliably and maintain data integrity even in the presence of failures.
+>
+> - _Atomicity_ - All operations in a Firestore transaction succeed or none do. If any write fails, Firestore rolls back the entire transaction.
+> - _Consistency_ - Firestore ensures that any committed transaction leaves the data in a valid state according to your rules (security rules, schema expectations, constraints you enforce in code).
+> - _Isolation_ - Transactions in Firestore run with snapshot isolation. Each transaction sees a consistent snapshot of the data and is retried automatically if conflicts occur.
+> - _Durability_ - Once Firestore commits a write, it is stored redundantly across multiple Google data centers, ensuring it survives crashes or outages.
 
 ## 5. Write Limits (Major Exam Trap)
 
