@@ -6,18 +6,17 @@ _Image source: Google Cloud Documentation_
 
 ## 1. App Engine Overview
 
-App Engine is a fully managed Platform as a Service (PaaS) for building and deploying web applications and APIs.
+App Engine is a fully managed _Platform as a Service (PaaS)_ for building and deploying web applications and APIs.
 
-- **Key Characteristics:**
+- Key Characteristics
   - **Serverless:** No server management; automatic scaling.
   - **Application-Centric:** Focus on code, not infrastructure.
   - **Regional Resource:** An App Engine application is created within a specific region and cannot be moved once created.
   - **Max One App per Project:** You can only have one App Engine application per Google Cloud project.
-  - **Gemini Integration:** Use Gemini Code Assist to generate app.yaml configurations and optimize runtime code.
 
 ## 2. Standard vs. Flexible Environment
 
-_This is the most frequent exam topic for App Engine._
+> This is the most frequent exam topic for App Engine.
 
 ### Standard Environment
 
@@ -29,7 +28,7 @@ _This is the most frequent exam topic for App Engine._
 
 ### Flexible Environment
 
-- **Speed:** Starts in minutes (uses Compute Engine VMs). No scale-to-zero.
+- **Speed:** Starts in minutes (uses _Compute Engine VMs_). No scale-to-zero.
 - **Infrastructure:** Runs your code in Docker containers. You can use any language or version.
 - **Machine Types:** Supports modern N4 and C4 machine types for high-performance workloads.
 - **Capabilities:** You can modify the OS, access the local filesystem, and use SSH.
@@ -49,20 +48,58 @@ Understanding the relationship between components is essential for resource mana
 
 ## 4. Scaling Types
 
-- **Automatic Scaling:** Based on CPU, throughput, or latency. Supported by both Standard and Flexible. (Only Standard can scale to zero).
-- **Basic Scaling:** Only for Standard. Instances are created when a request is received and turned off when idle.
+- **Automatic Scaling:** Based on CPU, throughput, or latency. Supported by both _Standard_ and _Flexible_.
+  - Only Standard can scale to zero.
+- **Basic Scaling:** Only for _Standard_. Instances are created when a request is received and turned off when idle.
 - **Manual Scaling:** You specify the exact number of instances. Supported by both.
 
 ## 5. Traffic Management
 
-- **Traffic Migration:** Gradually moves all traffic from one version to another (e.g., switching from v1 to v2).
-- **Traffic Splitting:** Simultaneously routes percentages of traffic to different versions (e.g., 50/50 for A/B testing or 1% for Canary testing).
-- **Methods:** Split traffic by IP address, HTTP cookie, or Randomly.
+- **Traffic Migration** - Gradually shifts all traffic from one version to another. Useful for controlled rollouts, such as moving traffic from `v1` to `v2` without an abrupt cutover.
+- **Traffic Splitting** - Routes live traffic to multiple versions at the same time. Common use cases include _A/B testing_ (e.g., 50/50 split), _Canary releases_ (e.g., 1% to a new version), and progressive rollouts with real user traffic.
+- **Methods** - App Engine can distribute traffic using:
+  - _IP-based_ splitting — consistent routing for users behind the same IP.
+    ```bash
+    gcloud app services set-traffic my-service \
+      --splits v1=0.9,v2=0.1 \
+      --split-by ip
+    ```
+  - _Cookie-based_ splitting — sticky sessions (per user) for experiments or A/B tests. App Engine uses the `GOOGAPPUID` cookie.
+    ```bash
+    gcloud app services set-traffic my-service \
+      --splits v1=0.5,v2=0.5 \
+      --split-by cookie
+    ```
+  - _Random_ splitting — evenly distributed, non-sticky traffic.
+    ```bash
+    gcloud app services set-traffic my-service \
+      --splits v1=0.99,v2=0.01 \
+      --split-by random
+    ```
 
 ## 6. Deployment and Configuration
 
-- **app.yaml:** The core configuration file used for deployment. Defines the runtime, scaling, environment variables, and handlers.
-- **Deployment:** Use `gcloud app deploy`. By default, this promotes the new version to handle 100% of traffic. Use `--no-promote` to deploy without switching traffic.
+- **`app.yaml`**: The core configuration file used for deployment. Defines the runtime, scaling, environment variables, and handlers.
+
+  _App Engine Flexible (Java) - example `app.yaml` file_
+  ```yaml
+  runtime: java
+  env: flex
+
+  runtime_config:
+    jdk: openjdk21
+
+  automatic_scaling:
+    min_num_instances: 1
+    max_num_instances: 5
+
+  resources:
+    cpu: 1
+    memory_gb: 2
+    disk_size_gb: 10
+  ```
+
+- **Deployment**: Use `gcloud app deploy`. By default, this promotes the new version to handle 100% of traffic. Use `--no-promote` to deploy without switching traffic.
 
 ## 7. Networking and Security
 
@@ -85,3 +122,8 @@ Understanding the relationship between components is essential for resource mana
 - **App Engine vs. Cloud Run:** Use App Engine for traditional, stateful-ish web apps or when you want the simplest "push code" experience. Use Cloud Run for modern containerized microservices that need to scale to zero.
 - **Versioning:** Always deploy a new version for major changes. This allows for instant rollbacks if things go wrong.
 - **Region Lock:** You cannot change an App Engine app's region after it is created. You must create a new project to change the region.
+
+## 10. External Links
+
+- [App Engine - Google Cloud Documentation](https://docs.cloud.google.com/appengine/docs)
+- [Youtube - Andrew Brown - App Engine](https://www.youtube.com/watch?v=OlAmyf8_4O4&t=10827s)

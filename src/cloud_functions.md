@@ -86,11 +86,17 @@ In 2nd Generation, Cloud Functions use **Eventarc** to deliver events from over 
 To write a Cloud Function in Java, you must implement one of Google’s functional interfaces. These are part of the [**Cloud Functions Framework**](https://docs.cloud.google.com/java/docs/reference/google-cloud-functions/latest/overview), which allows you to run and test these functions locally or in any Knative-compatible environment.
 
 ```gradle
-implementation platform("com.google.cloud:libraries-bom:26.79.0")
-implementation "com.google.cloud:google-cloud-functions"
+dependencies {
+    implementation platform("com.google.cloud:libraries-bom:26.79.0")
+    implementation "com.google.cloud:google-cloud-functions"
+}
 ```
 
-#### `com.google.cloud.functions.HttpFunction` → for HTTP-triggered functions
+_Cloud Functions_ doesn’t run on Knative directly, but uses the Knative‑compatible Functions Framework, allowing the same function code to run on _Cloud Run_ or any Knative environment.
+
+#### For HTTP-triggered functions
+
+`com.google.cloud.functions.HttpFunction`
 
 ```java
 public class HelloHttp implements HttpFunction {
@@ -103,7 +109,9 @@ public class HelloHttp implements HttpFunction {
 }
 ```
 
-#### `com.google.cloud.functions.BackgroundFunction<T>` → for background (event-driven) functions
+#### For background (event-driven) functions
+
+`com.google.cloud.functions.BackgroundFunction<T>`
 
 ```java
 public class HelloBackground implements BackgroundFunction<PubSubMessage> {
@@ -120,7 +128,9 @@ record PubSubMessage(String data) {
 }
 ```
 
-#### `com.google.cloud.functions.RawBackgroundFunction` → for raw event payloads
+#### For raw event payloads
+
+`com.google.cloud.functions.RawBackgroundFunction`
 
 ```java
 public class HelloRawBackground implements RawBackgroundFunction {
@@ -142,3 +152,8 @@ These interfaces define the entry point that Google Cloud invokes when your func
 - **Cold Starts**: Occur when a new instance is spun up from zero. Mitigated by setting a `min-instances` value.
 - **Idempotency**: _Critical._ Event-driven functions should be idempotent to handle retries correctly.
   > **Idempotency** - An operation is idempotent if performing it multiple times produces the same result as performing it once.
+
+## 11. External Links
+
+- [Cloud Run Functions - Google Cloud Documentation](https://docs.cloud.google.com/functions/docs)
+- [Youtube - Andrew Brown - Cloud Run](https://www.youtube.com/watch?v=OlAmyf8_4O4&t=11029s)

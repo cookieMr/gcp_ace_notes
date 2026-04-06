@@ -1,19 +1,22 @@
 # Compute Engine: ACE Exam Study Guide (2026)
 
+![Compute Engine](images/compute_engine.png)
+
+_Image source: Google Cloud Documentation_
+
 ## 1. Compute Engine Overview
 
-Compute Engine is Google Cloud's Infrastructure as a Service (IaaS) offering, providing customizable Virtual Machines (VMs).
+Compute Engine is Google Cloud's _Infrastructure as a Service (IaaS)_ offering, providing customizable Virtual Machines (VMs).
 
-- **Machine Families (2026 Standards):**
+- Machine Families (2026 Standards)
   - **General-purpose:** Best price-performance. Includes **E2**, **N2**, and the new **N4** (optimized for modern workloads with flexible sizing).
   - **Compute-optimized:** High performance per core. Includes **C2**, **C3**, and **C4** (the latest generation for high-performance computing).
   - **Memory-optimized:** High memory/vCPU ratio. Includes **M1**, **M2**, and **M3**.
   - **Accelerator-optimized:** GPUs attached (e.g., **A2**, **A3**).
-- **Gemini Integration:** Gemini in Compute Engine provides AI-assisted instance type selection, performance optimization tips, and troubleshooting for VM startup issues.
 
 ## 2. Pricing and Discounts
 
-- **Cost of Stopped VMs:** If you stop a VM, you stop paying for CPU and RAM, but you still pay for attached Persistent Disks and any reserved Static External IPs.
+- **Cost of Stopped VMs:** If you stop a VM, you stop paying for CPU and RAM, but you still pay for attached _Persistent Disks_ and any reserved _Static External IPs_.
 - **Sustained Use Discounts (SUD):** Automatic discounts for running instances for a significant portion of the month (N1, N2).
 - **Committed Use Discounts (CUD):** 1 or 3-year commitment for a predictable workload.
 - **Spot VMs:** Up to 91% discount. These can be terminated by Google at any time with a 30-second notice. Best for fault-tolerant, stateless batch jobs.
@@ -26,18 +29,34 @@ Compute Engine is Google Cloud's Infrastructure as a Service (IaaS) offering, pr
   - **Auto-scaling:** Dynamically adds or removes VMs based on CPU utilization, load balancing capacity, or custom metrics.
   - **Regional MIGs:** Highly recommended for production as they distribute VMs across multiple zones in a region.
 
+> - [Zonal MIG - Google Cloud Documentation](https://docs.cloud.google.com/compute/docs/instance-groups/create-zonal-mig)
+> - [Regional MIG - Google Cloud Documentation](https://docs.cloud.google.com/compute/docs/instance-groups/distributing-instances-with-regional-instance-groups)
+
 ## 4. Persistent Disks, Snapshots and Images
 
 - **Persistent Disks (PD):** Durable network storage. You can resize a disk up but never down.
 - **Snapshots:** Incremental backups of disks, stored globally. Best for disaster recovery.
-- **Custom Images:** A "Gold Master" boot disk with your OS and software pre-installed. Best for consistent deployments in MIGs.
+- **Custom Images:** A _Gold Master_ boot disk with your OS and software pre-installed. Best for consistent deployments in MIGs.
 - **Local SSD:** Physical drives attached directly to the host. Data is ephemeral and lost if the VM is stopped or deleted.
 
 ## 5. Sole-Tenant Nodes
 
-- **Definition:** Physical Compute Engine servers dedicated entirely to hosting your project's VMs.
-- **Use Cases:** Compliance, security isolation, and specific licensing (BYOL) that requires physical hardware.
-- **Node Groups:** Nodes are organized into groups, and you use node affinity labels to ensure VMs boot on these specific servers.
+Dedicated, single‑tenant physical servers in Google Cloud that run only your project’s Compute Engine VMs. They provide hardware‑level isolation by ensuring no other customer’s workloads share the same underlying host.
+
+> [Sole-tenancy overview - Google Cloud Documentation](https://docs.cloud.google.com/compute/docs/nodes/sole-tenant-nodes)
+
+#### Primary Use Cases
+Regulatory or compliance requirements that mandate physical isolation (e.g., healthcare, finance, government).
+Security boundaries where you must avoid multi‑tenant hardware for risk or policy reasons.
+_Bring‑Your‑Own‑License (BYOL)_ scenarios for software that is licensed per physical core, socket, or host.
+Workload placement control, such as pinning specific VMs to specific hardware types.
+
+#### Node Groups & Placement
+
+Nodes are organized into node groups, which act as pools of dedicated hosts.
+VMs use **node affinity/anti‑affinity** rules to control placement, ensuring they land on the correct physical nodes.
+You can enforce strict placement (must run on a specific node type) or preferred placement (try this node type first).
+Useful for keeping related workloads together or separating sensitive workloads across different hosts.
 
 ## 6. Connecting to Instances
 
@@ -55,7 +74,7 @@ Compute Engine is Google Cloud's Infrastructure as a Service (IaaS) offering, pr
 
 ## 7. Service Accounts and Metadata
 
-- **Service Accounts:** VMs use these to authenticate to other Google Cloud services (GCS, BigQuery). Always use custom service accounts with "Least Privilege" for production.
+- **Service Accounts:** VMs use these to authenticate to other Google Cloud services (GCS, BigQuery). Always use custom service accounts with _Least Privilege_ for production.
 - **Metadata:** Used to pass configuration data. Startup scripts are automated scripts that run every time the VM boots.
 - **Metadata Server:** Accessible at `http://metadata.google.internal/computeMetadata/v1/`.
 

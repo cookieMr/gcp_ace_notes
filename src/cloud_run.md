@@ -8,11 +8,19 @@ _Image source: Google Cloud Documentation_
 
 Cloud Run is a fully managed, serverless compute platform that enables you to run containerized applications that are stateless, request-driven. It is built on **Knative**, an open-source standard for serverless.
 
-- **Key Characteristics:**
-  - **Serverless:** No infrastructure to manage. It scales automatically based on incoming requests.
-  - **Scale to Zero:** If there is no traffic, Cloud Run scales down to zero instances.
-  - **Stateless:** Containers must be stateless. Persistent data should be stored in Cloud Storage, Filestore, or a database.
-  - **Concurrency:** Cloud Run can handle multiple concurrent requests per container instance (default is 80, up to 1000).
+- Key Characteristics
+  - **Serverless**: No infrastructure to manage. It scales automatically based on incoming requests.
+  - **Scale to Zero**: If there is no traffic, Cloud Run scales down to zero instances.
+  - **Stateless**: Containers must be stateless. Persistent data should be stored in Cloud Storage, Filestore, or a database.
+  - **Concurrency**: Cloud Run can handle multiple concurrent requests per container instance (default is 80, up to 1000).
+
+### Knative Framework
+
+**Knative** is an open‑source framework that brings serverless capabilities to Kubernetes by providing standardized components for building, deploying, and running containerized applications.
+
+It abstracts complex Kubernetes operations and adds features such as automatic scaling (including scale‑to‑zero), traffic management, revisioning, and event‑driven execution through CloudEvents.
+
+Knative consists of two main parts: **Serving**, which handles request‑driven workloads, and **Eventing**, which manages event routing and triggers. _Cloud Run_ is built directly on _Knative Serving_, offering a fully managed version of its core serverless functionality.
 
 ## 2. Deployment & Sidecars (2026)
 
@@ -35,9 +43,9 @@ Cloud Run is a fully managed, serverless compute platform that enables you to ru
 - **Tagging:** Assign a specific URL to a revision for testing before routing main traffic.
 - **Rollbacks:** Instantly roll back to a previous revision by shifting 100% of traffic.
 
-### Deployment Strategies: Blue‑Green vs Canary
+### Deployment Strategies: Blue‑Green vs A/B Testing vs Canary
 
-#### **Blue‑Green Deployment**
+#### Blue‑Green Deployment
 
 Two identical environments exist: **Blue (current)** and **Green (new)**.
 
@@ -48,8 +56,10 @@ Two identical environments exist: **Blue (current)** and **Green (new)**.
 
 **Use cases:** zero‑downtime releases, fast rollback, predictable behavior.
 
-#### **A/B Testing**
+#### A/B Testing
+
 Two versions run **simultaneously**, each receiving a portion of traffic.
+
 - Version A = baseline.
 - Version B = experimental variant.
 - Users are split (e.g., 50/50 or 90/10).
@@ -58,7 +68,7 @@ Two versions run **simultaneously**, each receiving a portion of traffic.
 **Purpose:** Experimentation and data‑driven decision‑making.  
 **Traffic behavior:** Parallel traffic to both versions for comparison.
 
-#### **Canary Deployment**
+#### Canary Deployment
 
 Gradually roll out a new version to a small subset of users.
 
@@ -118,7 +128,7 @@ Gradually roll out a new version to a small subset of users.
 - **Scenario**: Connect to Cloud SQL securely without hardcoded IPs? → Use a **Sidecar** with the _Cloud SQL Auth Proxy_.
 - **Scenario**: Deploy a background task that runs for 2 hours? → Use **Cloud Run Jobs** (not Services).
   > By default, each task runs for a maximum of 10 minutes: you can change this to a shorter time or a longer time up to 168 hours (7 days). For tasks using GPUs, the maximum available timeout is 1 hour.
-  > 
+  >
   > Souorce: [Set task timeout for jobs | Cloud Run](https://docs.cloud.google.com/run/docs/configuring/task-timeout)
 - **Scenario**: Split traffic 10/90 for a new feature? → Use **Traffic Splitting** across revisions.
 - **Scenario**: Mount a 1TB shared drive for multiple instances? → Use **Filestore** via Direct VPC Egress.
@@ -131,3 +141,8 @@ Gradually roll out a new version to a small subset of users.
 - **Describe Service:** `gcloud run services describe [SERVICE]`
 
 > **Final ACE Tip:** Cloud Run is the preferred choice for modern, containerized microservices that need to **scale to zero**. Use Sidecars for infrastructure logic and ID Tokens for private service-to-service communication.
+
+## 10. External Links
+
+- [Cloud Run - Google Cloud Documentation](https://docs.cloud.google.com/run/docs)
+- [Youtube - Andrew Brown - Cloud Run](https://www.youtube.com/watch?v=OlAmyf8_4O4&t=11029s)

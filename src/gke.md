@@ -34,6 +34,8 @@ Google Kubernetes Engine (GKE) is a managed environment for deploying, managing,
     - Accessible only inside the cluster.
     - Used for pod‑to‑pod communication.
 
+  _ClusterIP Service Definition for Internal Traffic_
+
   ```yaml
   apiVersion: v1
   kind: Service
@@ -48,42 +50,49 @@ Google Kubernetes Engine (GKE) is a managed environment for deploying, managing,
         targetPort: 8080 # container port
   ```
 
-  - **NodePort**:
+  - **NodePort**
     - Opens port `30080` on every node.
     - Accessible via `http://<node-ip>:30080`.
     - Still load‑balances across pods.
-    ```yaml
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: my-nodeport-service
-    spec:
-      type: NodePort
-      selector:
-        app: my-app
-      ports:
-        - port: 80
-          targetPort: 8080
-          nodePort: 30080 # must be in range 30000–32767
-    ```
+
+  _NodePort Service Exposing Port 80 → 30080_
+
+  ```yaml
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: my-nodeport-service
+  spec:
+    type: NodePort
+    selector:
+      app: my-app
+    ports:
+      - port: 80
+        targetPort: 8080
+        nodePort: 30080 # must be in range 30000–32767
+  ```
+
   - **LoadBalancer**:
     - GKE automatically creates a Google Cloud external Load Balancer
     - Assigns a public IP
     - Traffic → LB → NodePort → Pod
     - This is the standard way to expose a service publicly
-    ```yaml
-    apiVersion: v1
-    kind: Service
-    metadata:
-      name: my-loadbalancer-service
-    spec:
-      type: LoadBalancer
-      selector:
-        app: my-app
-      ports:
-        - port: 80
-          targetPort: 8080
-    ```
+
+  _LoadBalancer Service Exposing Port 80_
+
+  ```yaml
+  apiVersion: v1
+  kind: Service
+  metadata:
+    name: my-loadbalancer-service
+  spec:
+    type: LoadBalancer
+    selector:
+      app: my-app
+    ports:
+      - port: 80
+        targetPort: 8080
+  ```
 
 - Ingress: Manages external access (layer-7 HTTP/HTTPS) routing mechanism and creates a _Google Cloud_ **_External Application Load Balancer_**.
 - Container-Native Load Balancing: Uses _Network Endpoint Groups (NEGs)_ to route traffic directly to pods.
@@ -110,13 +119,7 @@ That’s where _Persistent Volumes_ (PV) and _Persistent Volume Claims_ (PVC) co
 - IAM: Manages permissions outside the cluster (e.g., cluster creation).
 - Shielded GKE Nodes: Provides node identity and integrity.
 
-## 7. Gemini and Observability
-
-- Gemini in GKE: Use Gemini for AI-powered troubleshooting, log summarization, and cluster health monitoring.
-- GKE Enterprise: Advanced fleet management and AI-driven cost optimization powered by Gemini.
-- Gemini Code Assist: Use to generate Kubernetes manifests and Helm charts from natural language.
-
-## 8. Essential gcloud and kubectl Commands
+## 8. Essential `gcloud` and `kubectl` Commands
 
 - Create a Cluster: `gcloud container clusters create [CLUSTER_NAME] --zone [ZONE] --num-nodes [NUMBER]`
 - Get Credentials: `gcloud container clusters get-credentials [CLUSTER_NAME] --zone [ZONE]`
