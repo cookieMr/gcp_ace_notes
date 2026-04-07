@@ -1,5 +1,9 @@
 # Cloud Armor: ACE Exam Study Guide (2026)
 
+![Cloud Armor](images/cloud_armor.png)
+
+_Image source: Google Cloud Documentation_
+
 ## 1. Cloud Armor Overview
 
 Cloud Armor is Google Cloud's network security service that provides Web Application Firewall (WAF) and Distributed Denial of Service (DDoS) protection at scale.
@@ -33,6 +37,181 @@ Cloud Armor includes preconfigured WAF rules to protect against common web attac
 - **Remote Code Execution (RCE)**
 - **Protocol Attack / Scanner Detection**
 - **Exam Tip:** You should know that Cloud Armor can mitigate the "OWASP Top 10" risks using these preconfigured rule sets.
+
+### 3.1. OWASP Top 10
+
+#### 3.1.1. Broken Access Control
+
+Failures in enforcing permissions allow users to access data or actions they shouldn’t.
+
+**Spring Boot example**  
+A controller exposes user details without checking ownership:
+
+```java
+@GetMapping("/users/{id}")
+public User getUser(@PathVariable Long id) {
+    // No check: user can fetch ANY user
+    return userService.findById(id);
+}
+```
+
+**Fix**  
+Use Spring Security method-level authorization:
+
+```java
+@PreAuthorize("#id == authentication.principal.id")
+```
+
+#### 3.1.2. Cryptographic Failures
+
+Sensitive data is exposed due to missing or weak encryption.
+
+**Spring Boot example**
+Storing passwords in plain text or using MD5:
+
+```java
+String hash = DigestUtils.md5DigestAsHex(password.getBytes());
+```
+
+**Fix**  
+Use BCrypt:
+
+```java
+PasswordEncoder encoder = new BCryptPasswordEncoder();
+```
+
+#### 3.1.3. Injection
+
+Untrusted input is interpreted as code or commands.
+
+**Spring Boot example**  
+Using string concatenation in JPA queries:
+
+```java
+@Query("SELECT u FROM User u WHERE u.name = '" + name + "'")
+```
+
+**Fix**  
+Use parameter binding:
+
+```java
+@Query("SELECT u FROM User u WHERE u.name = :name")
+```
+
+> **XSS (Cross-Site Scripting)** is also an injection attack. It happens when an untrusted input is rendered into a webpage without proper escaping, allowing attackers to execute malicious JavaScript in the victim’s browser. This can lead to session theft, account takeover, redirects, or UI manipulation.
+
+#### 3.1.4. Insecure Design
+
+Security issues caused by missing or flawed architecture and design decisions.
+
+**Spring Boot example**  
+No rate limiting → brute force login possible.
+
+**Fix**
+
+- Spring Cloud Gateway rate limiting
+- Cloud Armor rate limiting
+- Captcha for login endpoints
+
+#### 3.1.5. Security Misconfiguration
+
+Incorrect or missing security settings across applications, servers, or cloud resources.
+
+**Spring Boot example**  
+Actuator endpoints exposed publicly
+
+```yaml
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+```
+
+**Fix**  
+Restrict exposure.
+
+```yaml
+include: health,info
+```
+
+And secure with Spring Security.
+
+#### 3.1.6. Vulnerable and Outdated Components
+
+Using libraries or frameworks with known vulnerabilities.
+
+**Spring Boot example**
+Using vulnerable Log4j version.
+
+**Fix**  
+Upgrade to patched versions and use dependency scanning (OWASP DC, Snyk, Trivy).
+
+#### 3.1.7. Identification and Authentication Failures
+
+Weak authentication or session handling allows attackers to impersonate users.
+
+**Spring Boot example**
+Session ID not regenerated after login → session fixation.
+
+**Fix**
+Spring Security handles this automatically, but only if enabled:
+
+```java
+http.sessionManagement().sessionFixation().migrateSession();
+```
+
+> Not checking JWT cryptographic signature falls into this categoty.
+
+#### 3.1.8. Software and Data Integrity Failures
+
+Trusting unvalidated or untrusted code, data, or CI/CD pipelines.
+
+**Spring Boot example**
+CI pipeline pulling dependencies without checksum verification.
+
+**Fix**
+
+- Maven checksum validation
+- Signed artifacts
+- Secure CI/CD runners
+
+#### 3.1.9. Security Logging and Monitoring Failures
+
+Insufficient logging or alerting prevents detection of attacks.
+
+**Spring Boot example**
+Login failures not logged.
+
+**Fix**  
+Implement logging:
+
+```java
+logger.warn("Failed login for user {}", username);
+```
+
+Send logs to SIEM (Cloud Logging, ELK, etc.).
+
+> A SIEM (_Security Information and Event Management_) is a centralized system that collects, aggregates, correlates, and analyzes logs from across your infrastructure to detect security threats in real time.
+
+#### 3.1.10. Server-Side Request Forgery (SSRF)
+
+Server makes unintended internal or external requests controlled by the attacker.
+
+**Spring Boot example**
+Fetching user-supplied URLs:
+
+```java
+RestTemplate rest = new RestTemplate();
+String result = rest.getForObject(userInputUrl, String.class);
+```
+
+**Fix**
+
+- Validate URLs
+- Allowlist domains
+- Block metadata endpoints (`169.254.169.254`)
+- Use Cloud Armor SSRF rules
 
 ## 4. Managed Protection Tiers
 
