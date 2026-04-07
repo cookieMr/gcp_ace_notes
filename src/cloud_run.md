@@ -87,14 +87,16 @@ Gradually roll out a new version to a small subset of users.
 
 ## 4. Scaling, Resources & Probes
 
-- **Maximum Instances:** Limits how far the service can scale up (prevents runaway costs).
-- **Minimum Instances:** Keeps instances "warm" to eliminate **cold start** latency.
-- **CPU Allocation:** CPU can be allocated only during request processing or "always allocated" for background tasks.
-- **Probes (Health Checks):**
-  - **Startup Probe:** Checks if the app is ready to serve traffic (prevents 503 errors during scale-up).
-  - **Liveness Probe:** Restarts the container if it becomes unhealthy or hangs.
+- **Maximum Instances**: Limits how far the service can scale up (prevents runaway costs).
+- **Minimum Instances**: Keeps instances "warm" to eliminate **cold start** latency.
+- **CPU Allocation & Throttling**
+  - **Throttled (Default)**: CPU is only allocated during request processing. Once the response is sent, CPU is heavily "throttled" (reduced), which can cause background threads or asynchronous tasks to hang or fail.
+  - **Always Allocated**: CPU is available even when no requests are being processed. This is required for background tasks, WebSocket-like connections, or monitoring agents that need to run continuously.
+- **Probes (Health Checks)**
+  - **Startup Probe**: Checks if the app is ready to serve traffic (prevents 503 errors during scale-up).
+  - **Liveness Probe**: Restarts the container if it becomes unhealthy or hangs.
   - In Spring Boot this is achieved with an Actuator.
-- **GPU Support:** Cloud Run now supports GPU acceleration for AI/ML inference workloads.
+- **GPU Support**: Cloud Run now supports GPU acceleration for AI/ML inference workloads.
 
 ## 5. Networking and Ingress
 
@@ -126,10 +128,11 @@ Gradually roll out a new version to a small subset of users.
 - **Scenario**: Call a private service from a local script? → Use `gcloud auth print-identity-token` to get a bearer token.
 - **Scenario**: Prevent _Cold Start_ for a critical API? → Set `min-instances` to at least 1.
 - **Scenario**: Connect to Cloud SQL securely without hardcoded IPs? → Use a **Sidecar** with the _Cloud SQL Auth Proxy_.
+- **Scenario**: Your application starts a background thread to process an image after sending the HTTP response, but the process never completes or runs extremely slowly. → Change **CPU Allocation** to "always allocated" to prevent CPU throttling after the request is returned to the user.
 - **Scenario**: Deploy a background task that runs for 2 hours? → Use **Cloud Run Jobs** (not Services).
   > By default, each task runs for a maximum of 10 minutes: you can change this to a shorter time or a longer time up to 168 hours (7 days). For tasks using GPUs, the maximum available timeout is 1 hour.
   >
-  > Souorce: [Set task timeout for jobs | Cloud Run](https://docs.cloud.google.com/run/docs/configuring/task-timeout)
+  > Source: [Set task timeout for jobs | Cloud Run](https://docs.cloud.google.com/run/docs/configuring/task-timeout)
 - **Scenario**: Split traffic 10/90 for a new feature? → Use **Traffic Splitting** across revisions.
 - **Scenario**: Mount a 1TB shared drive for multiple instances? → Use **Filestore** via Direct VPC Egress.
 
@@ -137,6 +140,7 @@ Gradually roll out a new version to a small subset of users.
 
 - **Deploy from Image:** `gcloud run deploy [SERVICE] --image [IMAGE_URL]`
 - **Update Traffic:** `gcloud run services update-traffic [SERVICE] --to-revisions [REV1=10,REV2=90]`
+- **Set CPU Allocation (Throttling):** `gcloud run services update [SERVICE] --no-cpu-throttling` (always on) or `--cpu-throttling` (default)
 - **List Revisions:** `gcloud run revisions list --service [SERVICE]`
 - **Describe Service:** `gcloud run services describe [SERVICE]`
 

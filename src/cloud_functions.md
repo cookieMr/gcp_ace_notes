@@ -148,9 +148,10 @@ These interfaces define the entry point that Google Cloud invokes when your func
 
 - **Cloud Functions vs. Cloud Run**
   - Use _Cloud Functions_ for event-driven snippets or simple _glue logic_.
+    > **Glue logic** is small, simple code that connects components so they can work together. It adapts interfaces, transforms data, or coordinates calls between modules, acting as the plumbing that lets otherwise incompatible parts interoperate.
   - Use _Cloud Run_ for full web applications, containers with multiple routes, or complex dependencies.
 - **Cold Starts**: Occur when a new instance is spun up from zero. Mitigated by setting a `min-instances` value.
-- **Idempotency**: _Critical._ Event-driven functions should be idempotent to handle retries correctly.
+- **Idempotency**: Event-driven functions should be idempotent to handle retries correctly.
   > **Idempotency** - An operation is idempotent if performing it multiple times produces the same result as performing it once.
 
 ## 11. External Links

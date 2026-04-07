@@ -8,34 +8,20 @@ _Image source: Google Cloud Documentation_
 
 Memorystore is Google Cloud’s fully managed in-memory data store service. It is used for low-latency caching, session storage, and real-time data access.
 
-## 2. Quick Summary: Redis/Valkey vs. Memcached
+## 2. Redis/Valkey vs. Memcached
 
-| Feature          | Redis/Valkey                               | Memcached              |
-| :--------------- | :----------------------------------------- | :--------------------- |
-| **Use Case**     | Advanced (Sessions, Pub/Sub, HA)           | Simple Key/Value Cache |
-| **Persistence**  | Optional (RDB/AOF)                         | **No** (Ephemeral)     |
-| **Scaling**      | Vertical (Standard) / Horizontal (Cluster) | Horizontal (Node pool) |
-| **Networking**   | PSA (Standard) / PSC (Cluster)             | PSA (VPC Peering)      |
-| **Auth/TLS**     | Yes (Redis AUTH)                           | **No**                 |
-| **Availability** | HA with Failover (Standard Tier)           | No HA/Replication      |
+| Feature          | Redis / Valkey                                              | Memcached                                |
+| ---------------- | ----------------------------------------------------------- | ---------------------------------------- |
+| **Deployment**   | **Regional** (multi‑zone)                                   | **Zonal** (no multi‑zone replication)    |
+| **Availability** | Standard Tier: automatic failover (Primary → Replica)       | No HA, no failover                       |
+| **Persistence**  | Optional: RDB snapshots + point‑in‑time recovery            | None (purely in‑memory, ephemeral)       |
+| **Use Case**     | Durable cache, counters, queues, sessions, Pub/Sub patterns | Large, simple, ephemeral key/value cache |
+| **Scaling**      | Vertical (Basic/Standard) or Horizontal (Cluster mode)      | Horizontal (node pool)                   |
+| **Networking**   | PSA (Standard) / PSC (Cluster mode)                         | PSA (VPC Peering)                        |
+| **Auth/TLS**     | Yes (AUTH, TLS)                                             | No                                       |
+| **Notes**        | Valkey = modern Redis‑compatible engine (2026+)             | Best when data loss is acceptable        |
 
-## 3. Supported Engines
-
-### Redis & Valkey
-
-- **Latency:** Sub-millisecond.
-- **Persistence:** Supports RDB snapshots and point-in-time recovery.
-- **Valkey:** The 2026 standard for open-source high-performance caching.
-- **Tiers:**
-  - **Basic:** Single node (dev/test).
-  - **Standard:** Primary + Replica with automatic failover (Production).
-
-### Memcached
-
-- **Architecture:** Horizontally scalable node pools.
-- **Behavior:** Data is lost on restart or node failure. Best for large, simple web caches.
-
-## 4. Networking and Connectivity
+## 3. Networking and Connectivity
 
 Memorystore instances are **VPC-only** (no public IPs).
 
@@ -49,6 +35,10 @@ Memorystore instances are **VPC-only** (no public IPs).
 - **Standard/Basic Tiers:** Use Private Service Access (PSA).
 - **Cluster/Valkey Tiers:** Use **Private Service Connect (PSC)**. Clients connect to a single IP (discovery endpoint) in their own VPC.
 
+> _Private Service Access_ lets your VPC connect privately to Google‑managed services that run inside your project, such as _Cloud SQL_, _**Memorystore**_, _AlloyDB_, and _Filestore_. It works through _VPC peering_ and a reserved IP range, giving those services private [RFC 1918](https://en.wikipedia.org/wiki/Private_network#Private_IPv4_addresses) addresses. PSA is regional and meant for accessing Google‑managed backends you own.
+
+> _Private Service Connect_ creates private endpoints that let your VPC reach Google APIs, third‑party SaaS, or services in other projects using private IPs. It uses Google’s internal load balancing instead of VPC peering, making it ideal for cross‑project or cross‑organization service consumption or publishing.
+
 | Service          | Can connect? | Requirements                 |
 | ---------------- | ------------ | ---------------------------- |
 | Compute Engine   | Yes          | Same VPC                     |
@@ -56,7 +46,7 @@ Memorystore instances are **VPC-only** (no public IPs).
 | Cloud Run        | Yes          | Direct VPC Egress            |
 | External clients | Yes          | Only via VPN or Interconnect |
 
-## 5. Scaling and TTL
+## 4. Scaling and TTL
 
 - **Scaling:**
   - **Vertical:** Increasing memory on Basic/Standard tiers causes brief downtime.
@@ -64,15 +54,15 @@ Memorystore instances are **VPC-only** (no public IPs).
 - **TTL (Time-to-Live):** Essential for cache management.
   - `SET key value EX 60` (Set on write)
   - `EXPIRE key 60` (Set after write)
+    > TTL is simply an expiration timer for a key. When you set a TTL, Redis automatically deletes the key after the specified number of seconds. It’s used to control cache freshness, prevent stale data, and free memory without manual cleanup.
 
-## 6. Authentication and Monitoring
+## 5. Authentication and Monitoring
 
 - **Security:**
   - **IAM:** Controls management plane (creating/deleting instances).
   - **Redis AUTH:** Application-level password (not IAM-based). Must be enabled at creation.
-- **Gemini for Memorystore:** Provides AI-driven recommendations for sharding and memory usage patterns.
 
-## 7. Common ACE Exam Scenarios
+## 6. Common ACE Exam Scenarios
 
 - **Scenario**: Connect Cloud Run to Redis with lowest cost? → Use **Direct VPC Egress**.
 - **Scenario**: Scale Redis to 10TB+ with zero downtime? → Use **Redis Cluster** or **Valkey**.
@@ -80,7 +70,7 @@ Memorystore instances are **VPC-only** (no public IPs).
 - **Scenario**: Ephemeral cache for simple KV pairs? → Use **Memcached**.
 - **Scenario**: Avoid VPC Peering limits? → Use **Private Service Connect (PSC)**.
 
-## 8. Using Memorystore in Spring Boot (Examples)
+## 7. Using Memorystore in Spring Boot (Examples)
 
 ### Redis / Valkey
 

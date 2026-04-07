@@ -115,3 +115,7 @@ public class FileService {
 | **HA**            | Regional Tier       | Regional/Multi-Reg    | Regional PD           |
 
 > Note: Multi-writer PD exists but is highly specialized (Block storage).
+
+## 10. External Links
+
+- [Youtube - Andrew Brown - GCP ACE](https://www.youtube.com/watch?v=OlAmyf8_4O4&t=17043s)
