@@ -62,6 +62,8 @@ Use Spring Security method-level authorization:
 @PreAuthorize("#id == authentication.principal.id")
 ```
 
+> Check the `id` against the `sub` claim from JWT.
+
 #### 3.1.2. Cryptographic Failures
 
 Sensitive data is exposed due to missing or weak encryption.

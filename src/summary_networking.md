@@ -2,6 +2,7 @@
 - [VPC Peering](./vpc_peering.md)
 - [Cloud NAT](./cloud_nat.md)
 - [Cloud VPN](./cloud_vpn.md)
+- [Cloud Router](./cloud_router.md)
 - [Cloud Interconnect](./cloud_interconnect.md)
 - [Load Balancers](./load_balancers.md)
 - [Cloud CDN](./cloud_cdn.md)

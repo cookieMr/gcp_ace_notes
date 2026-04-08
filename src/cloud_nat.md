@@ -1,12 +1,16 @@
 # Cloud NAT: ACE Exam Study Guide (2026)
 
+![Cloud NAT](images/cloud_nat.png)
+
+_Image source: Google Cloud Documentation_
+
 ## 1. Cloud NAT Overview
 
-Cloud NAT (Network Address Translation) is a managed Google Cloud service that allows VM instances without external (public) IP addresses to access the internet.
+_Cloud NAT_ (Network Address Translation) is a managed Google Cloud service that allows VM instances without external (public) IP addresses to access the internet.
 
 - **Primary Purpose:** To provide outbound internet connectivity for private VMs while preventing those VMs from being directly accessible from the public internet (inbound).
-- **Managed Service:** It is a software-defined, distributed service. It is NOT a single gateway instance.
-- **Relationship with Cloud Router:** Cloud NAT is a configuration that is applied to a **Cloud Router**.
+- **Managed Service:** It is a software-defined, distributed service. It is _NOT_ a single gateway instance.
+- **Relationship with Cloud Router:** Cloud NAT is a configuration that is applied to a _Cloud Router_.
 
 ## 2. Key Characteristics
 
@@ -21,8 +25,8 @@ Cloud NAT provides NAT services for resources without external IP addresses:
 
 - **Compute Engine VMs:** Standard, N4, and C4 machine types in a VPC.
 - **GKE Nodes and Pods:** Private cluster nodes use Cloud NAT for outbound access.
-- **Serverless (Run/Functions/App Engine):** When using a Serverless VPC Access Connector or Direct VPC Egress.
-- **Private Service Connect (PSC) (2026 Update):** Cloud NAT can now provide NAT services for traffic destined for Private Service Connect endpoints.
+- **Serverless (Cloud Run/Cloud Functions/App Engine):** When using a _Serverless VPC Access Connector_ or _Direct VPC Egress_.
+- **Private Service Connect (PSC) (2026 Update):** Cloud NAT can now provide NAT services for traffic destined for _Private Service Connect_ endpoints.
 
 ## 4. Architecture and Configuration
 

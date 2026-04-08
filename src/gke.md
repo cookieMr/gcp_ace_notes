@@ -26,6 +26,61 @@ Google Kubernetes Engine (GKE) is a managed environment for deploying, managing,
 - Horizontal Pod Autoscaler (HPA): Scales pod replicas based on CPU or custom metrics.
 - Vertical Pod Autoscaler (VPA): Adjusts CPU and memory reservations for pods.
 
+> **Deployment** → Manages app lifecycle: rolling updates, rollbacks, scaling. Creates and controls ReplicaSets.
+> This is a recommented way to run stateless apps in GKE.
+>
+> ```yaml
+> apiVersion: apps/v1
+> kind: Deployment
+> metadata:
+>   name: my-app
+> spec:
+>   replicas: 3
+>   strategy:
+>     type: RollingUpdate
+>     rollingUpdate:
+>       maxSurge: 1
+>       maxUnavailable: 1
+>   selector:
+>     matchLabels:
+>       app: my-app
+>   template:
+>     metadata:
+>       labels:
+>         app: my-app
+>     spec:
+>       containers:
+>         - name: app
+>           image: nginx:1.25
+>           ports:
+>             - containerPort: 80
+> ```
+
+> **ReplicaSet** → Ensures a fixed number of Pods are running. Usually not used directly. Managed (created automatically) by Deployments.
+>
+> ```yaml
+> apiVersion: apps/v1
+> kind: ReplicaSet
+> metadata:
+>   name: my-app-rs
+> spec:
+>   replicas: 3
+>   selector:
+>     matchLabels:
+>       app: my-app
+>   template:
+>     metadata:
+>       labels:
+>         app: my-app
+>     spec:
+>       containers:
+>         - name: app
+>           image: nginx:1.25
+> ```
+
+> **GKE** → Use Deployments for stateless workloads. ReplicaSets are created automatically.
+
+
 ## 4. GKE Networking
 
 - Services:
