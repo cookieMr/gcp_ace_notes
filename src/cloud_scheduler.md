@@ -46,8 +46,13 @@ Cloud Scheduler uses the standard Unix cron format: `* * * * *` (Minute, Hour, D
 
 - **Auth for HTTP Targets:**
   - **OIDC Token:** Used for services that require OpenID Connect (e.g., Cloud Run, Cloud Functions).
+    > OIDC is an identity layer built on top of OAuth 2.0 that adds user authentication and provides ID tokens containing user identity information.
   - **OAuth Token:** Used for Google APIs.
+    > OAuth 2.0 is an authorization framework that lets an application access a user's resources (APIs, data) on another service without needing the user's password.
   - **Service Account:** You must specify a service account that has the permissions to invoke the target service (e.g., `roles/run.invoker`).
+
+  > OAuth handles authorization (permissions), while OIDC adds authentication (identity) on top of OAuth.
+
 - **IAM Roles:**
   - `roles/cloudscheduler.admin`: Full control.
   - `roles/cloudscheduler.jobRunner`: Permission to run jobs manually.

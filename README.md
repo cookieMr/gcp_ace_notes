@@ -4,7 +4,7 @@
 
 ## Read the Book
 
-The notes in this repository are compiled into a highly readable, searchable online book using **mdBook**. 
+The notes in this repository are compiled into a highly readable, searchable online book using **mdBook**.
 
 **[Read the live study guide here](https://cookieMr.github.io/gcp_ace_notes/)**
 
@@ -16,11 +16,11 @@ If you preffer the offline mode you can download [epub](https://github.com/cooki
 
 The study material is organized into specific Google Cloud services and concepts. All source material is written in Markdown and located in the `src/` directory. Key areas covered include:
 
-* **Compute Services:** Compute Engine, GKE, Cloud Run, App Engine, Cloud Functions.
-* **Storage & Databases:** Cloud Storage, Cloud SQL, Cloud Spanner, BigQuery, Firestore, Bigtable, Memorystore.
-* **Networking:** VPC Networks, Load Balancers, Cloud DNS, Hybrid Connectivity (Cloud VPN, Cloud Interconnect).
-* **Operations & Security:** IAM, Cloud Logging, Cloud Monitoring, VPC Service Controls, Cloud Armor, Secret Manager.
-* **Migration Tools:** Migrate to Virtual Machines, Database Migration Service, Storage Transfer Service.
+- **Compute Services:** Compute Engine, GKE, Cloud Run, App Engine, Cloud Functions.
+- **Storage & Databases:** Cloud Storage, Cloud SQL, Cloud Spanner, BigQuery, Firestore, Bigtable, Memorystore.
+- **Networking:** VPC Networks, Load Balancers, Cloud DNS, Hybrid Connectivity (Cloud VPN, Cloud Interconnect).
+- **Operations & Security:** IAM, Cloud Logging, Cloud Monitoring, VPC Service Controls, Cloud Armor, Secret Manager.
+- **Migration Tools:** Migrate to Virtual Machines, Database Migration Service, Storage Transfer Service.
 
 ## Building Locally
 
@@ -39,6 +39,11 @@ If you want to run this book locally to study offline or modify the notes, you w
 ## Content Generation
 
 The core content and technical facts within these Markdown files were initially structured and generated with the assistance of AI, then curated, reviewed, and formatted specifically for this mdBook layout.
+
+## Mock Tests
+
+- [OpenExamPrep](https://open-exam-prep.com/practice/gcp-ace)
+- [Trusted Institute](https://trustedinstitute.com/practice/gcp-associate-cloud-engineer)
 
 ## License
 

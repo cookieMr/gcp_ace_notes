@@ -32,12 +32,15 @@ Compute Engine is Google Cloud's _Infrastructure as a Service (IaaS)_ offering, 
 > - [Zonal MIG - Google Cloud Documentation](https://docs.cloud.google.com/compute/docs/instance-groups/create-zonal-mig)
 > - [Regional MIG - Google Cloud Documentation](https://docs.cloud.google.com/compute/docs/instance-groups/distributing-instances-with-regional-instance-groups)
 
+> Live migration is the process of moving a running VM from one physical host to another without downtime. Google uses this for infrastructure maintenance, allowing your VMs to keep running during host updates. It requires no action from you.
+
 ## 4. Persistent Disks, Snapshots and Images
 
 - **Persistent Disks (PD):** Durable network storage. You can resize a disk up but never down.
 - **Snapshots:** Incremental backups of disks, stored globally. Best for disaster recovery.
 - **Custom Images:** A _Gold Master_ boot disk with your OS and software pre-installed. Best for consistent deployments in MIGs.
 - **Local SSD:** Physical drives attached directly to the host. Data is ephemeral and lost if the VM is stopped or deleted.
+  > You can attach up to 24 local SSDs to a single VM, depending on the machine type. Each local SSD is 375 GB, providing up to 9 TB of local SSD storage per VM. Local SSDs provide high-performance ephemeral storage.
 
 ## 5. Sole-Tenant Nodes
 
@@ -46,6 +49,7 @@ Dedicated, single‑tenant physical servers in Google Cloud that run only your p
 > [Sole-tenancy overview - Google Cloud Documentation](https://docs.cloud.google.com/compute/docs/nodes/sole-tenant-nodes)
 
 #### Primary Use Cases
+
 Regulatory or compliance requirements that mandate physical isolation (e.g., healthcare, finance, government).
 Security boundaries where you must avoid multi‑tenant hardware for risk or policy reasons.
 _Bring‑Your‑Own‑License (BYOL)_ scenarios for software that is licensed per physical core, socket, or host.
@@ -75,10 +79,11 @@ Useful for keeping related workloads together or separating sensitive workloads 
 ## 7. Service Accounts and Metadata
 
 - **Service Accounts:** VMs use these to authenticate to other Google Cloud services (GCS, BigQuery). Always use custom service accounts with _Least Privilege_ for production.
+  > The default Compute Engine service account `PROJECT_NUMBER-compute@developer.gserviceaccount.com` is automatically created and has the Editor role on the project. It is automatically attached to new VMs unless you specify a different service account or disable it.
 - **Metadata:** Used to pass configuration data. Startup scripts are automated scripts that run every time the VM boots.
 - **Metadata Server:** Accessible at `http://metadata.google.internal/computeMetadata/v1/`.
 
-## 8. Essential gcloud Commands
+## 8. Essential `gcloud` Commands
 
 - **Create a VM:** `gcloud compute instances create [NAME] --zone=[ZONE] --machine-type=[TYPE]`
 - **Resize a MIG:** `gcloud compute instance-groups managed resize [NAME] --size=[NEW_SIZE]`

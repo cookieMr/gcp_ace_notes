@@ -8,7 +8,6 @@ Cloud Monitoring provides visibility into the performance, uptime, and overall h
   - **Full Stack:** Monitors GCP services, AWS, and on-premises resources.
   - **Integrated:** Collects metrics, events, and metadata from Cloud Logging, Trace, and Debugger.
   - **Real-time:** Provides a real-time dashboarding and alerting system.
-- **Gemini for Cloud Monitoring (2026 Update):** Gemini provides AI-driven insights for troubleshooting performance issues, explaining metric spikes, and recommending optimized alerting thresholds.
 
 ## 2. Metrics and Time Series
 
@@ -44,6 +43,8 @@ Synthetic monitoring replaces traditional uptime checks with more complex, progr
 - **Custom Scripts:** Use Node.js or Python scripts to simulate complex user journeys (e.g., "Login -> Add to Cart -> Checkout").
 - **Global Probes:** Checks are performed from multiple regions around the world.
 - **Alerting Integration:** Notify you if a synthetic check fails or exceeds latency thresholds.
+
+> In Cloud Monitoring, you create an uptime check specifying the URL, protocol (HTTP/HTTPS/TCP), frequency, and locations to check from. If the service fails to respond from multiple locations, an alert can be triggered.
 
 ## 6. Groups and Resources
 

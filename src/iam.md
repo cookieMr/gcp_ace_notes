@@ -32,6 +32,8 @@ A role is a collection of permissions. Permissions are typically in the format `
     - Require manual maintenance as new permissions are added to GCP services.
     - Cannot be used if the underlying permissions are not supported for custom roles.
 
+> Primitive roles (Owner, Editor, Viewer) apply across all services in a project and are too broad for most use cases. Predefined roles are service-specific (e.g., compute.instanceAdmin) with granular permissions following the principle of least privilege.
+
 ## 3. Service Accounts
 
 Service accounts are special identities used by applications and virtual machines, rather than people.
@@ -41,7 +43,7 @@ Service accounts are special identities used by applications and virtual machine
   - **Default Service Accounts:** Created automatically by GCP (e.g., Compute Engine default service account). These often have the "Editor" role by default, which is not recommended for production.
   - **Google-managed:** Used by GCP services to perform actions on your behalf.
 - **Key Concepts:**
-  - **Service Account User Role (`roles/iam.serviceAccountUser`):** A user needs this role on a specific service account to "act as" that account (e.g., to attach it to a VM).
+  - **Service Account User Role (`roles/iam.serviceAccountUser`):** To allow one service account to use another (e.g., attach it to a resource), grant the Service Account User role (`roles/iam.serviceAccountUser`) on the target service account to the acting service account or user.
   - **Service Account Keys:** Avoid downloading JSON keys for production. Use Identity Federation or attached service accounts instead.
   - **Workload Identity:** The recommended way for GKE workloads to access GCP services securely.
 - **Exam Tip:** When a VM needs to access a Cloud Storage bucket, do not use user credentials or hardcoded keys. Attach a service account with the `roles/storage.objectViewer` role to the VM.
@@ -62,6 +64,10 @@ The Principle of Least Privilege states that a principal should have only the mi
 IAM policies are hierarchical and permissions are inherited.
 
 - **Hierarchy Level:** Organization > Folder > Project > Resource.
+  - The maximum depth of the folder hierarchy in Google Cloud is `10` levels, where:
+    - Organization = level 0
+    - Folders = levels 1–9
+    - Projects = always at the bottom
 - **Inheritance:** A role granted at the Organization level is inherited by all Folders, Projects, and Resources within that Organization.
 - **Additive Nature:** Permissions are additive. You cannot "deny" a permission at a lower level if it was granted at a higher level.
 - **Exam Tip:** If a user is an "Editor" at the Project level, they are an "Editor" for every bucket in that project, regardless of any restrictive policies set on individual buckets.

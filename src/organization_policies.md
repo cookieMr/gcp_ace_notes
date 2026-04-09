@@ -33,6 +33,7 @@ Policies follow the Google Cloud resource hierarchy.
 You should recognize these common constraints for the exam:
 
 - Resource Location Restriction: Restricts the physical locations where resources (VMs, buckets, etc.) can be created.
+  > The `constraints/gcp.resourceLocations` constraint allows you to specify which geographical locations resources can be created in. You can define a whitelist of regions (e.g., europe-west1, europe-west2) to ensure data residency requirements are met.
 - Disable Service Account Key Creation: Prevents users from creating external JSON keys for service accounts.
 - Disable External IP Addresses: Prevents Compute Engine instances from having external (public) IP addresses.
 - Restrict Shared VPC Host Projects: Limits which projects can be used as Shared VPC hosts.

@@ -43,6 +43,7 @@ Log-based Metrics allow you to create numerical metrics based on the content of 
 These are critical for security and compliance.
 
 - **Admin Activity:** Records operations that modify the configuration of resources (always on).
+  - Records are stored for 400 days. This is fixed, automatic, and free — **you cannot shorten or disable it**.
 - **Data Access:** Records operations that read or write user-provided data. Must be manually enabled.
 - **System Event:** Records administrative actions taken by Google Cloud.
 - **Policy Denied:** Records when access is denied by a security policy.

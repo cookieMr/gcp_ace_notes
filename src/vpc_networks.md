@@ -110,3 +110,7 @@ In 2026, **Network Firewall Policies** (Global and Regional) are the modern stan
 - **Conflict Resolution:** Longest Prefix Match always wins in routing.
 - **IAP for SSH/RDP:** Remember the range `35.235.240.0/20` must be allowed for IAP TCP forwarding (TCP:22 for SSH, TCP:3389 for RDP).
 - **Networking Costs:** Egress traffic usually incurs costs; Ingress is usually free. Traffic within the same Zone is free; traffic between Zones in the same Region has a cost.
+
+## 10. External Links
+
+- [CIRD Calculator](https://cidr.xyz/)

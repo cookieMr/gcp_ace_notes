@@ -143,6 +143,7 @@ Cloud Router
 ### 9.2. Don't
 
 - Use for VPC-to-VPC routing (use VPC Peering or TGW)
+  > **TGW (Transit Gateway)**: A regional hub that connects VPCs and on-premises networks in a hub-and-spoke topology. Use it for simplifying multi-VPC architectures instead of managing multiple peerings.
 - Use static routes when dynamic routing is required
 - Forget to allow TCP 179 in firewall rules for on-prem router
 
