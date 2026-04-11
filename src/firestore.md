@@ -151,6 +151,14 @@ To avoid hotspots:
 - Use randomized document IDs
 - Avoid sequential keys
 
+### How Firestore Sharding Works
+
+Firestore sharding spreads write operations across multiple shard documents instead of sending all writes to a single document. Each client writes to a randomly selected (or hash‑based) shard, which prevents write hotspots and avoids the 1‑write‑per‑second limit on individual documents. When reading, the application aggregates all shard documents (e.g., summing counters) to produce the final result. This allows Firestore to scale write throughput horizontally.
+
+![Firestore - sharded counter](images/firestore_sharding.png)
+
+_Image source: Own work (Mermaid diagram)._
+
 ## 12. Queries and Aggregations (2026 Update)
 
 Firestore supports:

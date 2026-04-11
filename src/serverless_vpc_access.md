@@ -1,73 +1,159 @@
-# Serverless VPC Access: ACE Exam Study Guide (2026)
+# Serverless VPC Access: ACE Exam Study Guide
 
 ## 1. Overview
 
 Serverless VPC Access allows your Google Cloud serverless services to communicate with resources in your VPC network using internal (private) IP addresses.
 
-- **Supported Services (The "Serverless" side):**
-  - Cloud Run (Services and Jobs)
-  - Cloud Functions (1st and 2nd Gen)
-  - App Engine (Standard Environment)
-- **Target Resources (The "VPC" side):**
-  - Compute Engine VMs
-  - Cloud SQL (with private IP)
-  - Memorystore (Redis/Memcached)
-  - Internal Load Balancers
-  - On-premises resources (via Cloud VPN or Cloud Interconnect)
+**Supported Services (The "Serverless" side):**
 
-## 2. Key Characteristics
+- Cloud Run (Services and Jobs)
+- Cloud Functions (1st and 2nd Gen)
+- App Engine (Standard Environment)
 
-- **Managed Connector:** It acts as a bridge between the serverless environment and your VPC.
-- **Regional Resource:** A connector is created in a specific region and can only be used by serverless services in that same region.
-- **Dedicated Subnet:** Each connector requires a dedicated `/28` subnet range that does not overlap with any existing ranges in your VPC.
-- **Throughput:** You can scale the connector's throughput by specifying the minimum and maximum number of instances.
-- **Machine Types:** In 2026, connectors can leverage newer machine types (like N4) for improved performance and cost-efficiency.
+**Target Resources (The "VPC" side):**
 
-## 3. Architecture and Configuration
+- Compute Engine VMs
+- Cloud SQL (with private IP)
+- Memorystore (Redis/Memcached)
+- Internal Load Balancers
+- On-premises resources (via Cloud VPN or Cloud Interconnect)
 
-To set up Serverless VPC Access, you need:
+## 2. Direct VPC Egress vs Serverless VPC Access Connector
 
-1.  **VPC Network:** The network containing the private resources.
-2.  **Connector:** A regional resource configured on the VPC.
-3.  **Subnet Range:** A reserved `/28` CIDR block (e.g., `10.8.0.0/28`).
+| Feature            | Direct VPC Egress | Serverless VPC Access Connector |
+| ------------------ | ----------------- | ------------------------------- |
+| Subnet required    | No                | Yes (`/28` dedicated subnet)    |
+| Performance        | Lower latency     | Higher latency                  |
+| Cost               | Pay per use       | Always-on minimum instances     |
+| All traffic egress | Native support    | Requires "All traffic" mode     |
+| Simplicity         | Simpler           | More complex                    |
 
-- **Egress Settings (Important for Exam):**
-  - **Private ranges only:** Only traffic destined for internal IP ranges (RFC 1918) is routed through the connector. Internet traffic goes through the standard Cloud Run/Functions public gateway.
-  - **All traffic:** All outbound traffic (including internet) is routed through the connector. This is required if you want your serverless service to have a **Static Outbound IP** (via Cloud NAT).
+**Use Direct VPC Egress when:**
 
-## 4. Connectivity to Shared VPC
+- Building new deployments
+- Only need outbound (egress) connectivity to VPC
+- Want to avoid managing connector infrastructure
 
-Serverless VPC Access supports Shared VPC, but with specific requirements:
+![Direct VPC Egress](images/serverless_vpc_access_direct_vpc_egress_diagram.png)
 
-- The connector must be created in the **Host Project** (where the VPC exists).
-- The serverless service in the **Service Project** then points to the connector in the Host Project.
-- The Service Project Admin needs the `roles/vpcaccess.user` role on the connector.
+_Image source: [Google Cloud Blog](https://cloud.google.com/blog/products/serverless/announcing-direct-vpc-egress-for-cloud-run)_
 
-## 5. Security and IAM
+**Use Serverless VPC Access Connector when:**
 
-- **IAM Roles:**
-  - `roles/vpcaccess.admin`: Full control over connectors.
-  - `roles/vpcaccess.user`: Permission to use a connector (required for deploying a Cloud Run service that uses the connector).
-  - `roles/vpcaccess.viewer`: View-only access.
-- **Firewall Rules:** You must ensure that the VPC's firewall allows ingress traffic from the connector's `/28` subnet to the target resources (e.g., allow port 3306 for Cloud SQL).
+- Need inbound connectivity **from** VPC to serverless service
+- Must use Shared VPC (connector in host project)
+- Exam question specifically mentions a connector
 
-## 6. Gemini and Troubleshooting
+![Serverless VPC Access Connector](images/serverless_vpc_access_connector_diagram.png)
 
-- **Gemini for Network Intelligence:** Use Gemini in the Cloud Console to troubleshoot connectivity issues between your serverless application and VPC resources.
-- **Connectivity Tests:** Integrate with Network Intelligence Center to run automated tests from the connector to the destination IP/port.
+_Image source: [Google Cloud Blog](https://cloud.google.com/blog/products/serverless/announcing-direct-vpc-egress-for-cloud-run)_
 
-## 7. Essential gcloud Commands
+### Key Characteristics
 
-- **Create a Connector:**
-  `gcloud compute vpc-access connectors create [NAME] --network=[VPC] --region=[REGION] --range=[CIDR_28]`
-- **List Connectors:**
-  `gcloud compute vpc-access connectors list --region=[REGION]`
-- **Deploy Cloud Run with Connector:**
-  `gcloud run deploy [SERVICE_NAME] --image [IMAGE] --vpc-connector [CONNECTOR_NAME]`
+- **Managed Connector:** Acts as a bridge between serverless environment and VPC.
+- **Regional Resource:** Created in a specific region; only works with services in that same region.
+- **Dedicated Subnet:** Requires a `/28` subnet that must not overlap with existing VPC ranges.
+- **Always-on Cost:** Minimum 2 instances run even if set to 0 (billed regardless).
+- **Throughput Scaling:** Specify min/max instances to control throughput.
 
-## 8. Exam Tips
+## 4. Configuration
 
-- **The "When to use" question:** If you see "Cloud Run" + "Cloud SQL Private IP" or "Memorystore," the answer is almost always **Serverless VPC Access Connector**.
-- **The Subnet Rule:** Remember it must be exactly a **`/28`** CIDR block and must not overlap with any existing subnets.
-- **The Cost:** Connectors incur costs even when not in use because they are backed by small, underlying VM instances.
-- **Static IP for Cloud Run:** To give Cloud Run a static IP for a third-party firewall, you MUST use a VPC Connector with "All Traffic" egress and a **Cloud NAT** gateway.
+### Egress Settings
+
+| Mode                              | Behavior                                                                                     |
+| --------------------------------- | -------------------------------------------------------------------------------------------- |
+| **Private ranges only** (default) | Only RFC 1918 traffic goes through connector. Internet traffic uses standard public gateway. |
+| **All traffic**                   | All outbound traffic routes through connector. Required for static outbound IP.              |
+
+### Static Outbound IP for Cloud Run
+
+To give Cloud Run a static IP (e.g., for third-party firewall whitelisting):
+
+1. Create Serverless VPC Access Connector with **"All traffic"** egress
+2. Configure **Cloud NAT** on the VPC
+3. All outbound traffic from Cloud Run exits via Cloud NAT's static IP
+
+## 5. Shared VPC
+
+- Connector must be created in the **Host Project** (where VPC lives)
+- Serverless service in **Service Project** references the connector
+- Service Project Admin needs `roles/vpcaccess.user` on the connector
+
+## 6. IAM Roles
+
+| Role                     | Permissions                               |
+| ------------------------ | ----------------------------------------- |
+| `roles/vpcaccess.admin`  | Full control over connectors              |
+| `roles/vpcaccess.user`   | Use a connector (required for deployment) |
+| `roles/vpcaccess.viewer` | View-only access                          |
+
+## 7. Firewall Rules
+
+The connector's `/28` subnet must be allowed to reach target resources:
+
+- Example: Allow port 3306 from connector subnet to Cloud SQL instance
+- Without proper firewall rules, connectivity will fail silently
+
+## 8. Common Exam Gotchas
+
+1. **Wrong region:** Connector and serverless service must be in the same region
+2. **Subnet overlap:** `/28` must not conflict with any existing VPC subnet
+3. **Minimum instances:** Even setting min to 0 still runs 2 instances (cost!)
+4. **RFC 1918 only:** By default, only private IP ranges route through connector
+5. **Inbound vs Outbound:** Connector handles outbound from serverless; for inbound **to** serverless from VPC, consider Direct VPC Egress or Serverless VPC Access (ingress mode)
+
+## 9. Essential gcloud Commands
+
+**Create a Connector:**
+
+```
+gcloud compute vpc-access connectors create [NAME] \
+  --network=[VPC] \
+  --region=[REGION] \
+  --range=[CIDR_28]
+```
+
+**List Connectors:**
+
+```
+gcloud compute vpc-access connectors list --region=[REGION]
+```
+
+**Deploy Cloud Run with Connector:**
+
+```
+gcloud run deploy [SERVICE_NAME] --image [IMAGE] --vpc-connector [CONNECTOR_NAME]
+```
+
+**Deploy Cloud Run with Direct VPC Egress:**
+
+```
+gcloud run services update [SERVICE_NAME] --vpc-egress=all
+```
+
+## 10. Practice Questions
+
+**Q1:** A Cloud Run service needs to connect to a Cloud SQL instance using Private IP only. What GCP feature is required?
+
+> **Answer:** Serverless VPC Access Connector
+
+**Q2:** You want Cloud Run to use a static outbound IP for firewall whitelisting. What configuration is needed?
+
+> **Answer:** Serverless VPC Access Connector with "All traffic" egress + Cloud NAT gateway
+
+## 11. When NOT to Use
+
+- Public serverless services with no VPC dependencies (unnecessary cost and complexity)
+- Egress-only scenarios where Direct VPC Egress is available (simpler, no connector needed)
+- When service and target are in different regions (not supported)
+
+## Quick Reference Summary
+
+| Item                          | Value                              |
+| ----------------------------- | ---------------------------------- |
+| Subnet size                   | `/28` exactly                      |
+| Connector region              | Must match service region          |
+| Always-on instances           | 2 (even at min=0)                  |
+| Default egress                | RFC 1918 only                      |
+| Static IP                     | Requires "All traffic" + Cloud NAT |
+| Shared VPC connector location | Host Project                       |

@@ -1,29 +1,32 @@
 # Cloud VPN: ACE Exam Study Guide (2026)
 
+![Cloud VPN](images/cloud_vpn.png)
+
+_Image source: Google Cloud Documentation_
+
 ## 1. Cloud VPN Overview
 
 Cloud VPN securely connects your peer network (on-premises or another VPC) to your Google Cloud VPC network through an IPsec VPN connection.
 
-- **Key Characteristics:**
-  - **Encrypted Traffic:** Data travels over the public internet but remains private due to IPsec encryption.
-  - **SLA:** Up to 99.99% availability for HA VPN.
-  - **Gemini Integration:** Gemini in the Cloud Console can analyze VPN configurations and provide troubleshooting steps for tunnel downtime or routing issues.
+### Key Characteristics
+
+- **Encrypted Traffic:** Data travels over the public internet but remains private due to IPsec encryption.
+- **SLA:** Up to 99.99% availability for HA VPN.
 
 ## 2. VPN Types (The Most Important Exam Distinction)
 
 Google Cloud offers two types of VPN gateways: **HA VPN** and **Classic VPN**.
 
-### HA (High Availability) VPN
-- **Availability:** 99.99% SLA.
-- **Architecture:** Each HA VPN gateway has two interfaces (0 and 1), each with its own external IP.
-- **Routing:** **Dynamic Routing (BGP)** is mandatory. Requires a Cloud Router.
-- **Support (2026 Standard):** Supports both IPv4 and IPv6 traffic.
-
-### Classic VPN
-- **Availability:** 99.9% SLA.
-- **Architecture:** Single interface with a single external IP.
-- **Routing:** Supports Static or Dynamic Routing.
-- **Status:** Deprecated for many use cases; only used when the peer side does not support BGP.
+| Feature             | HA VPN                                                                                          | Classic VPN                                                                    |
+| ------------------- | ----------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------ |
+| **SLA**             | **99.99%**                                                                                      | **99.9%**                                                                      |
+| **Architecture**    | Two interfaces (0 & 1), each with its own external IP; two tunnels per interface for redundancy | Single interface, single external IP; single tunnel unless manually duplicated |
+| **Routing**         | **Dynamic routing only (BGP)** via Cloud Router                                                 | Static or Dynamic (BGP optional)                                               |
+| **Redundancy**      | Built‑in high availability across two availability zones                                        | No built‑in HA; must create multiple tunnels manually                          |
+| **Traffic Support** | IPv4 and IPv6 (2026 standard)                                                                   | IPv4 only                                                                      |
+| **Throughput**      | Higher throughput due to dual‑tunnel architecture                                               | Lower throughput                                                               |
+| **Use Case**        | Production‑grade, highly available VPN connections                                              | Legacy systems or peers that **do not support BGP**                            |
+| **Status**          | Recommended default                                                                             | Deprecated for most new deployments                                            |
 
 ## 3. Dynamic vs. Static Routing
 
@@ -37,6 +40,7 @@ Google Cloud offers two types of VPN gateways: **HA VPN** and **Classic VPN**.
 ## 4. Connectivity Components
 
 To establish a VPN, you need:
+
 1. **VPC Network:** The Google Cloud network you are connecting.
 2. **Cloud VPN Gateway:** The Google-side gateway.
 3. **Peer VPN Gateway:** The on-premises or non-GCP side gateway.
@@ -52,6 +56,9 @@ To establish a VPN, you need:
 ## 6. Security and Firewall Rules
 
 - **IPsec Protocols:** Uses IKE (Internet Key Exchange) to establish the secure tunnel.
+
+  > _Internet Key Exchange_ is the protocol that negotiates keys and security parameters for IPsec VPN tunnels. It authenticates endpoints and establishes encrypted sessions. Used by GCP **Cloud VPN (Classic + HA VPN)** because both rely on IPsec.
+
 - **Firewall Rules:** You must create ingress firewall rules in your VPC to allow traffic from the on-premises IP ranges.
 - **IKE Ports:** Traffic on UDP 500 and UDP 4500 must be allowed by the on-premises firewall.
 
@@ -68,6 +75,6 @@ To establish a VPN, you need:
 
 - **VPN vs. Interconnect:**
   - Use **VPN** for lower bandwidth, lower cost, and fast setup over the public internet.
-  - Use **Interconnect** for high bandwidth (10-100 Gbps), predictable latency, and high security via a direct physical link.
-- **High Availability:** To achieve 99.99% SLA, you must have two tunnels from the HA VPN gateway and use Cloud Router with BGP.
+  - Use **Interconnect** for high bandwidth (10 or 100 Gbps), predictable latency, and high security via a direct physical link.
+- **High Availability:** To achieve 99.99% SLA, you must have two tunnels from the HA VPN gateway and use Cloud Router with BGP (Border Gateway Protocol).
 - **Transitive Routing:** Cloud VPN can act as a bridge for transitive routing if Cloud Router is configured correctly to advertise routes from other peered VPCs.

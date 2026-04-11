@@ -13,7 +13,10 @@ Cloud SQL is a fully managed relational database service (RDBMS) on Google Cloud
   - **Cloud SQL Enterprise:** Standard performance and reliability.
   - **Cloud SQL Enterprise Plus:** Enhanced performance, higher availability (99.99% for regional), and near-zero downtime maintenance.
 - **Use Cases:** Web frameworks, structured data, existing applications that require standard SQL, OLTP workloads.
-- **Gemini Integration:** Gemini in Cloud SQL provides AI-assisted query optimization, performance insights, and simplified database management.
+
+### Cloud SQL Index Advisor
+_Cloud SQL Index Advisor_ automatically analyzes query patterns and recommends new indexes to improve performance. It identifies slow or inefficient queries, suggests optimal indexes, and can show the expected impact before applying changes. It helps reduce manual tuning and keeps databases performing efficiently.
+
 
 ## 2. High Availability (HA) and Replication
 
@@ -43,7 +46,7 @@ Understanding the difference between HA and Read Replicas is heavily tested on t
 - **Vertical Scaling:** Increasing the machine type (vCPUs and RAM). **Requires a restart** of the database instance.
 - **Horizontal Scaling:** Using Read Replicas to scale read capacity. Cloud SQL does not natively horizontally scale for write operations (use Cloud Spanner or AlloyDB for massive write scale).
 - **Storage Auto-Increase:** Cloud SQL can automatically add storage capacity as you approach your limit.
-- **Important Fact:** Cloud SQL storage can scale up, but it **cannot scale down**.
+- **Important Fact:** Cloud SQL storage can scale up (requires downtime), but it **cannot scale down**.
 
 ## 5. Security and Networking
 
@@ -92,10 +95,12 @@ spring:
 ### When to Use Each Cloud SQL Connection Method
 
 - **Private IP**
-  - Use it when your service runs inside a VPC (GKE, GCE, Cloud Run with VPC connector). Best security and lowest latency. No public exposure.
+  
+  Use it when your service runs inside a VPC (GKE, GCE, Cloud Run with VPC connector). Best security and lowest latency. No public exposure.
 
 - **Cloud SQL Auth Proxy**
-  - Use for local development or when you want automatic IAM auth and secure TLS without managing certificates. Works anywhere but adds a sidecar/agent.
+  
+  Use for local development or when you want automatic IAM auth and secure TLS without managing certificates. Works anywhere but adds a sidecar/agent.
 
   ```bash
   ./cloud-sql-proxy INSTANCE_CONNECTION_NAME \
@@ -103,8 +108,11 @@ spring:
       --credentials-file=key.json
   ```
 
+  For more details see [Connect using the Cloud SQL Auth Proxy](https://docs.cloud.google.com/sql/docs/mysql/connect-auth-proxy) (Google Cloud Documentation).
+
 - **Socket Factory (JDBC Connector)**
-  - Use in Java apps (Spring Boot) when you want secure IAM‑based connections without running the proxy. Common in Cloud Run and GKE.
+  
+  Use in Java apps (Spring Boot) when you want secure IAM‑based connections without running the proxy. Common in Cloud Run and GKE.
 
   ```yaml
   spring:
