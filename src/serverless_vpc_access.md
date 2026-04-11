@@ -1,5 +1,9 @@
 # Serverless VPC Access: ACE Exam Study Guide
 
+![Dilbert helps when no image for Serverless VPC Access can be found](images/00_image_is_needed.png)
+
+_Image source: Dilbert.com_
+
 ## 1. Overview
 
 Serverless VPC Access allows your Google Cloud serverless services to communicate with resources in your VPC network using internal (private) IP addresses.

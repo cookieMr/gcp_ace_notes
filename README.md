@@ -34,7 +34,7 @@ If you want to run this book locally to study offline or modify the notes, you w
    ```bash
    mdbook serve --open
    ```
-   This compiles the Markdown files and opens a local web server at http://localhost:3000 with hot-reloading enabled.
+   This compiles the Markdown files and opens a local web server at [http://localhost:3000](http://localhost:3000) with hot-reloading enabled.
 
 ## Content Generation
 

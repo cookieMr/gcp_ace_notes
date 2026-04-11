@@ -114,3 +114,4 @@ In 2026, **Network Firewall Policies** (Global and Regional) are the modern stan
 ## 10. External Links
 
 - [CIRD Calculator](https://cidr.xyz/)
+- [Virtual Private Cloud - The Cloud Girl](https://www.thecloudgirl.dev/networking/virtual-private-cloud)

@@ -150,3 +150,4 @@ Gradually roll out a new version to a small subset of users.
 
 - [Cloud Run - Google Cloud Documentation](https://docs.cloud.google.com/run/docs)
 - [Youtube - Andrew Brown - Cloud Run](https://www.youtube.com/watch?v=OlAmyf8_4O4&t=11029s)
+- [Cloud Run - The Cloud Girl](https://www.thecloudgirl.dev/compute/cloud-run)

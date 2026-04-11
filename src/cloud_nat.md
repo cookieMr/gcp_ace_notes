@@ -59,3 +59,7 @@ To set up Cloud NAT, you need:
   - Use **Cloud NAT** to reach the general internet (e.g., package repositories) without an external IP.
 - **High Availability:** Cloud NAT is automatically highly available within its region.
 - **IAP SSH:** Remember that IAP TCP Forwarding allows you to SSH into a VM without an external IP, but the VM still needs Cloud NAT for internet-based updates.
+
+## 8. External Links
+
+- [Cloud NAT - The Cloud Girl](https://www.thecloudgirl.dev/networking/cloud-nat)

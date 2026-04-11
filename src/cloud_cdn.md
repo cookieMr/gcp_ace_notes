@@ -55,3 +55,7 @@ Cloud CDN (Content Delivery Network) uses Google's global edge network to serve 
 - **Static vs. Dynamic:** CDN is primarily for static content (images, CSS, JS). While it can cache dynamic content, it is less common.
 - **Cost Savings:** Cloud CDN reduces "egress" costs because traffic from cache to user is cheaper than traffic from origin to user.
 - **Cloud Storage:** When using Cloud Storage as a backend, ensure the bucket or files have public access (unless using Signed URLs).
+
+## 8. External Links
+
+- [Cloud CDN - The Cloud Girl](https://www.thecloudgirl.dev/networking/cloud-cdn)

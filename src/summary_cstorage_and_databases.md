@@ -35,3 +35,8 @@ Fully managed in-memory data store service for **Redis**, **Valkey**, and **Memc
 ### **[Filestore](./filestore.md)**
 
 Managed **NFS** file storage for applications that require a **POSIX-compliant** shared filesystem. Commonly used as shared storage for GKE pods and Compute Engine VMs.
+
+### **[Persistent Disk](./persistent_disk.md)**
+
+Persistent Disk is durable, high‑performance block storage for VM instances. It’s replicated for reliability, supports snapshots, resizing, and can detach/reattach across VMs.
+

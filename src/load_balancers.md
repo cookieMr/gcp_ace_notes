@@ -108,3 +108,7 @@ Also know as _sticky sessions_ ensures that requests from the same client go to 
 - SSL Termination: Proxy-based load balancers (App LB, Proxy Net LB) handle SSL at the load balancer level.
 - Cloud Armor/CDN: These integrate only with the Global External Application Load Balancer.
 - Session Affinity: Use if a client needs to stick to the same backend instance.
+
+## 8. External Links
+
+- [Cloud Load Balancing - The Cloud Girl](https://www.thecloudgirl.dev/networking/cloud-load-balancing)

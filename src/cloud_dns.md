@@ -102,3 +102,7 @@ Split-horizon DNS lets you create a public zone and a private zone with the same
 ![Cluod DNS - Split-Horizon Use Case](images/cloud_dns_split_horizon_diagram.png)
 
 _Image source: Own work (Mermaid diagram)._
+
+## 9. External Links
+
+- [Cloud DNS - The Cloud Girl](https://www.thecloudgirl.dev/networking/cloud-dns)

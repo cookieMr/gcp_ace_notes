@@ -127,3 +127,4 @@ Understanding the relationship between components is essential for resource mana
 
 - [App Engine - Google Cloud Documentation](https://docs.cloud.google.com/appengine/docs)
 - [Youtube - Andrew Brown - App Engine](https://www.youtube.com/watch?v=OlAmyf8_4O4&t=10827s)
+- [App Engine - The Cloud Girl](https://www.thecloudgirl.dev/compute/app-engine)

@@ -187,3 +187,7 @@ That’s where _Persistent Volumes_ (PV) and _Persistent Volume Claims_ (PVC) co
 - Control Plane Upgrade: Google automatically upgrades the Control Plane. Define Maintenance Windows and Exclusions.
 - Preemptible/Spot VMs: Use for cost savings in fault-tolerant workloads.
 - Autopilot vs Standard: Choose Autopilot for reduced operational overhead unless specific node customization is required.
+
+## 10. External Links
+
+- [Google Kubernetes Engine - The Cloud Girl](https://www.thecloudgirl.dev/compute/google-kubernetes-engine)

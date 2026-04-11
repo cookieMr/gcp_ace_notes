@@ -95,3 +95,7 @@ Useful for keeping related workloads together or separating sensitive workloads 
 - **Zonal vs. Regional MIG:** Choose Regional MIG for the highest availability.
 - **Metadata Header:** Requests to the metadata server require the header `Metadata-Flavor: Google`.
 - **Machine Type Selection:** If a question asks for the best cost-performance for a general workload, consider **E2** or **N4**. For high-performance databases, consider **C4** or **M3**.
+
+## 8. External Links
+
+- [Compute Engine - The Cloud Girl](https://www.thecloudgirl.dev/compute/compute-engine)

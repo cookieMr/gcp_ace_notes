@@ -16,6 +16,7 @@
     - [BigQuery](./bigquery.md)
     - [Memorystore](./memorystore.md)
     - [Filestore](./filestore.md)
+    - [Persistent Disk](./persistent_disk.md)
 - [Networking](./summary_networking.md)
     - [VPC Networks](./vpc_networks.md)
     - [VPC Peering](./vpc_peering.md)

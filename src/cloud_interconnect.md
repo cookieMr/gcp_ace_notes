@@ -75,3 +75,7 @@ To achieve the 99.99% SLA, you must follow specific architecture guidelines:
 - **Encryption:** Remember that Cloud Interconnect does not encrypt traffic by default. If encryption is required, you must run HA VPN over Interconnect or enable MACsec (where supported).
 - **BGP:** All Interconnect types require Cloud Router and Dynamic Routing (BGP).
 - **VLAN Attachments:** These are the resources you actually "see" and manage in your project.
+
+## 8. External Links
+
+- [Network Connectivity Options - The Cloud Girl](https://www.thecloudgirl.dev/networking/network-connectivity-options)

@@ -4,6 +4,11 @@
 
 _Image source: Google Cloud Documentation_
 
+---
+
+* [Wait... what is Cloud again - The Cloud Girl](https://www.thecloudgirl.dev/compute/what-is-cloud)
+* [Where should I run my staff - The Cloud Girl](https://www.thecloudgirl.dev/compute/where-should-i-run-my-stuff)
+
 ### **[Compute Engine](./compute_engine.md)**
 
 Infrastructure as a Service (IaaS) providing fully customizable Virtual Machines (VMs). Best for legacy apps, custom OS requirements, or high-performance databases.
