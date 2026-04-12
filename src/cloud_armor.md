@@ -36,7 +36,7 @@ Cloud Armor includes preconfigured WAF rules to protect against common web attac
 - **Local File Inclusion (LFI)**
 - **Remote Code Execution (RCE)**
 - **Protocol Attack / Scanner Detection**
-- **Exam Tip:** You should know that Cloud Armor can mitigate the "OWASP Top 10" risks using these preconfigured rule sets.
+- **Exam Tip:** You should know that Cloud Armor can mitigate the _[OWASP Top 10](./owasp.md)_ risks using these preconfigured rule sets.
 
 ## 4. Managed Protection Tiers
 

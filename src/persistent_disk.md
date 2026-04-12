@@ -293,21 +293,9 @@ spec:
 
 **Q2:** A VM needs maximum IOPS for a database. What disk type?
 
-> **Answer:** pd-extreme (or pd-ssd if not extreme needed)
+> **Answer:** `pd-extreme` (or `pd-ssd` if not extreme needed)
 
-**Q3:** You stopped a VM with a Local SSD. Is the data still there?
-
-> **Answer:** No, Local SSD data is lost when VM stops
-
-**Q4:** What is the minimum size for any Persistent Disk?
-
-> **Answer:** 10 GB
-
-**Q5:** Can you reduce the size of a Persistent Disk after creation?
-
-> **Answer:** No, only increase
-
-**Q6:** A disk needs to be attached to multiple VMs simultaneously. What mode/type?
+**Q3:** A disk needs to be attached to multiple VMs simultaneously. What mode/type?
 
 > **Answer:** Hyperdisk with multi-writer mode
 

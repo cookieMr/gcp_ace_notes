@@ -163,6 +163,8 @@ That’s where _Persistent Volumes_ (PV) and _Persistent Volume Claims_ (PVC) co
 - Storage Classes: Defines storage types (e.g., standard HDD, SSD, or Balanced PD).
 - Hyperdisk: Support for Google Cloud Hyperdisk in 2026 for high-performance GKE workloads.
 
+For more details see [Persistant Disk](./persistent_disk.md)
+
 ## 6. GKE Security
 
 - Workload Identity: The recommended way for GKE workloads to access Google Cloud services.

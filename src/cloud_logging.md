@@ -8,11 +8,11 @@ _Image source: Google Cloud Documentation_
 
 Cloud Logging is a fully managed service that allows you to store, search, analyze, and alert on log data and events from Google Cloud.
 
-- **Key Characteristics:**
-  - **Unified:** Collects logs from all GCP services (Compute Engine, GKE, Cloud Run, etc.) and even multi-cloud/on-premises sources.
-  - **Integrated:** Works seamlessly with Cloud Monitoring and Cloud Error Reporting.
-  - **Retention:** Logs are kept for a specific period (standard is 30 days) and then automatically deleted.
-- **Gemini for Cloud Logging (2026 Update):** Gemini integration allows for real-time log analysis, summarizing complex log entries, and explaining the root cause of errors in plain language.
+### Key Characteristics
+
+- **Unified:** Collects logs from all GCP services (Compute Engine, GKE, Cloud Run, etc.) and even multi-cloud/on-premises sources.
+- **Integrated:** Works seamlessly with Cloud Monitoring and Cloud Error Reporting.
+- **Retention:** Logs are kept for a specific period (standard is 30 days) and then automatically deleted.
 
 ## 2. Log Buckets and Log Analytics
 
@@ -67,6 +67,8 @@ These are critical for security and compliance.
 
 ## 8. Exam Tips
 
-- **Export Choices:** Archiving -> Cloud Storage; SQL Analysis -> BigQuery or Log Analytics; Real-time -> Pub/Sub.
+- **Export Choices:**
+  - Archiving -> Cloud Storage
+  - SQL Analysis -> BigQuery or Log Analytics
+  - Real-time -> Pub/Sub
 - **Retention vs. Sink:** Remember that logs in the Logs Explorer have a **retention period**.
-- **Gemini Usage:** Use Gemini to quickly understand why a service is failing by asking it to summarize the most recent error logs.

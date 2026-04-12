@@ -1,19 +1,33 @@
 # GCP VPC Peering and Shared VPC: ACE Exam Study Guide (2026)
 
+![Dilbert helps when no image for Serverless VPC Access can be found](images/00_image_is_needed.png)
+
+_Image source: Dilbert.com_
+
 ## 1. VPC Network Peering
 
 VPC Network Peering allows you to connect two VPC networks so that resources in each network can communicate via internal IP addresses.
 
-- **Key Characteristics:**
-  - **Private Connectivity:** Traffic stays within the Google Cloud network and does not traverse the public internet.
-  - **Low Latency:** Peered networks have the same latency, throughput, and security as if the resources were in the same network.
-  - **Cross-Project/Cross-Org:** You can peer VPCs across different projects and even different Google Cloud Organizations.
-  - **Non-Transitive:** If VPC A is peered with VPC B, and VPC B is peered with VPC C, VPC A is **not** peered with VPC C. You must create a direct peering between A and C.
-- **Requirements and Constraints:**
-  - **No Overlapping IP Ranges:** Peering will fail if any subnet IP ranges overlap between the two networks.
-  - **Two-Way Configuration:** Peering must be configured in **both** networks (A to B and B to A) for it to become active.
-  - **Firewall Rules:** Peering allows communication, but it does not bypass firewall rules. You must still create ingress firewall rules to allow traffic from the peered network's IP ranges.
-  - **Service Chaining:** You can export/import custom routes across the peering connection.
+### Key Characteristics
+
+- **Private Connectivity:** Traffic stays within the Google Cloud network and does not traverse the public internet.
+- **Low Latency:** Peered networks have the same latency, throughput, and security as if the resources were in the same network.
+- **Cross-Project/Cross-Org:** You can peer VPCs across different projects and even different Google Cloud Organizations.
+- **Non-Transitive:** If VPC A is peered with VPC B, and VPC B is peered with VPC C, VPC A is **not** peered with VPC C. You must create a direct peering between A and C.
+
+
+![VPC Peering Diagram](images/vpc_peering_abc_diagram.png)
+
+_Image source: Own work (Mermaid diagram)._
+
+> This setup shows three separate VPC networks where VPC A is peered with VPC B, and VPC B is peered with VPC C. Each peering connection allows private RFC1918 traffic to flow directly between the paired VPCs without VPN, Interconnect, or NAT. However, because VPC peering in GCP is non‑transitive, VPC A cannot reach VPC C unless a direct peering connection is created. This illustrates the requirement for explicit, pairwise peering links whenever cross‑VPC communication is needed.
+
+### Requirements and Constraints
+
+- **No Overlapping IP Ranges:** Peering will fail if any subnet IP ranges overlap between the two networks.
+- **Two-Way Configuration:** Peering must be configured in **both** networks (A to B and B to A) for it to become active.
+- **Firewall Rules:** Peering allows communication, but it does not bypass firewall rules. You must still create ingress firewall rules to allow traffic from the peered network's IP ranges.
+- **Service Chaining:** You can export/import custom routes across the peering connection.
 
 ## 2. Shared VPC
 
