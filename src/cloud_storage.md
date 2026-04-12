@@ -82,3 +82,9 @@ Cloud Storage is Google Cloud's object storage service for storing unstructured 
 - **Scenario**: High Availability for a single region? → Use **Dual-Region**.
 - **Scenario**: Protect against "fat-finger" accidental deletion? → Enable **Soft Delete** or **Object Versioning**.
 - **Scenario**: Give a non-GCP user temporary access to a file? → Use a **Signed URL**.
+
+## 11. External Links
+
+- [Cloud Storage - The Cloud Girl](https://www.thecloudgirl.dev/storage2/cloud-storage)
+- [Which Storage Should I Use - The Cloud Girl](https://www.thecloudgirl.dev/storage2/which-storage-should-i-use)
+- [What are different storage types - The Cloud Girl](https://www.thecloudgirl.dev/storage2/types-of-storage)

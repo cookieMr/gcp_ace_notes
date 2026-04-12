@@ -159,3 +159,4 @@ These interfaces define the entry point that Google Cloud invokes when your func
 - [Cloud Run Functions - Google Cloud Documentation](https://docs.cloud.google.com/functions/docs)
 - [Youtube - Andrew Brown - Cloud Run](https://www.youtube.com/watch?v=OlAmyf8_4O4&t=11029s)
 - [Cloud Functions - The Cloud Girl](https://www.thecloudgirl.dev/compute/cloud-functions)
+- [Where should I run my staff - The Cloud Girl](https://www.thecloudgirl.dev/compute/where-should-i-run-my-stuff)

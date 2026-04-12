@@ -77,3 +77,8 @@ Cloud Translation API makes it easy to translate text into thousands of language
 - Need to translate technical manuals with specific terminology? Translation API Advanced (Glossaries).
 - Need to build a custom model for your specific company data? Vertex AI (AutoML or Custom Training).
 - Need to build a GenAI chatbot with your own documents? Vertex AI Agent Builder.
+
+## 6. External Links
+
+- [What is Vertex AI - The Cloud Girl](https://www.thecloudgirl.dev/data-science-ml-ai/what-is-vertex-ai)
+- [Vertex Forecasting - The Cloud Girl](https://www.thecloudgirl.dev/data-science-ml-ai/vertex-forecasting)

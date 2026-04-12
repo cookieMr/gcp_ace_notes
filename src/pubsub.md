@@ -214,3 +214,7 @@ gcloud pubsub topics update TOPIC_NAME --enable-message-ordering
 | Regional topic            | Topics are **global**, not regional                        |
 | Message deleted after ACK | Message is removed immediately after acknowledgement       |
 | Same subscription         | Each subscriber needs its **own subscription** for fan-out |
+
+## 10. External Links
+
+- [Pub/Sub - The Cloud Girl](https://www.thecloudgirl.dev/data-analytics/cloud-pub/sub)

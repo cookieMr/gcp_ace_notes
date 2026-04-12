@@ -74,3 +74,7 @@ When reading an exam question, look for these specific identifiers:
 - **Data Transfer Service:** Use this to automate data movement from SaaS apps (Google Ads, YouTube) or other clouds (Amazon S3, Azure Blob) into BigQuery.
 - **BigQuery ML:** Allows creating and executing machine learning models using standard SQL directly inside BigQuery.
 - **Connected Sheets:** Allows users to analyze billions of rows of BigQuery data directly from Google Sheets.
+
+## 9. External Links
+
+- [BigQuery - The Cloud Girl](https://www.thecloudgirl.dev/data-analytics/bigquery)

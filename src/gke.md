@@ -191,3 +191,4 @@ That’s where _Persistent Volumes_ (PV) and _Persistent Volume Claims_ (PVC) co
 ## 10. External Links
 
 - [Google Kubernetes Engine - The Cloud Girl](https://www.thecloudgirl.dev/compute/google-kubernetes-engine)
+- [Where should I run my staff - The Cloud Girl](https://www.thecloudgirl.dev/compute/where-should-i-run-my-stuff)

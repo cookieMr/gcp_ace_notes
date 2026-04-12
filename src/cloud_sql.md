@@ -128,3 +128,9 @@ spring:
 - **Private IP** → Best for production inside a VPC (GKE, GCE, Cloud Run + VPC connector)
 - **Auth Proxy** → Easiest secure option for local dev or simple setups
 - **Socket Factory** → Ideal for Java apps needing secure IAM auth without running the proxy
+
+## 11. External Links
+
+- [Cloud SQL - The Cloud Girl](https://www.thecloudgirl.dev/database/cloud-sql)
+- [Introduction to Databases - The Cloud Girl](https://www.thecloudgirl.dev/database/introduction-to-databases)
+- [Which Database should I Use - The Cloud Girl](https://www.thecloudgirl.dev/database/which-database-should-i-use)

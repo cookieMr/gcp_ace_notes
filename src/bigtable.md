@@ -51,3 +51,9 @@ _Image source: Google Cloud Documentation_
 - **Scaling:** You can increase or decrease the number of nodes in a cluster via the Console or `gcloud` while the cluster is serving traffic (zero downtime).
 - **Monitoring:** Use _Key Visualizer_ (a tool within the GCP Console) to identify _hotspots_ and troubleshoot performance issues visually.
 - **Backups:** Bigtable allows you to take _Backups_ of tables. These are stored within the Bigtable service (in the same region), NOT in Cloud Storage. They can only be used to _Restore_ to a new table.
+
+## 8. External Links
+
+- [Cloud Bigtable - The Cloud Girl](https://www.thecloudgirl.dev/database/cloud-bigtable)
+- [Introduction to Databases - The Cloud Girl](https://www.thecloudgirl.dev/database/introduction-to-databases)
+- [Which Database should I Use - The Cloud Girl](https://www.thecloudgirl.dev/database/which-database-should-i-use)

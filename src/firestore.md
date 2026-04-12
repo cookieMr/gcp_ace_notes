@@ -241,7 +241,7 @@ public class FirestoreService {
 | **Cleanup**     | TTL (Time-to-Live) via timestamps                            |
 | **Modes**       | Native (Real-time/Offline) vs Datastore (High-volume server) |
 
-## Final ACE Tips
+## 18. Final ACE Tips
 
 - Firestore is the default NoSQL choice for most GCP apps.
 - TTL = Cost savings (auto-delete).
@@ -250,3 +250,9 @@ public class FirestoreService {
 - Native mode is for mobile/web; Datastore mode is for high-volume server apps.
 - Location is permanent once the database is created.
 - Aggregations (`COUNT`, `SUM`, `AVG`) are now built-in and server-side.
+
+## 19. External Links
+
+- [Firestore - The Cloud Girl](https://www.thecloudgirl.dev/database/firestore)
+- [Introduction to Databases - The Cloud Girl](https://www.thecloudgirl.dev/database/introduction-to-databases)
+- [Which Database should I Use - The Cloud Girl](https://www.thecloudgirl.dev/database/which-database-should-i-use)

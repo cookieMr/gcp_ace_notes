@@ -119,3 +119,6 @@ public class FileService {
 ## 10. External Links
 
 - [Youtube - Andrew Brown - GCP ACE](https://www.youtube.com/watch?v=OlAmyf8_4O4&t=17043s)
+- [Firestore - The Cloud Girl](https://www.thecloudgirl.dev/storage2/filestore)
+- [Which Storage Should I Use - The Cloud Girl](https://www.thecloudgirl.dev/storage2/which-storage-should-i-use)
+- [What are different storage types - The Cloud Girl](https://www.thecloudgirl.dev/storage2/types-of-storage)

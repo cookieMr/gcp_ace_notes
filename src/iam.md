@@ -87,3 +87,8 @@ IAM policies are hierarchical and permissions are inherited.
 - **Remove Role Binding:** `gcloud projects remove-iam-policy-binding [PROJECT_ID] --member='user:[EMAIL]' --role='roles/viewer'`
 - **Create Service Account:** `gcloud iam service-accounts create [SA_NAME] --display-name="[DISPLAY_NAME]"`
 - **List Service Accounts:** `gcloud iam service-accounts list`
+
+## 8. External Links
+
+- [IAM Authentication - The Cloud Girl](https://www.thecloudgirl.dev/security/iam)
+- [IAM Authorization - The Cloud Girl](https://www.thecloudgirl.dev/security/data-loss-prevention-2r4bc-4sbwh)

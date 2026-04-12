@@ -324,3 +324,9 @@ spec:
 | Regional PD zones    | Two zones in same region            |
 | Snapshot type        | Incremental                         |
 | Size change          | Increase only                       |
+
+## 15. External Links
+
+- [Persistent Disk - The Cloud Girl](https://www.thecloudgirl.dev/storage2/persistent-disk)
+- [Which Storage Should I Use - The Cloud Girl](https://www.thecloudgirl.dev/storage2/which-storage-should-i-use)
+- [What are different storage types - The Cloud Girl](https://www.thecloudgirl.dev/storage2/types-of-storage)

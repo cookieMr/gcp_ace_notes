@@ -110,3 +110,9 @@ public class MemcachedConfig {
     }
 }
 ```
+
+## 8. External Links
+
+- [Memorystore - The Cloud Girl](https://www.thecloudgirl.dev/database/memorystore)
+- [Introduction to Databases - The Cloud Girl](https://www.thecloudgirl.dev/database/introduction-to-databases)
+- [Which Database should I Use - The Cloud Girl](https://www.thecloudgirl.dev/database/which-database-should-i-use)

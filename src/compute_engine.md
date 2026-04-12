@@ -99,3 +99,4 @@ Useful for keeping related workloads together or separating sensitive workloads 
 ## 8. External Links
 
 - [Compute Engine - The Cloud Girl](https://www.thecloudgirl.dev/compute/compute-engine)
+- [Where should I run my staff - The Cloud Girl](https://www.thecloudgirl.dev/compute/where-should-i-run-my-stuff)

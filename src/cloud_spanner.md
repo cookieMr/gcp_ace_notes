@@ -71,3 +71,6 @@ For the ACE exam, know the `gcloud spanner` command group:
 ## 8. External Links
 
 - [Youtube - Andrew Brown - GCP ACE](https://www.youtube.com/watch?v=OlAmyf8_4O4&t=14504s)
+- [Cloud Spanner - The Cloud Girl](https://www.thecloudgirl.dev/database/cloud-spanner)
+- [Introduction to Databases - The Cloud Girl](https://www.thecloudgirl.dev/database/introduction-to-databases)
+- [Which Database should I Use - The Cloud Girl](https://www.thecloudgirl.dev/database/which-database-should-i-use)
