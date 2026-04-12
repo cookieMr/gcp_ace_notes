@@ -54,7 +54,7 @@ Error Reporting supports major languages including:
 - **Issue Trackers:** You can link an error group to an external issue tracker (like Jira or GitHub Issues) directly from the console.
 - **Gemini for Google Cloud:** Leverage AI-powered insights to correlate error spikes with recent deployments or configuration changes.
 
-## 7. Essential gcloud Commands
+## 7. Essential `gcloud` Commands
 
 - **List Error Groups:** `gcloud alpha error-reporting groups list` (Note: Most management is done via the Console or APIs).
 - **Check API Status:** `gcloud services list --enabled | grep clouderrorreporting`

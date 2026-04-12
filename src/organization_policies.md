@@ -45,7 +45,7 @@ You should recognize these common constraints for the exam:
 - Tags-based Policies: Allows you to conditionally apply organization policies based on Tags attached to resources (e.g., apply a strict policy only to resources tagged with environment: production).
 - Gemini for Policy Analysis: Use Gemini in the Cloud Console to explain the impact of an Organization Policy on your existing resources and identify potential violations before they occur.
 
-## 6. Essential gcloud Commands
+## 6. Essential `gcloud` Commands
 
 - List Available Constraints: `gcloud resource-manager org-policies list --organization=[ORG_ID]`
 - Describe Current Policy: `gcloud resource-manager org-policies describe [CONSTRAINT_NAME] --project=[PROJECT_ID]`

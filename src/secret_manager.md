@@ -57,7 +57,7 @@ The exam often tries to confuse these two services.
 - Avoid "Latest": In production, it is often safer to pin an application to a specific secret version (e.g., v5) to prevent accidental breaking changes.
 - Gemini for Secret Manager: Use Gemini in the Cloud Console to audit secret access patterns and receive recommendations for rotation and IAM policy improvements.
 
-## 7. Essential gcloud Commands
+## 7. Essential `gcloud` Commands
 
 - Create a Secret: `gcloud secrets create [SECRET_ID] --replication-policy="automatic"`
 - Add a Secret Version: `gcloud secrets versions add [SECRET_ID] --data-file="[FILE_PATH]"`

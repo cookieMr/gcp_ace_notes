@@ -23,3 +23,16 @@ flowchart LR
     MIG_Inventory --> IZ1["Zone B - Inventory VM 1"]
     MIG_Inventory --> IZ2["Zone B - Inventory VM 2"]
 ```
+```
+sequenceDiagram
+    participant C as Client (Browser)
+    participant LB as Load Balancer (TLS Termination)
+    participant S as Backend Service (HTTP)
+
+    C->>LB: HTTPS Request (Encrypted)
+    LB->>C: TLS Handshake + Certificate
+    LB->>LB: Decrypt TLS (Termination)
+    LB->>S: HTTP Request (Plain)
+    S->>LB: HTTP Response (Plain)
+    LB->>C: HTTPS Response (Re‑encrypted)
+```

@@ -62,7 +62,7 @@ You must distinguish between these three concepts for the exam.
 
 - **Gemini for Cloud KMS:** Use Gemini to help generate least-privilege IAM policies for keys and troubleshoot key access issues. Gemini can also assist in explaining key rotation schedules and auditing key usage via Cloud Logging.
 
-## 7. Essential gcloud Commands
+## 7. Essential `gcloud` Commands
 
 - **Create a Key Ring:** `gcloud kms keyrings create [NAME] --location [LOCATION]`
 - **Create a Key:** `gcloud kms keys create [NAME] --keyring [RING] --location [LOCATION] --purpose encryption`

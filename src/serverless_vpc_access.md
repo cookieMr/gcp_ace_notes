@@ -106,7 +106,7 @@ The connector's `/28` subnet must be allowed to reach target resources:
 4. **RFC 1918 only:** By default, only private IP ranges route through connector
 5. **Inbound vs Outbound:** Connector handles outbound from serverless; for inbound **to** serverless from VPC, consider Direct VPC Egress or Serverless VPC Access (ingress mode)
 
-## 9. Essential gcloud Commands
+## 9. Essential `gcloud` Commands
 
 **Create a Connector:**
 

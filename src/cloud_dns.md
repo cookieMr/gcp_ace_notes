@@ -70,7 +70,7 @@ DNS policies allow you to control how the VPC handles DNS queries.
   - `roles/dns.admin`: Full control over Cloud DNS resources.
   - `roles/dns.reader`: View access only.
 
-## 7. Essential gcloud Commands
+## 7. Essential `gcloud` Commands
 
 - **Create a Public Managed Zone:**
   `gcloud dns managed-zones create [ZONE_NAME] --dns-name="example.com." --description="My public zone"`

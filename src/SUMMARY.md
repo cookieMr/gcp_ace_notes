@@ -54,3 +54,5 @@
     - [Transfer Appliance](./transfer_appliance.md)
 - [AI & ML (Light Coverage)](./summary_ai_and_ml.md)
     - [Vertex AI](./vertex_ai.md)
+- [Appendix](./summary_appendix.md)
+    - [OWASP Top 10](./owasp.md)

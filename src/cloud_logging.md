@@ -1,5 +1,9 @@
 # Cloud Logging: ACE Exam Study Guide (2026)
 
+![Cloud Logging](images/cloud_logging.png)
+
+_Image source: Google Cloud Documentation_
+
 ## 1. Cloud Logging Overview
 
 Cloud Logging is a fully managed service that allows you to store, search, analyze, and alert on log data and events from Google Cloud.
@@ -55,7 +59,7 @@ These are critical for security and compliance.
 - `roles/logging.viewer`: Permission to view logs in the Logs Explorer.
 - `roles/logging.privateLogViewer`: Permission to view logs containing sensitive information.
 
-## 7. Essential gcloud Commands
+## 7. Essential `gcloud` Commands
 
 - **Read Logs:** `gcloud logging read "resource.type=gce_instance"`
 - **Create a Sink:** `gcloud logging sinks create [SINK_NAME] storage.googleapis.com/[BUCKET_NAME] --log-filter="severity>=ERROR"`

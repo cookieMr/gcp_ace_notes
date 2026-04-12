@@ -46,7 +46,7 @@ A typical build configuration file includes:
   - **Exam Tip:** You must grant this service account the necessary IAM roles to deploy to other services (e.g., `roles/run.admin` to deploy to Cloud Run).
 - **Artifact Integrity:** You can use **Binary Authorization** in conjunction with Cloud Build to ensure that only images built and signed by Cloud Build are deployed to GKE.
 
-## 7. Essential gcloud Commands
+## 7. Essential `gcloud` Commands
 
 - **Submit a Build Manually:** `gcloud builds submit --config cloudbuild.yaml .`
 - **Build a Docker Image directly:** `gcloud builds submit --tag gcr.io/[PROJECT_ID]/[IMAGE_NAME] .`

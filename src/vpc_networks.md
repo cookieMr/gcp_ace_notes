@@ -1,6 +1,6 @@
 # GCP VPC Networks: ACE Exam Study Guide (2026)
 
-![VPC Networks](images/compute_engine.png)
+![VPC Networks](images/virtual_private_cloud.png)
 
 _Image source: Google Cloud Documentation_
 
@@ -95,7 +95,7 @@ In 2026, **Network Firewall Policies** (Global and Regional) are the modern stan
 - **Scenario**: You want to allow internal communication between two VPCs in different organizations without using public IPs.
   > Configure **VPC Network Peering** between the two networks. Remember that this connection is not transitive.
 
-## 8. Essential gcloud Commands
+## 8. Essential `gcloud` Commands
 
 - **Create VPC:** `gcloud compute networks create [NAME] --subnet-mode=custom`
 - **Create Subnet:** `gcloud compute networks subnets create [NAME] --network=[VPC] --region=[REGION] --range=[CIDR]`

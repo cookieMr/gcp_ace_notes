@@ -41,7 +41,7 @@ Shared VPC allows an organization to connect resources from multiple projects to
 | **Scale**          | Best for connecting independent VPCs        | Best for multi-team/multi-project organization structure |
 | **Transitivity**   | Non-transitive                              | Centralized (all service projects share the same VPC)    |
 
-## 4. Essential gcloud Commands
+## 4. Essential `gcloud` Commands
 
 - **Create Peering (Network A):** `gcloud compute networks peerings create [PEER_NAME] --network=[NET_A] --peer-project=[PROJECT_B] --peer-network=[NET_B]`
 - **Enable Host Project:** `gcloud compute shared-vpc enable [HOST_PROJECT_ID]`

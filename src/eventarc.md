@@ -57,7 +57,7 @@ Where the event can be sent for processing:
 - Gemini for Eventarc: Use Gemini in the Cloud Console to visualize event flows and troubleshoot failed triggers by analyzing event payloads and delivery logs.
 - AI-Powered Monitoring: Leverage Gemini to identify patterns in event delivery delays or failures across your event-driven architecture.
 
-## 8. Essential gcloud Commands
+## 8. Essential `gcloud` Commands
 
 - Create a Trigger (Cloud Storage):
   `gcloud eventarc triggers create [NAME] --destination-run-service=[SERVICE_NAME] --destination-run-region=[REGION] --event-filters="type=google.cloud.storage.object.v1.finalized" --event-filters="bucket=[BUCKET_NAME]" --service-account=[SA_EMAIL]`

@@ -80,7 +80,7 @@ IAM policies are hierarchical and permissions are inherited.
 - **Avoid Default Service Accounts:** Create custom service accounts with specific roles instead of using the broad default accounts.
 - **IAP (Identity-Aware Proxy):** Use IAP to control access to applications and VMs without relying on VPNs or external IP addresses.
 
-## 7. Essential gcloud Commands
+## 7. Essential `gcloud` Commands
 
 - **View Project Policy:** `gcloud projects get-iam-policy [PROJECT_ID]`
 - **Add Role Binding:** `gcloud projects add-iam-policy-binding [PROJECT_ID] --member='user:[EMAIL]' --role='roles/viewer'`

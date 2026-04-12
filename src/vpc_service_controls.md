@@ -51,7 +51,7 @@ Not all services are supported, but the most common exam-relevant services inclu
 4. **Test in Dry-Run Mode:** Monitor audit logs for potential breakages.
 5. **Enforce the Perimeter.**
 
-## 6. Essential gcloud Commands
+## 6. Essential `gcloud` Commands
 
 - **List Perimeters:** `gcloud access-context-manager perimeters list --policy=[POLICY_ID]`
 - **Describe a Perimeter:** `gcloud access-context-manager perimeters describe [PERIMETER_NAME] --policy=[POLICY_ID]`

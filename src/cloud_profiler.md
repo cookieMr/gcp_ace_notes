@@ -45,7 +45,7 @@ Data collected depends on the language:
   - `roles/cloudprofiler.agent`: Allows the application's service account to send profiling data.
   - `roles/cloudprofiler.user`: Allows viewing and interacting with the UI.
 
-## 6. Essential gcloud Commands
+## 6. Essential `gcloud` Commands
 
 - **Enable API:** `gcloud services enable cloudprofiler.googleapis.com`
 - **Check Status:** Profiler is primarily managed via the Cloud Console UI.

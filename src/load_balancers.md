@@ -29,6 +29,12 @@ Google Cloud Load Balancing is a fully managed, software-defined service. It is 
 
 _Image source: Own work (Mermaid diagram)._
 
+There is no functional difference today — TLS is simply the modern, secure successor to SSL. But people still say SSL termination even though they actually mean TLS termination.
+
+![Use Case for Global Load Balancing](images/cloud_load_balancing_tls_termination_diagram.png)
+
+_Image source: Own work (Mermaid diagram)._
+
 ### External Proxy Network Load Balancer (TCP/SSL)
 
 - Layer: Layer 4 (TCP with SSL termination).
@@ -94,7 +100,7 @@ Also know as _sticky sessions_ ensures that requests from the same client go to 
 - _L4 proxy_ LBs use source IP/port hashing.
 - _Passthrough_ LBs do not support session affinity because they do not proxy traffic.
 
-## 6. Essential gcloud Commands
+## 6. Essential `gcloud` Commands
 
 - Create a health check: `gcloud compute health-checks create http [NAME] --port 80`
 - Create a backend service: `gcloud compute backend-services create [NAME] --protocol=HTTP --health-checks=[HC_NAME] --global`

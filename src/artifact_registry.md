@@ -45,7 +45,7 @@ For Docker images, the format is:
 - `roles/artifactregistry.writer`: Upload and delete artifacts.
 - `roles/artifactregistry.reader`: View and pull artifacts.
 
-## 7. Essential gcloud Commands
+## 7. Essential `gcloud` Commands
 
 - **Create a Docker Repository:**
   `gcloud artifacts repositories create [NAME] --repository-format=docker --location=[LOCATION] --description="My Docker repo"`

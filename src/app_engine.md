@@ -108,7 +108,7 @@ Understanding the relationship between components is essential for resource mana
 - **VPC Access:** Use a **Serverless VPC Access Connector** (mostly for Standard) to allow the app to reach resources with private IPs (e.g., Cloud SQL, Memorystore).
 - **Service Accounts:** App Engine uses the **App Engine Default Service Account** (`project-id@appspot.gserviceaccount.com`) by default. It has broad "Editor" permissions; best practice is to use a custom service account.
 
-## 8. Essential gcloud Commands
+## 8. Essential `gcloud` Commands
 
 - **Initialize App:** `gcloud app create --region [REGION]`
 - **Deploy App:** `gcloud app deploy [YAML_FILE]`

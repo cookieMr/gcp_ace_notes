@@ -53,7 +53,7 @@ Groups allow you to organize and monitor sets of resources together.
 - **Criteria:** You can define groups based on names, tags, labels, or regions.
 - **Use Case:** Monitor all web servers in the `us-east1` region as a single entity.
 
-## 7. Essential gcloud Commands
+## 7. Essential `gcloud` Commands
 
 - **List Metrics:** `gcloud monitoring metric-descriptors list`
 - **Create a Dashboard:** `gcloud monitoring dashboards create --config-from-file=[DASHBOARD_JSON]`

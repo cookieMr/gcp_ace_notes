@@ -46,7 +46,7 @@ To set up Cloud NAT, you need:
 - **Cloud NAT Logging:** Enable logging to capture connection details, including source/destination IP addresses and ports.
 - **Port Reservation:** By default, Cloud NAT reserves a fixed number of ports (64). Using **Dynamic Port Allocation** is recommended for better scalability.
 
-## 6. Essential gcloud Commands
+## 6. Essential `gcloud` Commands
 
 - **Create Cloud Router:** `gcloud compute routers create [ROUTER_NAME] --network=[VPC] --region=[REGION]`
 - **Create Cloud NAT Gateway:** `gcloud compute routers nats create [NAT_NAME] --router=[ROUTER_NAME] --region=[REGION] --auto-allocate-nat-external-ips --nat-all-subnet-ip-ranges`

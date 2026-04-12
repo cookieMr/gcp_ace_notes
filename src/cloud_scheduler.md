@@ -58,7 +58,7 @@ Cloud Scheduler uses the standard Unix cron format: `* * * * *` (Minute, Hour, D
   - `roles/cloudscheduler.jobRunner`: Permission to run jobs manually.
   - `roles/cloudscheduler.viewer`: View-only access.
 
-## 6. Essential gcloud Commands
+## 6. Essential `gcloud` Commands
 
 - **Create a Pub/Sub Job:**
   `gcloud scheduler jobs create pubsub [JOB_NAME] --schedule="0 9 * * 1" --topic=[TOPIC_NAME] --message-body="Hello world"`

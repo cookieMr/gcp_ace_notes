@@ -40,7 +40,7 @@ Cloud CDN (Content Delivery Network) uses Google's global edge network to serve 
 - **SSL/TLS:** Handled at the Load Balancer level (SSL termination).
 - **Cloud Armor integration:** You can use Cloud Armor security policies (WAF, Geo-blocking) in front of your CDN-enabled backends.
 
-## 6. Essential gcloud Commands
+## 6. Essential `gcloud` Commands
 
 - **Enable CDN on existing backend:**
   `gcloud compute backend-services update [BACKEND_NAME] --enable-cdn --global`

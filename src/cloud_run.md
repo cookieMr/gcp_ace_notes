@@ -136,7 +136,7 @@ Gradually roll out a new version to a small subset of users.
 - **Scenario**: Split traffic 10/90 for a new feature? → Use **Traffic Splitting** across revisions.
 - **Scenario**: Mount a 1TB shared drive for multiple instances? → Use **Filestore** via Direct VPC Egress.
 
-## 9. Essential gcloud Commands
+## 9. Essential `gcloud` Commands
 
 - **Deploy from Image:** `gcloud run deploy [SERVICE] --image [IMAGE_URL]`
 - **Update Traffic:** `gcloud run services update-traffic [SERVICE] --to-revisions [REV1=10,REV2=90]`

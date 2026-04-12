@@ -62,7 +62,7 @@ To establish a VPN, you need:
 - **Firewall Rules:** You must create ingress firewall rules in your VPC to allow traffic from the on-premises IP ranges.
 - **IKE Ports:** Traffic on UDP 500 and UDP 4500 must be allowed by the on-premises firewall.
 
-## 7. Essential gcloud Commands
+## 7. Essential `gcloud` Commands
 
 - **Create HA VPN Gateway:**
   `gcloud compute vpn-gateways create [NAME] --network=[VPC] --region=[REGION]`

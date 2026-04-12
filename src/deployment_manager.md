@@ -55,7 +55,7 @@ Templates allow you to abstract logic and make configurations more dynamic.
   - `roles/deploymentmanager.editor`: Create and manage deployments.
   - `roles/deploymentmanager.viewer`: View deployments only.
 
-## 7. Essential gcloud Commands
+## 7. Essential `gcloud` Commands
 
 - **Create a Deployment:**
   `gcloud deployment-manager deployments create [NAME] --config [FILE.YAML]`

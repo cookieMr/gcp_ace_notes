@@ -39,7 +39,7 @@ Cloud Trace is a distributed tracing system that collects latency data from your
   - `roles/cloudtrace.user`: Allows an application to send trace data to the API.
   - `roles/cloudtrace.viewer`: Allows viewing trace data and reports in the console.
 
-## 6. Essential gcloud Commands
+## 6. Essential `gcloud` Commands
 
 - **Check API Status:** `gcloud services list --enabled | grep cloudtrace`
 - **List Traces:** Use the console for visual management, but be aware of the `gcloud alpha trace` group for metadata.
