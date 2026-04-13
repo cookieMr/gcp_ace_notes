@@ -1,55 +1,173 @@
-# Cloud Trace: ACE Exam Study Guide (2026)
+# Cloud Trace: ACE Exam Study Guide
 
-## 1. Cloud Trace Overview
+![Cloud Trace](images/trace.png)
 
-Cloud Trace is a distributed tracing system that collects latency data from your applications and displays it in the Google Cloud Console.
+_Image source: Google Cloud Documentation_
 
-- **Primary Purpose:** To understand the performance of your application and identify latency bottlenecks in microservices architectures.
-- **How it Works:** It tracks how a single request travels through various services (frontend, backend, database) and records the time taken at each step.
-- **Gemini Integration:** Gemini in the Cloud Console can perform root cause analysis by summarizing trace data and identifying specific code spans responsible for performance regressions.
+## 1. Overview
+
+Cloud Trace is a managed distributed tracing service that collects latency data from your applications and visualizes it in the Google Cloud Console.
+
+**Primary Purpose:** Understand application performance and identify latency bottlenecks in microservices architectures.
+
+**How it Works:** Tracks how a single request travels through various services (frontend, backend, database) and records the time taken at each step.
 
 ## 2. Key Concepts
 
-- **Trace:** A set of spans representing the complete path of a single request through your system.
-- **Span:** A single operation within a trace (e.g., an RPC call or a database query) with start and end timestamps.
-- **Latency Profile:** A waterfall chart showing where time was spent during a request's lifecycle.
-- **Root Span:** The first span in a trace, representing the initial request.
+| Concept             | Description                                                                                |
+| ------------------- | ------------------------------------------------------------------------------------------ |
+| **Trace**           | Complete path (end-2-end) of a single request through your system                          |
+| **Span**            | Single operation within a trace (e.g., RPC call, database query) with start/end timestamps |
+| **Root Span**       | First span in a trace, representing the initial request                                    |
+| **Trace ID**        | Unique identifier propagated between services via HTTP headers                             |
+| **Latency Profile** | Waterfall chart showing where time was spent                                               |
 
-## 3. Service Integration and Instrumentation
+## 3. Service Integration
 
-- **Automatic Integration:**
-  - **App Engine (Standard and Flexible):** Traces are collected automatically.
-  - **Cloud Run and Cloud Functions:** Basic tracing is enabled by default.
-- **Manual Instrumentation:**
-  - **Compute Engine and GKE:** Requires use of an SDK or agent (Google recommends **OpenTelemetry**) to send data to the Trace API.
-  - **Internal Load Balancers:** Can be configured to provide trace data.
-  - **Multi-Cloud (2026 Standard):** Support for traces across GCP, AWS, and Azure via OpenTelemetry.
+### Auto-Instrumented (No Setup Required)
 
-## 4. Features and Analysis
+- **App Engine** (Standard and Flexible)
+- **Cloud Run** (basic tracing enabled by default)
+- **Cloud Functions** (basic tracing enabled by default)
+
+### Manual Instrumentation Required
+
+- **Compute Engine** VMs
+- **GKE** clusters
+- **Internal Load Balancers** (configurable)
+
+**Recommended SDK**: **OpenTelemetry** - sends data to Trace API, supports multi-cloud (AWS, Azure).
+
+- [Intro to OpenTelemetry Java](https://opentelemetry.io/docs/languages/java/intro/)
+
+## 4. Trace Context Propagation
+
+When a request crosses service boundaries, the trace context must be propagated:
+
+- **Header:** `X-Cloud-Trace-Context`
+- **Format:** `TRACE_ID/SPAN_ID;o=TRACE_TRUE`
+- The receiving service continues the trace instead of starting a new one
+
+## 5. Features and Analysis
 
 - **Trace Explorer:** Search and visualize individual traces. Filter by URI, latency, or status code.
-- **Analysis Reports:** Periodic reports that compare performance across different versions or time periods.
-- **Bottleneck Detection:** Identifies which operation is causing the most significant delay.
-- **Waterfall Charts:** Displays the sequence and duration of spans to pinpoint serial execution delays.
+- **Analysis Reports:** Periodic reports comparing performance across versions or time periods.
+- **Bottleneck Detection:** Identifies which operation causes the most delay.
+- **Waterfall Charts:** Displays sequence and duration of spans.
+- **Screenshots:** Capture trace views for documentation.
 
-## 5. Security and IAM
+## 6. Retention and Limits
 
-- **IAM Roles:**
-  - `roles/cloudtrace.admin`: Full control over Cloud Trace resources.
-  - `roles/cloudtrace.user`: Allows an application to send trace data to the API.
-  - `roles/cloudtrace.viewer`: Allows viewing trace data and reports in the console.
+| Setting        | Value                                  |
+| -------------- | -------------------------------------- |
+| Data retention | 30 days (default) / 90 days (extended) |
+| Free tier      | 10 traces/second                       |
+| Sampling rate  | Configurable to control costs          |
 
-## 6. Essential `gcloud` Commands
+## 7. Cloud Trace vs Other Cloud Operations Tools
 
-- **Check API Status:** `gcloud services list --enabled | grep cloudtrace`
-- **List Traces:** Use the console for visual management, but be aware of the `gcloud alpha trace` group for metadata.
+| Service              | Question Answered               | Data Type                   |
+| -------------------- | ------------------------------- | --------------------------- |
+| **Cloud Logging**    | "What happened?"                | Text events, logs           |
+| **Cloud Monitoring** | "How is the system performing?" | Numerical metrics           |
+| **Cloud Trace**      | "Where is the delay?"           | Latency across services     |
+| **Cloud Profiler**   | "Which code causes latency?"    | CPU/memory within a service |
 
-## 7. Exam Tips
+**Key Distinction:**
 
-- **Cloud Trace vs. Cloud Logging vs. Cloud Monitoring:**
-  - **Logging:** "What happened?" (Text events).
-  - **Monitoring:** "How is the system performing?" (Numerical metrics).
-  - **Trace:** "Where is the delay?" (Latency distribution across services).
-- **Performance Troubleshooting:** If a question asks how to find which microservice is slowing down a request, the answer is **Cloud Trace**.
-- **Sampling Rate:** You can configure the sampling rate to control costs while maintaining an accurate performance profile.
-- **Propagation:** The trace ID must be passed between services in the HTTP headers (usually `X-Cloud-Trace-Context`).
+- **Trace** = Latency **between** services (request flow)
+- **Profiler** = Latency **within** a service (code-level)
+
+## 8. When to Use Cloud Trace
+
+**Use Cloud Trace when:**
+
+- Troubleshooting latency across microservices
+- Identifying which service in a chain is slowing down requests
+- Comparing performance between deployments
+- Monitoring distributed tracing in production
+
+**Do NOT use Cloud Trace when:**
+
+- Single monolithic application (use Cloud Profiler instead)
+- Real-time alerting needed (use Cloud Monitoring)
+- Log analysis required (use Cloud Logging)
+
+## 9. Security and IAM
+
+| Role                      | Permission                                    |
+| ------------------------- | --------------------------------------------- |
+| `roles/cloudtrace.admin`  | Full control over Cloud Trace resources       |
+| `roles/cloudtrace.user`   | Send trace data to the API (for applications) |
+| `roles/cloudtrace.viewer` | View trace data and reports in console        |
+
+## 10. Essential gcloud Commands
+
+- Check API Status
+
+  ```bash
+  gcloud services list --enabled | grep cloudtrace
+  ```
+
+- List recent traces (alpha)
+  ```bash
+  gcloud alpha trace slices list --project=[PROJECT_ID]
+  ```
+
+## 11. Quick Reference Summary
+
+| Feature              | Value                                  |
+| -------------------- | -------------------------------------- |
+| Trace                | Complete request path through services |
+| Span                 | Single operation with timestamps       |
+| Propagation header   | `X-Cloud-Trace-Context`                |
+| Auto-instrumented    | App Engine, Cloud Run, Cloud Functions |
+| Manual setup needed  | Compute Engine, GKE                    |
+| Recommended SDK      | OpenTelemetry                          |
+| Data retention       | 30 days (default)                      |
+| Answers the question | "Where is the delay?"                  |
+
+## 12. Comparison Diagram
+
+### _Cloud Trace vs_ _Cloud Logging_ vs _Cloud Monitoring_
+
+```
+                          ┌──────────────────────────────────┐
+                          │        Cloud Operations Suite    │
+                          │   (Observability Stack in GCP)   │
+                          └──────────────────────────────────┘
+                                           │
+       ┌───────────────────────────────────┼───────────────────────────────────┐
+       │                                   │                                   │
+       ▼                                   ▼                                   ▼
+┌──────────────────────────┐  ┌──────────────────────────┐  ┌──────────────────────────┐
+│      Cloud Logging       │  │     Cloud Monitoring     │  │        Cloud Trace       │
+└──────────────────────────┘  └──────────────────────────┘  └──────────────────────────┘
+│ What it captures:        │  │ What it captures:        │  │ What it captures:        │
+│ • Text logs              │  │ • Metrics (CPU, RAM,     │  │ • Latency of requests    │
+│ • Structured logs        │  │   QPS, errors, custom)   │  │ • Request flow across    │
+│ • Application events     │  │ • SLOs, SLIs, alerts     │  │   microservices          │
+│ • Error messages         │  │ • Dashboards             │  │ • Spans & trace IDs      │
+└──────────────────────────┘  └──────────────────────────┘  └──────────────────────────┘
+│ Answers the question:    │  │ Answers the question:    │  │ Answers the question:    │
+│ “What happened?”         │  │ “How is the system       │  │ “Where is the delay?”    │
+│                          │  │ performing?”             │  │                          │
+└──────────────────────────┘  └──────────────────────────┘  └──────────────────────────┘
+│ Typical use cases:       │  │ Typical use cases:       │  │ Typical use cases:       │
+│ • Debugging errors       │  │ • Alerting on high CPU   │  │ • Troubleshooting slow   │
+│ • Viewing logs per       │  │ • Monitoring uptime      │  │   requests               │
+│   service or request     │  │ • SLO compliance         │  │ • Identifying bottleneck │
+│ • Log-based metrics      │  │ • Trend analysis         │  │   microservices          │
+└──────────────────────────┘  └──────────────────────────┘  └──────────────────────────┘
+                                             |
+                         ┌───────────────────┼───────────────────┐
+                         │                   │                   │
+                         ▼                   ▼                   ▼
+                   ┌──────────────────────────────────────────────────┐
+                   │   Combined View: Observability Workflow in GCP   │
+                   └──────────────────────────────────────────────────┘
+                   │ Logs show **what happened**                      │
+                   │ Metrics show **system health**                   │
+                   │ Traces show **where latency occurs**             │
+                   └──────────────────────────────────────────────────┘
+```

@@ -10,7 +10,6 @@ _Image source: Google Cloud Documentation_
 - **Workload Type:** Designed specifically for OLAP (Online Analytical Processing) and massive data analytics, rather than transactional (OLTP) application workloads.
 - **Scale:** Can query terabytes in seconds and petabytes in minutes.
 - **Architecture:** Utilizes a columnar storage format and completely separates the compute processing from the underlying storage.
-- **Gemini in BigQuery:** Provides AI-powered SQL assistance, query optimization, and data insights directly within the console.
 
 ## 2. Interacting with BigQuery
 

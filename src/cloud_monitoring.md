@@ -23,7 +23,6 @@ Dashboards provide a visual representation of your metrics.
 - **Google Cloud Dashboards:** Pre-defined dashboards created automatically.
 - **Custom Dashboards:** Dashboards you create to monitor specific aspects of your application.
 - **MQL (Monitoring Query Language):** A powerful language used to create complex charts and data transformations.
-- **Gemini Assistant:** You can use natural language queries in the console to generate custom charts and dashboards using Gemini.
 
 ## 4. Alerting Policies
 

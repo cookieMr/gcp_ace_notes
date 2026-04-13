@@ -10,7 +10,6 @@ _Image source: Google Cloud Documentation_
 - **Scale:** Designed for massive datasets (Terabytes to Petabytes).
 - **Performance:** Offers single-digit millisecond latency and extremely high throughput for both read and write operations.
 - **Compatibility:** Natively exposes an Apache HBase API.
-- **Gemini Integration:** Gemini can provide assistance with schema design, row key optimization, and performance troubleshooting.
 
 ## 2. When to Choose Cloud Bigtable (Exam Scenarios)
 
