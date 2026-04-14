@@ -53,9 +53,11 @@ Cloud Storage is Google Cloud's object storage service for storing unstructured 
 
 ## 7. Encryption
 
-- **Google-Managed Keys:** The default encryption for all data at rest.
+- **Google-Managed Keys:** The _default_ encryption for all data at rest.
 - **Customer-Managed Encryption Keys (CMEK):** Keys stored in Cloud KMS. The KMS key must be in the same region as the bucket.
 - **Customer-Supplied Encryption Keys (CSEK):** You provide the raw key with each request.
+
+> Data is always encrypted at rest in Cloud Storage.
 
 ## 8. Data Migration Tools
 

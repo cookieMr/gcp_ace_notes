@@ -159,7 +159,7 @@ When a request crosses service boundaries, the trace context must be propagated:
 │   service or request     │  │ • SLO compliance         │  │ • Identifying bottleneck │
 │ • Log-based metrics      │  │ • Trend analysis         │  │   microservices          │
 └──────────────────────────┘  └──────────────────────────┘  └──────────────────────────┘
-                                             |
+                                             │
                          ┌───────────────────┼───────────────────┐
                          │                   │                   │
                          ▼                   ▼                   ▼

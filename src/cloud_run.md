@@ -51,7 +51,7 @@ Two identical environments exist: **Blue (current)** and **Green (new)**.
 
 - Deploy the new version to the **Green** environment.
 - Test Green without affecting users.
-- Switch 100% of traffic from Blue → Green in one action.
+- Switch 100% of traffic from Blue → Green in **one action**.
 - Rollback is instant by switching traffic back to Blue.
 
 **Use cases:** zero‑downtime releases, fast rollback, predictable behavior.
@@ -68,6 +68,10 @@ Two versions run **simultaneously**, each receiving a portion of traffic.
 **Purpose:** Experimentation and data‑driven decision‑making.  
 **Traffic behavior:** Parallel traffic to both versions for comparison.
 
+![A/B Testing Deployment Sequence](images/ab_deployment_diagram.png)
+
+_Image source: Own work (Mermaid diagram)._
+
 #### Canary Deployment
 
 Gradually roll out a new version to a small subset of users.
@@ -78,6 +82,10 @@ Gradually roll out a new version to a small subset of users.
 - Rollback by shifting traffic back to the stable version.
 
 **Use cases:** risk‑reduction, real‑world testing, incremental rollout.
+
+![Canary Deployment Sequence](images/canary_deployment_diagram.png)
+
+_Image source: Own work (Mermaid diagram)._
 
 ### Summary
 
@@ -152,3 +160,4 @@ Gradually roll out a new version to a small subset of users.
 - [Youtube - Andrew Brown - Cloud Run](https://www.youtube.com/watch?v=OlAmyf8_4O4&t=11029s)
 - [Cloud Run - The Cloud Girl](https://www.thecloudgirl.dev/compute/cloud-run)
 - [Where should I run my staff - The Cloud Girl](https://www.thecloudgirl.dev/compute/where-should-i-run-my-stuff)
+- [Google Cloud Documentation - Canary Deployment](https://docs.cloud.google.com/deploy/docs/deployment-strategies/canary)

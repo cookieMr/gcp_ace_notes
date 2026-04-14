@@ -2,7 +2,7 @@
 authors = ["CookieMr"]
 language = "en"
 src = "src"
-title = "GCP ACE Study Guide (2026)"
+title = "GCP ACE - Study Guide (2026)"
 
 [output.html]
 additional-css = ["custom.css"]

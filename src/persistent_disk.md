@@ -71,6 +71,7 @@ Local SSDs are physically attached to the host server, not the network.
 - **Cost:** Charged while VM is running (not when stopped)
 - **Encryption:** Always encrypted; keys managed by Google
 - **Limit:** Maximum 8 Local SSD partitions (375 GB each = 3 TB total)
+  - up to 24 Local SSD, depending on machine type
 
 **Not for:** Databases, anything requiring durability
 

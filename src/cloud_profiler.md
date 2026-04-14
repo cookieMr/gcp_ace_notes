@@ -1,5 +1,9 @@
 # Cloud Profiler: ACE Exam Study Guide (2026)
 
+![Cloud Profiler](images/profiler.png)
+
+_Image source: [Cloud Icons](https://cloud-icons.onemodel.app/gcp/networking/cloud_load_balancing)_
+
 ## 1. Cloud Profiler Overview
 
 Cloud Profiler is a statistical, low-overhead tool that continuously profiles the performance of CPU, heap, and other resources in your applications.
@@ -7,7 +11,6 @@ Cloud Profiler is a statistical, low-overhead tool that continuously profiles th
 - **Primary Purpose:** To identify specific functions or lines of code that are consuming the most resources (CPU, Memory) to optimize performance and reduce costs.
 - **How it Works:** A small agent runs inside your application and sends profiling data to the Profiler backend.
 - **Low Overhead:** Designed to run in production with very low impact (typically less than 5%).
-- **Gemini for Profiler (2026 Update):** Gemini is now integrated to explain flame graphs in plain language and suggest specific code optimizations based on profiling data.
 
 ## 2. Key Concepts
 
@@ -16,6 +19,10 @@ Cloud Profiler is a statistical, low-overhead tool that continuously profiles th
   - **Width:** Represents the percentage of the resource consumed.
   - **Vertical Axis:** Represents the call stack.
 - **Continuous Profiling:** Cloud Profiler is always-on in production.
+
+---
+
+- [Flame Graph - Google Cloud Documentation](https://docs.cloud.google.com/profiler/docs/concepts-flame)
 
 ## 3. Supported Environments and Languages
 
@@ -56,5 +63,4 @@ Data collected depends on the language:
   - **Cloud Trace:** Identifies latency bottlenecks _between_ services.
   - **Cloud Profiler:** Identifies performance issues _within_ a service (code level).
 - **Production Use:** If a question mentions optimizing code in a production environment with minimal overhead, choose **Cloud Profiler**.
-- **Gemini Optimization:** Gemini can provide step-by-step instructions on how to rewrite a "hot" function to reduce CPU or memory usage.
 - **Agent Requirement:** Cloud Profiler **always requires** an agent or library to be included in your application code.

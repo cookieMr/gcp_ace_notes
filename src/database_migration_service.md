@@ -28,7 +28,7 @@ Database Migration Service (DMS) is a managed, serverless service used to migrat
 ## 4. Source Prerequisites (Common Exam Topics)
 
 - MySQL: Requires binary logging (binlog) enabled and server_id configured.
-- PostgreSQL: Requires the pglogical extension (for versions < 14) or native logical replication (for versions 14+), and all tables must have primary keys.
+- PostgreSQL: Requires the `pglogical` extension (for versions < 14) or native logical replication (for versions 14+), and all tables must have primary keys.
 - Oracle (Heterogeneous): Requires supplemental logging and specific user permissions for CDC.
 
 ## 5. Security and Monitoring
