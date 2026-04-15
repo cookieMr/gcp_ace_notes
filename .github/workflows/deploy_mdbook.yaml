@@ -37,7 +37,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release delete latest --cleanup-tag -y || true
-          gh release create latest "./book/epub/GCP ACE Study Guide (2026).epub" --notes "Automated EPUB build of the latest study guide."
+          gh release create latest "./book/epub/GCP ACE - Study Guide (2026).epub" --notes "Automated EPUB build of the latest study guide."
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v6
