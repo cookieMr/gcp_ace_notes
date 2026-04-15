@@ -10,19 +10,52 @@ Cloud Profiler is a statistical, low-overhead tool that continuously profiles th
 
 - **Primary Purpose:** To identify specific functions or lines of code that are consuming the most resources (CPU, Memory) to optimize performance and reduce costs.
 - **How it Works:** A small agent runs inside your application and sends profiling data to the Profiler backend.
-- **Low Overhead:** Designed to run in production with very low impact (typically less than 5%).
+- **Low Overhead:** Designed to run in _production_ with very low impact (typically less than 5%).
 
 ## 2. Key Concepts
 
-- **Profile:** Data representing resource usage over a short period (usually 10 seconds).
+- **Profile:** Data representing resource usage over a short period (default: 10 seconds, configurable).
 - **Flame Graph:** The primary visualization tool.
   - **Width:** Represents the percentage of the resource consumed.
-  - **Vertical Axis:** Represents the call stack.
+  - **Vertical Axis:** Shows function call hierarchy (parent functions at top, callees below).
 - **Continuous Profiling:** Cloud Profiler is always-on in production.
 
----
-
 - [Flame Graph - Google Cloud Documentation](https://docs.cloud.google.com/profiler/docs/concepts-flame)
+- [Profiler Concepts - Google Cloud Documentation](https://cloud.google.com/profiler/docs/)
+
+### Enabling the Profiler Agent
+
+The profiler agent must be included in your application code:
+
+| Environment          | How to Enable                                                |
+| -------------------- | ------------------------------------------------------------ |
+| Compute Engine / GKE | Install Cloud Profiler library and configure service account |
+| App Engine           | Automatically available for supported runtimes               |
+| Cloud Run            | Install Cloud Profiler library                               |
+| Cloud Functions      | Install Cloud Profiler library                               |
+
+### Java Example
+
+Add Maven dependency:
+```xml
+<dependency>
+    <groupId>com.google.cloud.profiler</groupId>
+    <artifactId>cloud-profiler-java-agent</artifactId>
+    <version>2.3.1</version>
+</dependency>
+```
+
+Add to startup flags (VM options):
+```bash
+-javaagent:/path/to/cloud-profiler-java-agent.jar
+```
+
+Or via Spring Boot `application.properties`:
+```
+spring.cloud.gcp.profiler.enabled=true
+```
+
+- [Profiling Java - Google Cloud Documentation](https://docs.cloud.google.com/profiler/docs/profiling-java#standard-environment)
 
 ## 3. Supported Environments and Languages
 
@@ -41,8 +74,9 @@ Data collected depends on the language:
 
 - **CPU Time:** Time spent by the CPU executing a function.
 - **Wall Time:** Total time elapsed during execution (includes waiting for I/O).
-- **Heap:** Amount of memory allocated in the heap.
-- **Allocated Heap:** Total memory allocated during the profiling period.
+- **Heap:** Amount of memory currently in use (live objects only).
+- **Allocated Heap:** Total memory allocated during profiling (includes freed objects) - useful for identifying memory leaks.
+- **Heap Allocation Rate:** How fast memory is being allocated over time.
 - **Threads:** Number of active threads.
 
 ## 5. Security and IAM
@@ -55,12 +89,44 @@ Data collected depends on the language:
 ## 6. Essential `gcloud` Commands
 
 - **Enable API:** `gcloud services enable cloudprofiler.googleapis.com`
-- **Check Status:** Profiler is primarily managed via the Cloud Console UI.
+- **List profiles:** `gcloud profiler profiles list`
+- **Profile data is primarily viewed via:** Cloud Console (Cloud Run → Profiler, or direct Profiler dashboard)
 
-## 7. Exam Tips
+### Troubleshooting
+
+| Issue               | Solution                                                           |
+| ------------------- | ------------------------------------------------------------------ |
+| No profiling data   | Check service account has `roles/cloudprofiler.agent`              |
+| Agent not starting  | Verify the profiler library is correctly installed and initialized |
+| Missing permissions | Ensure IAM roles are properly assigned to the service account      |
+
+## 7. GCP Observability Tools Comparison
+
+| Tool               | Purpose                         | What it Answers                              |
+| ------------------ | ------------------------------- | -------------------------------------------- |
+| **Cloud Profiler** | Code-level performance analysis | Which function is using the most CPU/memory? |
+| **Cloud Trace**    | Distributed tracing             | Where is latency in my service calls?        |
+| **Cloud Debugger** | Live debugging                  | What is the state of my code at this moment? |
+
+## 8. Exam Tips
 
 - **Profiler vs. Trace:**
   - **Cloud Trace:** Identifies latency bottlenecks _between_ services.
   - **Cloud Profiler:** Identifies performance issues _within_ a service (code level).
 - **Production Use:** If a question mentions optimizing code in a production environment with minimal overhead, choose **Cloud Profiler**.
 - **Agent Requirement:** Cloud Profiler **always requires** an agent or library to be included in your application code.
+- **Dashboard Location:** Profiles are viewed in Cloud Console under **Cloud Profiler** or via **Cloud Run → Profiler**.
+
+## 9. Practice Questions
+
+**Q1:** A production service shows high CPU usage but you cannot reproduce it locally. Which GCP tool should you use?
+
+> **Answer:** Cloud Profiler
+
+**Q2:** You need to identify which function in your Java application is causing a memory leak. The service is running on GKE. What do you check?
+
+> **Answer:** Cloud Profiler - look at Heap and Allocated Heap profiles
+
+**Q3:** You want to understand why API response times are high across multiple microservices. What should you use?
+
+> **Answer:** Cloud Trace (not Profiler - this is about inter-service latency, not code-level issues)
