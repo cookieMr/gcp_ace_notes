@@ -167,7 +167,6 @@ Firestore supports:
 - Server-side Aggregations: `COUNT()`, `SUM()`, and `AVG()`.
   > Aggregations are highly efficient; `COUNT()` costs 1 index read per 1,000 documents.
 - Vector Search: Supports similarity searches (KNN) for GenAI/LLM embeddings.
-- Gemini Integration: Use Gemini to generate complex Firestore queries from natural language.
 
 ## 13. Backups and Exports
 

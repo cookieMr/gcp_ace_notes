@@ -12,7 +12,6 @@ Cloud Storage is Google Cloud's object storage service for storing unstructured 
   - **Global Namespace:** Bucket names must be globally unique across all of Google Cloud.
   - **Durability:** Designed for 99.999999999% (11 nines) annual durability.
   - **Consistency:** Provides strong global consistency for all operations (read-after-write, list-after-write).
-  - **Gemini Integration:** Gemini in the Cloud Console can help generate lifecycle rules, explain bucket configurations, and suggest storage optimizations.
 
 ## 2. Bucket Locations
 

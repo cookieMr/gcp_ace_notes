@@ -177,7 +177,41 @@ gcloud pubsub subscriptions update SUB_NAME \
 gcloud pubsub topics update TOPIC_NAME --enable-message-ordering
 ```
 
-## 8. Comparison with Alternatives
+## 8. Java Code Example
+
+Add a dpendency into the `pom.xml`:
+
+```xml
+<dependency>
+    <groupId>com.google.cloud</groupId>
+    <artifactId>spring-cloud-gcp-starter-pubsub</artifactId>
+</dependency>
+```
+
+Using Pub/Sub Template in Java:
+
+```java
+@Service
+@RequiredArgsConstructor
+public class MessagingService {
+
+    private final PubSubTemplate pubSubTemplate;
+
+    public void sendWithHeaders(String topic, String payload) {
+        var headers = Map.of(
+            "origin", "spring-boot-app",
+            "priority", "high",
+            "correlation-id", "uuid-1234");
+
+        pubSubTemplate.publish(topic, payload, headers)
+            .addCallback(
+                result -> System.out.println("Message sent successfully! ID: " + result),
+                ex -> System.err.println("Failed to send: " + ex.getMessage()));
+    }
+}
+```
+
+## 9. Comparison with Alternatives
 
 | Feature         | Pub/Sub                  | Kafka (Confluent)               | RabbitMQ              |
 | --------------- | ------------------------ | ------------------------------- | --------------------- |
@@ -186,7 +220,7 @@ gcloud pubsub topics update TOPIC_NAME --enable-message-ordering
 | **Scalability** | Auto                     | Manual                          | Manual                |
 | **Use Case**    | Event-driven, serverless | High-throughput streaming       | Traditional messaging |
 
-## 9. Exam Prep Summary
+## 10. Exam Prep Summary
 
 ### Key Points to Remember
 
@@ -215,6 +249,6 @@ gcloud pubsub topics update TOPIC_NAME --enable-message-ordering
 | Message deleted after ACK | Message is removed immediately after acknowledgement       |
 | Same subscription         | Each subscriber needs its **own subscription** for fan-out |
 
-## 10. External Links
+## 11. External Links
 
 - [Pub/Sub - The Cloud Girl](https://www.thecloudgirl.dev/data-analytics/cloud-pub/sub)

@@ -1,5 +1,9 @@
 # Artifact Registry: ACE Exam Study Guide (2026)
 
+![Artifact Registry](images/artifact_registry.png)
+
+_Image source: Google Cloud Documentation_
+
 ## 1. Artifact Registry Overview
 
 Artifact Registry is the evolution of Container Registry (GCR), providing a single, secure, and managed place to store and manage build artifacts (container images, language packages, and OS packages).
@@ -9,6 +13,19 @@ Artifact Registry is the evolution of Container Registry (GCR), providing a sing
   - **Secure:** Supports vulnerability scanning, Binary Authorization, and fine-grained IAM controls.
   - **Regional:** Repositories are regional or multi-regional, unlike the project-wide nature of GCR.
   - **Replacement for GCR:** Google recommends using Artifact Registry for all new projects.
+
+| Feature                  | Artifact Registry (AR)                                              | Google Container Registry (GCR)          |
+| ------------------------ | ------------------------------------------------------------------- | ---------------------------------------- |
+| Status                   | Current, fully supported; recommended for all new workloads Legacy; | in maintenance mode                      |
+| Supported Artifact Types | Containers, Maven, npm, Python, generic artifacts                   | Containers only                          |
+| Repository Structure     | Regional or multi‑regional repositories                             | Multi‑regional buckets (us, eu, asia)    |
+| IAM & Permissions        | Fine‑grained, repo‑level IAM                                        | Bucket‑level IAM (coarse)                |
+| VPC‑SC Support           | Full support                                                        | Limited                                  |
+| Security Scanning        | Built‑in scanning + deeper integration with Security Command Center | Basic container scanning                 |
+| Performance              | Faster pulls, optimized caching, regional isolation                 | Older architecture, slower under load    |
+| Tag & Version Management | More flexible; supports immutability policies                       | Basic tagging                            |
+| Pricing Model            | Storage + network egress (per repo)                                 | Storage + network egress (per bucket)    |
+| Recommended Use          | All new container and artifact storage                              | Only for legacy workloads; migrate to AR |
 
 ## 2. Core Concepts
 
@@ -28,8 +45,7 @@ Artifact Registry is the evolution of Container Registry (GCR), providing a sing
 - **Vulnerability Scanning:** Automatically scans container images for known security vulnerabilities.
 - **Binary Authorization:** Integration with GKE ensures only trusted, scanned images are deployed.
 - **CMEK (Customer-Managed Encryption Keys):** Allows you to encrypt your artifacts with your own keys from Cloud KMS.
-- **Fine-grained IAM:** Permissions can be granted at the *repository level*, whereas GCR permissions were tied to the underlying Cloud Storage bucket.
-- **Gemini Integration:** Gemini can assist in analyzing vulnerability scan results and providing remediation advice.
+- **Fine-grained IAM:** Permissions can be granted at the _repository level_, whereas GCR permissions were tied to the underlying Cloud Storage bucket.
 
 ## 5. Repository Structure (Naming)
 

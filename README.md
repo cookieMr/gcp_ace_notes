@@ -1,5 +1,7 @@
 # Google Cloud Associate Cloud Engineer (ACE) Study Guide
 
+![Google Cloud Platform - Associate Cloud Engineer](https://miro.medium.com/v2/resize:fit:640/format:webp/0*XdPsBsUseYD08_Ne)
+
 **Note: These are my personal study notes that I am using to prepare myself for the Google Cloud Associate Cloud Engineer (ACE) certification exam.**
 
 ## Read the Book

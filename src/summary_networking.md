@@ -4,8 +4,6 @@
 
 _Image source: Google Cloud Documentation_
 
----
-
 - [Google Cloud networking Overview - The Cloud Girl](https://www.thecloudgirl.dev/networking/networking-overview)
 
 ### **[VPC Networks](./vpc_networks.md)**

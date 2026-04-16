@@ -1,5 +1,9 @@
 # Cloud Scheduler: ACE Exam Study Guide (2026)
 
+![Cloud Scheduler](images/cloud_scheduler.png)
+
+_Image source: Google Cloud Documentation_
+
 ## 1. Cloud Scheduler Overview
 
 Cloud Scheduler is a fully managed enterprise-grade cron job service. It allows you to schedule virtually any job, including batch, big data, and cloud infrastructure operations.
@@ -9,7 +13,6 @@ Cloud Scheduler is a fully managed enterprise-grade cron job service. It allows 
   - **Reliability:** Guaranteed at-least-once delivery to your targets.
   - **Unified:** Provides a single interface to manage all your scheduled jobs.
   - **PaaS Nature:** It is a serverless product; you pay per job per month.
-  - **Gemini Integration:** Use Gemini in the Cloud Console to generate cron schedules from natural language descriptions (e.g., "every first Monday of the month at 4 AM").
 
 ## 2. Target Types (How it triggers work)
 
@@ -32,7 +35,8 @@ Cloud Scheduler uses the standard Unix cron format: `* * * * *` (Minute, Hour, D
 
 - **Example:** `0 9 * * 1` runs every Monday at 9:00 AM.
 - **Timezone:** You can specify a timezone for the job (e.g., `UTC`, `America/New_York`). If not specified, it defaults to `UTC`.
-- **Natural Language:** With Gemini, you can now input "Daily at midnight" and have it automatically converted to `0 0 * * *`.
+
+For more details on `cron` see the [Crontab Guru](https://crontab.guru/).
 
 ## 4. Reliability and Retries
 
@@ -78,3 +82,55 @@ Cloud Scheduler uses the standard Unix cron format: `* * * * *` (Minute, Hour, D
 - **Triggering Serverless:** For Cloud Run or Cloud Functions, use the **HTTP target** with an **OIDC token** and a service account with the **Invoker** role.
 - **App Engine Region:** Cloud Scheduler requires an App Engine application to be initialized in the project (it uses the same underlying location). You cannot change this location later.
 - **Cron Format:** Be familiar with the 5-field cron syntax for basic scheduling questions.
+
+## 8. Limitations and Quotas
+
+- **Jobs per project:** Limited to a certain number per project (check current quotas in Cloud Console).
+- **Frequency:** Minimum interval is 1 minute between job executions.
+- **App Engine Dependency:** Requires App Engine to be enabled in the project for location assignment.
+- **Payload size:** Pub/Sub message body has size limits (typically 256KB).
+
+## 9. Cloud Scheduler vs Cloud Tasks
+
+| Feature        | Cloud Scheduler                | Cloud Tasks                      |
+| -------------- | ------------------------------ | -------------------------------- |
+| Type           | Fully managed cron service     | Task queue service               |
+| Use case       | Time-based triggers            | Work queue processing            |
+| Target control | Simple HTTP/Pub/Sub            | More control over task execution |
+| Retry behavior | Configurable backoff           | Queue-based with automatic retry |
+| Best for       | Scheduled jobs, periodic tasks | Decoupled async workloads        |
+
+**When to use Cloud Tasks:** If you need to process large volumes of tasks, want finer control over queue behavior, or need to throttle task execution rate.
+
+## 10. Troubleshooting
+
+- **Job not triggering:** Check job status (`gcloud scheduler jobs describe`), verify the schedule syntax, ensure the target service is accessible.
+- **Authentication failures:** Verify the service account has the correct IAM roles (e.g., `roles/run.invoker` for Cloud Run).
+- **Location errors:** Confirm App Engine is initialized in the project with the correct region.
+- **Use Logs:** Cloud Scheduler logs executions in Cloud Logging - check for error messages under the specific job.
+
+## 11. Job States and Lifecycle
+
+- **Enabled:** Job is active and will execute on schedule.
+- **Disabled:** Job exists but won't execute (can be re-enabled).
+- **Paused:** Job is temporarily paused (can be resumed).
+- **Job History:** Use Cloud Logging to view past executions, success/failure status, and error details.
+
+> While both `disabled` and `paused` states stop a job from running, the difference lies in _intent_ and _behavior_ regarding missed schedules.
+
+![Cloud Scheduler States](images/cluod_scheduler_states_diagram.png)
+
+_Image source: Own work (Mermaid diagram)._
+
+## 12. Real-World Use Cases
+
+- **Data pipeline automation:** Trigger a Cloud Function or Dataflow job nightly to process daily data.
+- **Database maintenance:** Run a scheduled script to clean up old records or optimize tables.
+- **Report generation:** Send a daily email report by triggering a Cloud Run service that generates and emails reports.
+- **Resource cleanup:** Automatically delete old temporary files from Cloud Storage every week.
+- **Instance scheduling:** Start/stop Compute Engine instances during business hours to save costs.
+
+## 13. Additional IAM Roles
+
+- `roles/iam.serviceAccountUser`: Required to impersonate or use a service account for job authentication.
+- `roles/pubsub.publisher`: Needed when creating Pub/Sub target jobs to publish messages to topics.

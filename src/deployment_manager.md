@@ -1,11 +1,15 @@
 # Deployment Manager: ACE Exam Study Guide (2026)
 
+![Deployment Manager](images/google-cloud-deployment-manager.png)
+
+_Image source: [Vecta.io](https://vecta.io/symbols/4/google-cloud-platform/20/google-cloud-deployment-manager)_
+
 ## 1. Deployment Manager Overview
 
 Deployment Manager is an Infrastructure as Code (IaC) service that allows you to automate the creation and management of Google Cloud resources.
 
 - **Key Characteristics:**
-  - **Declarative:** You specify "what" the infrastructure should look like, and Google Cloud handles the "how" to create it.
+  - **Declarative:** You specify _what_ the infrastructure should look like, and Google Cloud handles the _how_ to create it.
   - **Infrastructure as Code:** Allows you to version control and repeatably deploy your infrastructure.
   - **Native to GCP:** Fully integrated with Google Cloud services and IAM.
 
@@ -16,6 +20,8 @@ Deployment Manager is an Infrastructure as Code (IaC) service that allows you to
 - **Resources:** Individual GCP services (e.g., a VM, a Bucket) defined in the configuration.
 - **Types:** The specific kind of resource being created (e.g., `compute.v1.instance`).
 - **Properties:** The settings for a resource (e.g., `machineType`, `zone`).
+- **Manifest:** A file created after deployment that shows the final applied configuration - useful for auditing.
+- **Outputs:** Exposes resource properties (e.g., IP address, URL) after creation for reference.
 
 ## 3. Configuration File Structure (YAML)
 
@@ -37,7 +43,30 @@ Templates allow you to abstract logic and make configurations more dynamic.
 
 - **Jinja2:** Simpler, logic-based templating.
 - **Python:** More powerful, allows for complex calculations and logic.
-- **Importing:** Templates must be explicitly imported into the main YAML configuration file.
+- **Importing:** Templates must be explicitly imported into the main YAML configuration file using `imports` and `resources`.
+- **Dependencies:** Resources can reference each other; Deployment Manager infers the creation order based on references.
+- **basePath:** Used in templates to specify how to access the template file path.
+
+### 4.1. Example: Python Template
+
+```python
+def generate_config(context):
+  """Generate resource configuration."""
+  return [
+    {
+      'name': context.properties['instanceName'],
+      'type': 'compute.v1.instance',
+      'properties': {
+        'zone': context.properties['zone'],
+        'machineType': 'zones/' + context.properties['zone'] + '/machineTypes/n1-standard-1',
+        'networkInterfaces': [{
+          'network': 'global/networks/default',
+          'accessConfigs': [{'type': 'ONE_TO_ONE_NAT'}]
+        }]
+      }
+    }
+  ]
+```
 
 ## 5. Deployment Lifecycle
 
@@ -48,8 +77,10 @@ Templates allow you to abstract logic and make configurations more dynamic.
 
 ## 6. Security and IAM
 
-- **Service Account:** Deployment Manager uses the **Google Cloud APIs Service Agent** by default to create resources on your behalf.
-  - _Exam Tip:_ If Deployment Manager fails to create a resource, ensure this service agent has the necessary IAM permissions.
+- **Service Account:** Deployment Manager uses the _Cloud APIs Service Agent_ by default to create resources on your behalf.
+  - Default: `service-[PROJECT_NUMBER]@cloudservices.gserviceaccount.com`
+  - **Exam Tip:** If Deployment Manager fails to create a resource, ensure this service agent has the necessary IAM permissions.
+- **Logging:** All deployment operations are logged in Cloud Logging for auditing.
 - **IAM Roles:**
   - `roles/deploymentmanager.admin`: Full control.
   - `roles/deploymentmanager.editor`: Create and manage deployments.
@@ -73,5 +104,6 @@ Templates allow you to abstract logic and make configurations more dynamic.
 - **YAML vs. Templates:** Remember that the main config is always **YAML**, but reusable parts are **Jinja2** or **Python**.
 - **Declarative Nature:** If a question asks how to ensure a specific state for infrastructure repeatably, the answer is often **Deployment Manager** (or Terraform).
 - **Terraform vs. Deployment Manager:** While both are IaC, Deployment Manager is the Google-native tool. If a question specifically mentions "GCP-native templates," it's Deployment Manager.
+  - **Note:** For new projects, Google recommends Terraform over Deployment Manager.
 - **Preview Mode:** Always use the `--preview` flag to validate changes before applying them to production.
 - **Resource Types:** Familiarize yourself with the syntax for types like `compute.v1.instance` or `storage.v1.bucket`.
