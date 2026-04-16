@@ -66,6 +66,41 @@ Memorystore instances are **VPC-only** (no public IPs).
   - `EXPIRE key 60` (Set after write)
     > TTL is simply an expiration timer for a key. When you set a TTL, Redis automatically deletes the key after the specified number of seconds. It’s used to control cache freshness, prevent stale data, and free memory without manual cleanup.
 
+### 4.1. Key invaldation in case of max memory usage
+
+When Redis hits its maxmemory limit, it must _validate_ which keys to throw away. Redis doesn't use a perfect LRU (which is memory-heavy). Tt uses an Approximated LRU algorithm.
+
+- Redis samples `N` keys (default is `5`) and evicts the one with the oldest idle time among those samples.
+- Key Setting: `maxmemory-samples <number>`
+  - 5 (Default): Good balance of CPU vs. accuracy.
+  - 10: Closer to "True LRU" but higher CPU overhead.
+
+These settings determine what happens when you run out of RAM.
+
+| Policy       | Description                                                        |
+| ------------ | ------------------------------------------------------------------ |
+| allkeys-lru  | Evicts the Least Recently Used key among all keys.                 |
+| volatile-lru | Evicts the Least Recently Used key among keys with an expire set.  |
+| allkeys-lfu  | Evicts the Least Frequently Used (hits per second) among all keys. |
+| volatile-ttl | Evicts the key with the shortest time-to-live (TTL).               |
+| noeviction   | Returns an error on write operations (Safest for data integrity).  |
+
+To set the Eviction Policy (maxmemory-policy):
+
+```bash
+gcloud redis instances update [INSTANCE_ID] \
+    --region=[REGION] \
+    --redis-config=maxmemory-policy=allkeys-lru
+```
+
+To enable Lazy Freeing (for performance):
+
+```bash
+gcloud redis instances update [INSTANCE_ID] \
+    --region=[REGION] \
+    --redis-config=lazyfree-lazy-eviction=yes,lazyfree-lazy-expire=yes
+```
+
 ## 5. Authentication and Monitoring
 
 - **Security:**

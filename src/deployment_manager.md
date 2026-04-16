@@ -75,6 +75,29 @@ def generate_config(context):
 - **Update:** Modifying an existing deployment. Deployment Manager determines the difference and applies changes.
 - **Delete:** Removes all resources associated with a deployment.
 
+### 5.1. Deleting Deployment Manager
+
+#### Default Behavior (Delete Policy: `DELETE`)
+
+When you delete a deployment using the Google Cloud Console or the standard CLI command, the default behavior is to delete the deployment metadata and all underlying resources (e.g., VM instances, databases, firewalls) created by that deployment.
+
+> Warning: This operation is permanent and cannot be undone.
+
+#### Alternative Behavior (Delete Policy: `ABANDON`)
+
+If you want to remove the deployment record from Deployment Manager but keep the actual resources running in your project, you must explicitly use the `ABANDON` policy via the gcloud CLI or API.
+
+```bash
+gcloud deployment-manager deployments delete [DEPLOYMENT_NAME] --delete-policy=ABANDON
+```
+
+> **Use Case**: This is helpful if you want to stop managing resources via Deployment Manager (perhaps to switch to Terraform or manual management) without destroying your infrastructure.
+
+| Action          | Policy             | Result for Resources | Result for Deployment Metadata |
+| --------------- | ------------------ | -------------------- | ------------------------------ |
+| Standard Delete | `DELETE` (Default) | Deleted              | Removed                        |
+| Abandon         | `ABANDON`          | Kept (Remain active) | Removed                        |
+
 ## 6. Security and IAM
 
 - **Service Account:** Deployment Manager uses the _Cloud APIs Service Agent_ by default to create resources on your behalf.
