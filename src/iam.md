@@ -1,5 +1,9 @@
 # Identity and Access Management (IAM): ACE Exam Study Guide (2026)
 
+![IAM](images/identity_and_access_management.png)
+
+_Image source: Google Cloud Documentation_
+
 ## 1. IAM Overview
 
 Identity and Access Management (IAM) allows you to manage access control by defining **who** (identity) has **what access** (role) to **which resource**.
@@ -44,8 +48,11 @@ Service accounts are special identities used by applications and virtual machine
   - **Google-managed:** Used by GCP services to perform actions on your behalf.
 - **Key Concepts:**
   - **Service Account User Role (`roles/iam.serviceAccountUser`):** To allow one service account to use another (e.g., attach it to a resource), grant the Service Account User role (`roles/iam.serviceAccountUser`) on the target service account to the acting service account or user.
+  - **Service Account Token Creator (`roles/iam.serviceAccountTokenCreator`):** Allows impersonating (acting as) another service account. Required for workloads that need to generate tokens on behalf of another SA.
   - **Service Account Keys:** Avoid downloading JSON keys for production. Use Identity Federation or attached service accounts instead.
   - **Workload Identity:** The recommended way for GKE workloads to access GCP services securely.
+  - **Service Account Impersonation:** When User A impersonates Service Account B, User A gains all permissions that SA B has. Requires `roles/iam.serviceAccountTokenCreator` on SA B.
+- **Exam Tip:** For a GKE pod to access Cloud Storage, use Workload Identity (recommended) instead of attaching a service account key to the node.
 - **Exam Tip:** When a VM needs to access a Cloud Storage bucket, do not use user credentials or hardcoded keys. Attach a service account with the `roles/storage.objectViewer` role to the VM.
 
 ## 4. Principle of Least Privilege (PoLP)
@@ -58,6 +65,29 @@ The Principle of Least Privilege states that a principal should have only the mi
   - Use **IAM Conditions** to restrict access based on attributes like time, resource name, or IP address.
   - **IAM Recommender:** Regularly audit permissions using the AI-powered IAM Recommender to identify and remove unused roles.
   - **Policy Troubleshooter:** Use the Policy Troubleshooter to understand why a user has or doesn't have a specific permission.
+
+## 4.1. IAM Conditions
+
+IAM Conditions provide fine-grained access control by adding conditional logic to role bindings.
+
+- **Condition Types:**
+  - **Attribute-based:** Evaluate resource attributes (e.g., `resource.name.startsWith("projects/prod-")`)
+  - **Time-based:** Restrict access to specific dates/times (e.g., `now() < timestamp("2026-12-31T00:00:00Z")`)
+  - **Request attributes:** Check IP addresses, traffic origin, etc.
+- **Example Condition:** Grant `roles/storage.objectViewer` only for buckets in production:
+  ```
+  resource.name.startsWith("projects/_/buckets/prod-")
+  ```
+- **Exam Tip:** IAM Conditions are evaluated at request time. If the condition evaluates to false, access is denied.
+
+## 4.2. Denied Permissions (Security Tenure)
+
+Google Cloud supports **denied permissions** to explicitly block access even when a role would normally grant it.
+
+- **Purpose:** Implement "deny" logic to prevent access in specific scenarios.
+- **Example:** Deny `compute.instances.delete` for all users in the production project.
+- **Admin Access:** Requires Organization Admin or specialized roles to configure.
+- **Exam Tip:** Denied permissions take precedence over allowed permissions in the evaluation order.
 
 ## 5. Resource Hierarchy and Inheritance
 
@@ -74,11 +104,20 @@ IAM policies are hierarchical and permissions are inherited.
 
 ## 6. IAM Best Practices for 2026
 
-- **Gemini for IAM:** Leverage Gemini in the Google Cloud Console to explain complex IAM policies and suggest the most restrictive roles for a given set of permissions.
 - **Use Groups:** Always assign roles to Google Groups rather than individual users to simplify management.
-- **Audit Logs:** Use Cloud Audit Logs to track "Who did what, where, and when."
+- **Audit Logs:** Use Cloud Audit Logs to track "Who did what, where and when."
 - **Avoid Default Service Accounts:** Create custom service accounts with specific roles instead of using the broad default accounts.
 - **IAP (Identity-Aware Proxy):** Use IAP to control access to applications and VMs without relying on VPNs or external IP addresses.
+- **Public Access Prevention:** Use the "Public Access Prevention" feature to prevent Cloud Storage buckets or BigQuery datasets from becoming publicly accessible.
+- **IAM Recommender:** Enable to automatically recommend removing over-grantive permissions based on usage patterns.
+- **Domain Restricted Sharing:** Restrict sharing outside your organization by enabling Domain Restricted Sharing on the Organization resource.
+
+## 6.1. Policy Troubleshooter & IAM Debugging
+
+- **Policy Troubleshooter:** Diagnose why a principal has or lacks specific permissions. Use: `gcloud policy troubleshooter` or console.
+- **IAM Analytic:** View which roles grant a specific permission to a principal.
+- **Dry Run Policy:** Test IAM policies before applying them using the Policy Simulator.
+- **Exam Tip:** When debugging access issues, check: (1) Project-level permissions, (2) Resource-level permissions, (3) Service Account User role, (4) IAM Conditions.
 
 ## 7. Essential `gcloud` Commands
 
@@ -87,6 +126,8 @@ IAM policies are hierarchical and permissions are inherited.
 - **Remove Role Binding:** `gcloud projects remove-iam-policy-binding [PROJECT_ID] --member='user:[EMAIL]' --role='roles/viewer'`
 - **Create Service Account:** `gcloud iam service-accounts create [SA_NAME] --display-name="[DISPLAY_NAME]"`
 - **List Service Accounts:** `gcloud iam service-accounts list`
+- **Grant SA User Role to another SA:** `gcloud projects add-iam-policy-binding [PROJECT_ID] --member='serviceAccount:[SA_EMAIL]' --role='roles/iam.serviceAccountUser'`
+- **Add IAM Condition:** `gcloud projects add-iam-policy-binding [PROJECT_ID] --member='user:[EMAIL]' --role='roles/viewer' --condition='expression=resource.name.startsWith("projects/_/buckets/prod-"),title=Prod-Only'`
 
 ## 8. External Links
 

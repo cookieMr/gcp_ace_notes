@@ -1,5 +1,9 @@
 # Secret Manager: ACE Exam Study Guide (2026)
 
+![Secret Manager](images/secret_manager.png)
+
+_Image source: Google Cloud Documentation_
+
 ## 1. Secret Manager Overview
 
 Secret Manager is a secure and convenient storage system for API keys, passwords, certificates, and other sensitive data. It provides a central source of truth for secrets across Google Cloud.
@@ -50,17 +54,46 @@ The exam often tries to confuse these two services.
 - Secret Manager: Use for sensitive strings (API keys, passwords, database credentials, SSL certificates). You store the actual secret data here.
 - Cloud KMS: Use for cryptographic keys (keys used to encrypt/decrypt large files, disks, or database tables). You do not store your database password in KMS; you use KMS to encrypt the password or the disk it sits on.
 
-## 6. Security Best Practices and Gemini
+## 6. Security Best Practices
 
-- Encryption: Secrets are encrypted at rest by default. You can use CMEK (Cloud KMS) to gain more control over the encryption of your secrets.
-- Audit Logging: Every access to a secret version is recorded in Cloud Audit Logs.
-- Avoid "Latest": In production, it is often safer to pin an application to a specific secret version (e.g., v5) to prevent accidental breaking changes.
-- Gemini for Secret Manager: Use Gemini in the Cloud Console to audit secret access patterns and receive recommendations for rotation and IAM policy improvements.
+- **Encryption:** Secrets are encrypted at rest by default. You can use CMEK (Cloud KMS) to encrypt with your own key.
+  - Use `--kms-key-name` when creating a secret for CMEK.
+- **Audit Logging:** All secret access is recorded in Cloud Audit Logs (Admin Activity, Data Access).
+- **Avoid "Latest":** Pin applications to specific versions (e.g., `v5`) to prevent breaking changes.
+- **Expiration:** Set TTL on secret versions to auto-expire sensitive data.
+- **Secret Rotation:** Use Cloud Scheduler + Cloud Function to rotate secrets periodically.
+
+## 6a. Automated Secret Rotation
+
+- **Pattern:** Cloud Scheduler triggers a Cloud Function.
+- **Function:** Fetches new secret from source, creates new version.
+- **Application:** Reads new version automatically.
+- **Benefit:** Automatic credential rotation without downtime.
+
+## 6b. Binary Secrets
+
+- Secret Manager can store binary data (certificates, keys).
+- Encode binary as base64 when using CLI: `--data-file=-` (read from stdin).
+- Decode base64 on retrieval if needed.
 
 ## 7. Essential `gcloud` Commands
 
-- Create a Secret: `gcloud secrets create [SECRET_ID] --replication-policy="automatic"`
-- Add a Secret Version: `gcloud secrets versions add [SECRET_ID] --data-file="[FILE_PATH]"`
-- Access the Latest Version: `gcloud secrets versions access latest --secret="[SECRET_ID]"`
-- Grant Access to a Service Account: `gcloud secrets add-iam-policy-binding [SECRET_ID] --member="serviceAccount:[SA_EMAIL]" --role="roles/secretmanager.secretAccessor"`
-- List Secrets: `gcloud secrets list`
+- **Create a Secret:** `gcloud secrets create [SECRET_ID] --replication-policy="automatic"`
+- **Create with CMEK:** `gcloud secrets create [SECRET_ID] --replication-policy="automatic" --kms-key-name=[KMS_KEY]`
+- **Add a Secret Version:** `gcloud secrets versions add [SECRET_ID] --data-file="[FILE_PATH]"`
+- **Access Latest Version:** `gcloud secrets versions access latest --secret="[SECRET_ID]"`
+- **Access Specific Version:** `gcloud secrets versions access [VERSION] --secret="[SECRET_ID]"`
+- **Grant Access to SA:** `gcloud secrets add-iam-policy-binding [SECRET_ID] --member="serviceAccount:[SA_EMAIL]" --role="roles/secretmanager.secretAccessor"`
+- **List Secrets:** `gcloud secrets list`
+- **Disable a Version:** `gcloud secrets versions disable [VERSION] --secret="[SECRET_ID]"`
+- **Enable a Version:** `gcloud secrets versions enable [VERSION] --secret="[SECRET_ID]"`
+- **Destroy a Version:** `gcloud secrets versions destroy [VERSION] --secret="[SECRET_ID]"`
+- **Describe Secret:** `gcloud secrets describe [SECRET_ID]`
+
+## 8. Service Integrations
+
+- **Cloud Build:** Reference secrets in Cloud Build triggers.
+- **Dataproc:** Mount secrets as configurations for Spark jobs.
+- **Composer (Airflow):** Pass secrets to DAGs using Secret Manager.
+- **GKE (CSI Driver):** Mount secrets as Kubernetes volumes (best practice).
+- **Terraform:** Use Secret Manager as a backend for provider credentials.

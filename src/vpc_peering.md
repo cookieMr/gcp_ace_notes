@@ -1,6 +1,6 @@
 # GCP VPC Peering and Shared VPC: ACE Exam Study Guide (2026)
 
-![Dilbert helps when no image for Serverless VPC Access can be found](images/00_image_is_needed.png)
+![Dilbert helps when no image for VPC Peering can be found](images/00_image_is_needed.png)
 
 _Image source: Dilbert.com_
 

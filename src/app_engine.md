@@ -21,20 +21,31 @@ App Engine is a fully managed _Platform as a Service (PaaS)_ for building and de
 ### Standard Environment
 
 - **Speed:** Starts in seconds. Scale-to-zero is supported.
-- **Infrastructure:** Runs in sandboxed environments (specific versions of Node.js, Python, Java, etc.).
-- **Constraints:** You cannot modify the underlying OS or write to the local filesystem (except `/tmp`). No SSH access.
-- **Cost:** Generally cheaper for apps with intermittent traffic due to rapid scaling and scale-to-zero.
-- **Best For:** Standard web apps, high-scale APIs with varying traffic.
+- **Infrastructure:** Runs in sandboxed environments (specific versions of Node.js, Python, Java, Go, PHP, Ruby).
+- **Instance Classes:** M1 (high memory), M2 (high CPU), F1-F4 (default). Determines CPU/memory ratio.
+  | Class | Memory | CPU | Cost |
+  |-------|--------|-----|------|
+  | F1 | 256MB | 600MHz | Cheapest |
+  | F2 | 512MB | 1.2GHz | |
+  | F4 | 1GB | 2.4GHz | |
+  | M1 | 1GB | 600MHz | High memory |
+  | M2 | 2GB | 1.2GHz | High memory |
+- **Constraints:** Cannot modify OS; write-only to local filesystem (`/tmp`). No SSH access.
+- **Cost:** Cheaper for intermittent traffic; scale-to-zero saves money.
+- **Best For:** Web apps, APIs with varying traffic, rapid development.
 
 ### Flexible Environment
 
-- **Speed:** Starts in minutes (uses _Compute Engine VMs_). No scale-to-zero.
-- **Infrastructure:** Runs your code in Docker containers. You can use any language or version.
-- **Machine Types:** Supports modern N4 and C4 machine types for high-performance workloads.
-- **Capabilities:** You can modify the OS, access the local filesystem, and use SSH.
-- **Connectivity:** Can access resources in your VPC more easily than Standard.
-- **Cost:** More expensive; at least one instance must always be running.
-- **Best For:** Apps with consistent traffic, apps requiring custom libraries/OS-level dependencies, or those needing high CPU/Memory.
+- **Speed:** Starts in minutes (uses Compute Engine VMs). No scale-to-zero.
+- **Infrastructure:** Runs in Docker containers. Any language/version supported.
+- **Machine Types:** Uses custom machine types (not N4/C4 - those are Compute Engine).
+- **Capabilities:** Modify OS, access filesystem, SSH access.
+- **Health Checks:**
+  - `readiness_check`: When to route traffic to instance
+  - `liveness_check`: When to restart unhealthy instance
+- **Connectivity:** Easier VPC access than Standard.
+- **Cost:** More expensive; min 1 instance always running.
+- **Best For:** Apps with consistent traffic, custom dependencies, high CPU/memory needs.
 
 ## 3. App Engine Hierarchy
 
@@ -48,10 +59,29 @@ Understanding the relationship between components is essential for resource mana
 
 ## 4. Scaling Types
 
-- **Automatic Scaling:** Based on CPU, throughput, or latency. Supported by both _Standard_ and _Flexible_.
-  - Only Standard can scale to zero.
-- **Basic Scaling:** Only for _Standard_. Instances are created when a request is received and turned off when idle.
-- **Manual Scaling:** You specify the exact number of instances. Supported by both.
+| Type      | Standard | Flexible | Description                               |
+| --------- | -------- | -------- | ----------------------------------------- |
+| Automatic | Yes      | Yes      | Based on CPU, throughput, latency targets |
+| Basic     | Yes      | No       | On-demand; scale to zero when idle        |
+| Manual    | Yes      | Yes      | Fixed instance count                      |
+
+### Automatic Scaling Parameters
+
+```yaml
+automatic_scaling:
+  target_cpu_utilization: 0.6 # Scale when CPU > 60%
+  target_throughput_concurrent_requests: 100 # Or use this
+  min_instances: 0 # Standard: 0 allows scale-to-zero
+  max_instances: 10
+```
+
+### Basic Scaling Parameters
+
+```yaml
+basic_scaling:
+  max_instances: 5
+  idle_timeout: 60s # Shutdown after idle
+```
 
 ## 5. Traffic Management
 
@@ -79,52 +109,127 @@ Understanding the relationship between components is essential for resource mana
 
 ## 6. Deployment and Configuration
 
-- **`app.yaml`**: The core configuration file used for deployment. Defines the runtime, scaling, environment variables, and handlers.
+- **`app.yaml`**: The core configuration file used for deployment. Defines runtime, scaling, handlers, and more.
 
-  _App Engine Flexible (Java) - example `app.yaml` file_
-  ```yaml
-  runtime: java
-  env: flex
+### Standard Environment Example
 
-  runtime_config:
-    jdk: openjdk21
+```yaml
+runtime: python312
+instance_class: F2
+automatic_scaling:
+  min_instances: 1
+  max_instances: 10
+  target_cpu_utilization: 0.7
 
-  automatic_scaling:
-    min_num_instances: 1
-    max_num_instances: 5
+env_variables:
+  ENV_NAME: "production"
 
-  resources:
-    cpu: 1
-    memory_gb: 2
-    disk_size_gb: 10
-  ```
+handlers:
+  - url: /static
+    static_dir: static_files
+  - url: /.*
+    script: auto
+
+warmup: enabled
+```
+
+### Flexible Environment Example
+
+```yaml
+runtime: java21
+env: flex
+
+automatic_scaling:
+  min_num_instances: 1
+  max_num_instances: 5
+
+resources:
+  cpu: 1
+  memory_gb: 2
+  disk_size_gb: 10
+
+readiness_check:
+  path: /ready
+  check_interval_sec: 5
+```
 
 - **Deployment**: Use `gcloud app deploy`. By default, this promotes the new version to handle 100% of traffic. Use `--no-promote` to deploy without switching traffic.
 
 ## 7. Networking and Security
 
 - **App Engine Firewall:** Control access by IP range (Allow or Deny).
-- **IAP (Identity-Aware Proxy):** Use to restrict access to the app based on IAM identities (users/groups) without modifying application code.
-- **VPC Access:** Use a **Serverless VPC Access Connector** (mostly for Standard) to allow the app to reach resources with private IPs (e.g., Cloud SQL, Memorystore).
-- **Service Accounts:** App Engine uses the **App Engine Default Service Account** (`project-id@appspot.gserviceaccount.com`) by default. It has broad "Editor" permissions; best practice is to use a custom service account.
+- **IAP (Identity-Aware Proxy):** Restrict access based on IAM identities without modifying application code.
+- **VPC Access:** Use a **Serverless VPC Access Connector** to reach resources with private IPs (Cloud SQL, Memorystore).
+  - Flexible has easier VPC connectivity than Standard.
+- **Service Accounts:**
+  - Default: **App Engine Default Service Account** (`project-id@appspot.gserviceaccount.com`) with broad Editor permissions.
+  - **Best Practice:** Create a custom service account with least-privilege permissions.
+  - Use `--service-account=YOUR-SA@PROJECT.iam.gserviceaccount.com` in deployment.
+- **Security Best Practices:**
+  - Never use the default service account in production
+  - Use IAP for user authentication
+  - Leverage firewall rules for IP-based access control
+  - Store secrets in Secret Manager, not in `app.yaml`
 
 ## 8. Essential `gcloud` Commands
 
-- **Initialize App:** `gcloud app create --region [REGION]`
-- **Deploy App:** `gcloud app deploy [YAML_FILE]`
-- **Deploy without traffic shift:** `gcloud app deploy --no-promote`
-- **Split Traffic:** `gcloud app services set-traffic [SERVICE] --splits [V1=0.5,V2=0.5]`
-- **Browse App:** `gcloud app browse`
-- **Check Logs:** `gcloud app logs read`
+| Command                                                              | Description                       |
+| -------------------------------------------------------------------- | --------------------------------- |
+| `gcloud app create --region [REGION]`                                | Initialize App Engine in a region |
+| `gcloud app deploy [YAML_FILE]`                                      | Deploy application                |
+| `gcloud app deploy --no-promote`                                     | Deploy without shifting traffic   |
+| `gcloud app services set-traffic [SERVICE] --splits [V1=0.5,V2=0.5]` | Split traffic                     |
+| `gcloud app browse`                                                  | Open app in browser               |
+| `gcloud app logs read`                                               | View application logs             |
+| `gcloud app versions list`                                           | List all versions                 |
+| `gcloud app services list`                                           | List all services                 |
+| `gcloud app instances list`                                          | List running instances            |
 
-## 9. Exam Tips & Comparison
+## 9. When to Use App Engine vs Alternatives
 
-- **App Engine vs. Cloud Run:** Use App Engine for traditional, stateful-ish web apps or when you want the simplest "push code" experience. Use Cloud Run for modern containerized microservices that need to scale to zero.
-- **Versioning:** Always deploy a new version for major changes. This allows for instant rollbacks if things go wrong.
-- **Region Lock:** You cannot change an App Engine app's region after it is created. You must create a new project to change the region.
+| Use Case                                   | Recommended Service |
+| ------------------------------------------ | ------------------- |
+| Traditional web apps, simple deployments   | App Engine Standard |
+| Containerized microservices, scale-to-zero | Cloud Run           |
+| Full Kubernetes control                    | GKE                 |
+| Long-running processes, custom hardware    | Compute Engine      |
+| App Engine Standard features + custom deps | App Engine Flexible |
 
-## 10. External Links
+### App Engine vs Cloud Run Quick Reference
+
+| Feature           | App Engine    | Cloud Run              |
+| ----------------- | ------------- | ---------------------- |
+| Scale to zero     | Standard only | Yes                    |
+| Container support | Flexible only | Yes (primary)          |
+| Managed SSL       | Yes           | Yes                    |
+| VPC access        | Via connector | Native (Knative)       |
+| Warmup requests   | Yes           | No (cold starts)       |
+| Minimum cost      | $0 (Standard) | ~$0 with scale-to-zero |
+
+## 10. Cost Optimization Tips
+
+1. **Use Standard environment** for intermittent traffic (scale-to-zero)
+2. **Set appropriate `min_instances`** only when cold start latency is critical
+3. **Choose correct instance classes** (F1-F4 vs M1-M2) based on your memory/CPU needs
+4. **Use `target_cpu_utilization`** instead of throughput for more efficient scaling
+5. **Deploy with `--no-promote`** when testing to avoid unnecessary traffic
+6. **Delete unused versions** after migration
+
+## 11. Exam Tips & Common Pitfalls
+
+- **Region Lock:** Cannot change region after creation; must create new project.
+- **Always deploy new versions** for major changes to enable instant rollbacks.
+- **Warmup requests** reduce cold start latency (Standard environment).
+- **Flexible requires at least 1 instance** - no scale-to-zero, factor this into cost.
+- **Handlers order matters** - first matching handler wins.
+- **Static files** must be served via handlers, not your application code.
+- **App Engine API**: Use `google.appengine.application` for programmatic scaling config.
+
+## 12. External Links
 
 - [App Engine - Google Cloud Documentation](https://docs.cloud.google.com/appengine/docs)
+- [App Engine Standard - Google Cloud](https://cloud.google.com/appengine/docs/standard)
+- [App Engine Flexible - Google Cloud](https://cloud.google.com/appengine/docs/flexible)
+- [Serverless VPC Access](https://cloud.google.com/vpc/docs/serverless-vpc-access)
 - [Youtube - Andrew Brown - App Engine](https://www.youtube.com/watch?v=OlAmyf8_4O4&t=10827s)
 - [App Engine - The Cloud Girl](https://www.thecloudgirl.dev/compute/app-engine)

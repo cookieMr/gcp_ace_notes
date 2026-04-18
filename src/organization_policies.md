@@ -1,5 +1,9 @@
 # Organization Policies: ACE Exam Study Guide (2026)
 
+![Dilbert helps when no image for Organization Policies can be found](images/00_image_is_needed.png)
+
+_Image source: Dilbert.com_
+
 ## 1. Organization Policies Overview
 
 Organization Policies provide centralized and programmatic control over your organization's cloud resources. They act as guardrails to ensure compliance and security across the entire resource hierarchy.
@@ -32,25 +36,67 @@ Policies follow the Google Cloud resource hierarchy.
 
 You should recognize these common constraints for the exam:
 
-- Resource Location Restriction: Restricts the physical locations where resources (VMs, buckets, etc.) can be created.
-  > The `constraints/gcp.resourceLocations` constraint allows you to specify which geographical locations resources can be created in. You can define a whitelist of regions (e.g., europe-west1, europe-west2) to ensure data residency requirements are met.
-- Disable Service Account Key Creation: Prevents users from creating external JSON keys for service accounts.
-- Disable External IP Addresses: Prevents Compute Engine instances from having external (public) IP addresses.
-- Restrict Shared VPC Host Projects: Limits which projects can be used as Shared VPC hosts.
-- Enforce Shielded VM: Requires all new VMs to use Shielded VM features for improved security.
+- **Resource Location Restriction:** Restricts the physical locations where resources (VMs, buckets, etc.) can be created.
+  - Constraint: `constraints/gcp.resourceLocations`
+  - Use case: Data residency compliance (e.g., EU-only data).
+- **Disable Service Account Key Creation:** Prevents users from downloading JSON keys for service accounts (improves security).
+  - Constraint: `constraints/iam.disableServiceAccountKeyCreation`
+- **Disable External IP Addresses:** Prevents VMs from having public IP addresses.
+  - Constraint: `constraints/compute.disableExternalIPAccess`
+- **Restrict Shared VPC Host Projects:** Limits which projects can beShared VPC hosts.
+  - Constraint: `constraints/compute.restrictShared VPCHostProjects`
+- **Enforce Shielded VM:** Requires all new VMs to use Shielded VM features.
+  - Constraint: `constraints/compute.requireShieldedVm`
+- **Allow Cloud NAT:** Forces all VMs to use Cloud NAT (no direct egress).
+  - Constraint: `constraints/compute.requireNatConfig`
+- **Disable VPC Auto Mode:** Prevents automatic VPC network creation.
+  - Constraint: `constraints/compute.skipDefaultNetworkCreation`
+- **Restrict CMEK:** Requires CMEK for specific services.
+  - Constraint: `constraints/storage.require CMEK`
+- **Disable Serial Port Access:** Blocks serial port access on VMs.
+  - Constraint: `constraints/compute.disableSerialPortAccess`
+- **Allowed SSH Key Sources:** Restricts which users can add SSH keys to metadata.
+  - Constraint: `constraints/compute.trustedImageProjects`
+- **Public Access Prevention:** Blocks public access to Cloud Storage buckets.
+  - Constraint: `storage.publicAccessPrevention`
+
+> **Exam Tip:** Organization Policy constraints are evaluated before IAM. If a policy denies, IAM cannot override it.
 
 ## 5. Advanced Features (2026 Focus)
 
-- Dry-run Mode: Allows you to test the impact of a policy change before enforcing it. This generates audit logs showing what would have been blocked without actually blocking it.
-- Tags-based Policies: Allows you to conditionally apply organization policies based on Tags attached to resources (e.g., apply a strict policy only to resources tagged with environment: production).
-- Gemini for Policy Analysis: Use Gemini in the Cloud Console to explain the impact of an Organization Policy on your existing resources and identify potential violations before they occur.
+- **Dry-run Mode:** Test a policy's impact without enforcing. Audit logs show what _would_ be blocked.
+- **Tags-based Policies:** Apply policies conditionally based on resource tags (e.g., stricter policy for `environment:prod` resources).
+- **List Policy Evaluation:** For list constraints, use `whitelist` (allow list) or `blacklist` (deny list) modes.
+- **Condition Support:** Use IAM-style conditions in org policies for advanced scenarios.
+
+## 5a. Common Constraint Reference
+
+| Constraint | Description | Type |
+|------------|-------------|------|
+| `gcp.resourceLocations` | Allowed resource locations | List |
+| `iam.disableServiceAccountKeyCreation` | Block SA key downloads | Boolean |
+| `compute.disableExternalIPAccess` | No public IPs on VMs | Boolean |
+| `compute.requireShieldedVm` | Require Shielded VM | Boolean |
+| `storage.publicAccessPrevention` | Block public access | Boolean |
+| `compute.skipDefaultNetworkCreation` | Block auto VPC creation | Boolean |
 
 ## 6. Essential `gcloud` Commands
 
-- List Available Constraints: `gcloud resource-manager org-policies list --organization=[ORG_ID]`
-- Describe Current Policy: `gcloud resource-manager org-policies describe [CONSTRAINT_NAME] --project=[PROJECT_ID]`
-- Set a Policy (from YAML): `gcloud resource-manager org-policies set-policy [POLICY_FILE].yaml --project=[PROJECT_ID]`
-- Delete a Policy: `gcloud resource-manager org-policies delete [CONSTRAINT_NAME] --project=[PROJECT_ID]`
+- **List Available Constraints:** `gcloud resource-manager org-policies list --organization=[ORG_ID]`
+- **Describe Current Policy:** `gcloud resource-manager org-policies describe [CONSTRAINT_NAME] --project=[PROJECT_ID]`
+- **Set a Policy (from YAML):** `gcloud resource-manager org-policies set-policy [POLICY_FILE].yaml --project=[PROJECT_ID]`
+- **Delete a Policy:** `gcloud resource-manager org-policies delete [CONSTRAINT_NAME] --project=[PROJECT_ID]`
+- **Set Boolean Policy:** `gcloud resource-manager org-policies set-policy [CONSTRAINT_NAME] --project=[PROJECT_ID] --policy-file=[FILE].yaml`
+- **List Effective Policy:** `gcloud resource-manager org-policies describe [CONSTRAINT_NAME] --effective --project=[PROJECT_ID]`
+
+## 6a. Policy YAML Example
+
+```yaml
+spec:
+  rules:
+    - allowAll: false
+  updateTime: '2024-01-01T00:00:00Z'
+```
 
 ## 7. Troubleshooting Tip
 
