@@ -1,5 +1,9 @@
 # Transfer Appliance: ACE Exam Study Guide (2026)
 
+![Transfer Appliance](images/transfer_appliance.png)
+
+_Image source: Google Cloud Documentation_
+
 ## 1. Overview and Use Cases
 
 Transfer Appliance is a high-capacity, ruggedized storage server used to migrate massive amounts of data to Google Cloud Platform offline.
@@ -47,6 +51,5 @@ The ACE exam frequently tests your ability to choose the right tool based on dat
 
 ## 6. 2026 Focus Areas
 
-- Gemini Assistance: You can use Gemini to help estimate migration times and costs or to troubleshoot connectivity issues between your local network and the appliance.
 - Sustainability: Google emphasizes the reduced carbon footprint of shipping an appliance versus saturating a low-efficiency network connection for months.
 - Integration: Transfer Appliance is often used in conjunction with the Migration Center for end-to-end planning.

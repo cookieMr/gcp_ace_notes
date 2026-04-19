@@ -1,5 +1,9 @@
 # Database Migration Service (DMS): ACE Exam Study Guide (2026)
 
+![Database Migration Service](images/database_migration_service.png)
+
+_Image source: Google Cloud Documentation_
+
 ## 1. Overview and Use Cases
 
 Database Migration Service (DMS) is a managed, serverless service used to migrate databases to Google Cloud with minimal downtime.
@@ -48,6 +52,4 @@ Database Migration Service (DMS) is a managed, serverless service used to migrat
 
 ## 7. 2026 Updates
 
-- Gemini in DMS: AI-assisted schema conversion for heterogeneous migrations (e.g., Oracle to PostgreSQL). It handles stored procedures, triggers, and functions.
 - AlloyDB: Now a major target for DMS, especially for high-performance enterprise workloads.
-- Gemini Code Assist: Use Gemini to refactor database-driven application code to match the new cloud database architecture.

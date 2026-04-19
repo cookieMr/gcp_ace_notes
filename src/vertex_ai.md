@@ -1,5 +1,9 @@
 # Vertex AI and AI Services: ACE Exam Study Guide (2026)
 
+![Vertex AI](images/vertexai.png)
+
+_Image source: Google Cloud Documentation_
+
 ## 1. Vertex AI (High-Level Overview)
 
 Vertex AI is Google Cloud's unified platform for machine learning (ML). It brings together all the services for building, deploying, and scaling ML models.

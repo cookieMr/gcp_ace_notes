@@ -1,5 +1,9 @@
 # Migrate to Virtual Machines (M2VM): ACE Exam Study Guide (2026)
 
+![M2VM](images/migrate_for_compute_engine.png)
+
+_Image source: Google Cloud Documentation_
+
 ## 1. Overview and Use Cases
 
 Migrate to Virtual Machines is a lift-and-shift (Rehost) solution used to migrate physical or virtual machines into Compute Engine.
@@ -10,7 +14,7 @@ Migrate to Virtual Machines is a lift-and-shift (Rehost) solution used to migrat
 
 ## 2. Core Architecture Components
 
-- Migration Center: The unified platform for discovery, assessment, and planning. It integrates with Gemini to provide AI-driven migration recommendations.
+- Migration Center: The unified platform for discovery, assessment, and planning.
 - Migrate Connector: An appliance (OVA for VMware) installed on the source environment to facilitate discovery and data replication to GCP.
 - Host Project: The project where you enable the Migration API and manage the migration process.
 - Target Project: The project where the final Compute Engine instances will be created and run.
@@ -20,7 +24,7 @@ Migrate to Virtual Machines is a lift-and-shift (Rehost) solution used to migrat
 
 The order of operations is a common exam topic:
 
-1. Assess: Use Migration Center to discover inventory, estimate costs, and check OS compatibility. Gemini can assist in analyzing large-scale inventories to prioritize workloads.
+1. Assess: Use Migration Center to discover inventory, estimate costs, and check OS compatibility.
 2. Plan: Group VMs into Migration Groups to manage them together (e.g., all VMs for a specific application).
 3. Deploy (Replicate): Start the replication of data from source to GCP.
 4. Test Clone: Create a sandbox instance in GCP to verify the VM boots and the application works without affecting the source VM.
@@ -52,4 +56,3 @@ The order of operations is a common exam topic:
 - Database Migration Service (DMS): Use for Cloud SQL migrations, NOT for full VMs.
 - Storage Transfer Service: Use for moving large amounts of data (e.g., S3 to GCS), NOT for OS/boot disks.
 - Anthos Migrate: Used specifically for migrating VMs directly into Containers (GKE).
-- Gemini Code Assist: Use to modernize application code after the lift-and-shift to take advantage of cloud-native features.

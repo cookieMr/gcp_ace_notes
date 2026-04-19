@@ -1,5 +1,9 @@
 # Storage Transfer Service: ACE Exam Study Guide (2026)
 
+![Identity & Security](images/storage_transfer_service.png)
+
+_Image source: Google Cloud Documentation_
+
 ## 1. Overview and Use Cases
 
 Storage Transfer Service (STS) is a fully managed service for moving large volumes of data into Cloud Storage (GCS) from other cloud providers, on-premises locations, or within GCS itself.
@@ -48,6 +52,5 @@ Storage Transfer Service (STS) is a fully managed service for moving large volum
 
 ## 7. 2026 Updates
 
-- Gemini Integration: Use Gemini in the Cloud Console to assist in troubleshooting failed transfer jobs or generating `gcloud transfer` commands based on natural language.
 - Event-Driven Transfers: Now a standard feature for real-time synchronization between cloud providers.
 - OIDC Adoption: Moving away from static credentials for cross-cloud transfers.
