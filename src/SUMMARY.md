@@ -55,4 +55,5 @@
 - [AI & ML (Light Coverage)](./summary_ai_and_ml.md)
     - [Vertex AI](./vertex_ai.md)
 - [Appendix](./summary_appendix.md)
+    - [OIDC, OAuth2 & JWT](./oicd_oauth2_jwt.md)
     - [OWASP Top 10](./owasp.md)

@@ -48,6 +48,38 @@ _Image source: Own work (Mermaid diagram)._
 - Nature: Passthrough. Preserves the source IP address of the client.
 - Use Case: Simple TCP/UDP traffic where low latency is critical.
 
+## 2.1. Load Balancing Methods
+
+When distributing traffic across multiple backend services or instances, load balancers can use different algorithms to determine which backend receives each request.
+
+### Round Robin
+
+The simplest method — requests are distributed sequentially to each backend in order. Each backend gets an equal number of requests in rotation. This works well when all backends have similar capacity.
+
+### Least Connections
+
+The load balancer sends new requests to the backend with the fewest active connections. This accounts for varying request processing times — backends handling longer requests will receive fewer new requests.
+
+### Least Request
+
+Similar to Least Connections but uses a more general approach based on outstanding request count rather than established connections. The External Application Load Balancer uses this method.
+
+### Weighted Round Robin
+
+Each backend is assigned a weight indicating its capacity. Backends with higher weights receive proportionally more requests. For example, a backend with weight 3 receives 3 requests for every 1 sent to a weighted backend.
+
+### IP Hash
+
+The client's IP address is hashed to determine which backend receives the request. This ensures the same client always reaches the same backend — useful when session data is stored locally on the backend.
+
+### Session Affinity (Sticky Sessions)
+
+Session affinity ensures requests from the same client go to the same backend. This is critical when applications store session data in memory on specific instances. The load balancer uses cookies or source IP to track and route requests to the same backend.
+
+- **L7 Load Balancers**: Use LB-generated cookies (e.g., `GOOGLB` cookie).
+- **L4 Proxy Load Balancers**: Use source IP/port hashing.
+- **Passthrough Load Balancers**: Do not support session affinity.
+
 ## 3. Internal Load Balancers
 
 ### Internal Application Load Balancer (HTTP/S)
@@ -91,14 +123,6 @@ _Image source: Own work (Mermaid diagram)._
 ### Backend Service
 
 A backend service defines how a load balancer sends traffic to backends like MIGs or NEGs. It applies health checks, balancing policies, timeouts, and routing rules. The load balancer never talks directly to VMs - traffic always flows through a backend service, which decides which instances are healthy and ready to receive requests.
-
-### Session Affinity
-
-Also know as _sticky sessions_ ensures that requests from the same client go to the same backend VM instead of being distributed randomly. This is useful when an application stores session data in memory and expects the same user to keep hitting the same instance.
-
-- _L7_ LB achieve this using LB-generated cookies (e.g., GCLB).
-- _L4 proxy_ LBs use source IP/port hashing.
-- _Passthrough_ LBs do not support session affinity because they do not proxy traffic.
 
 ## 6. Essential `gcloud` Commands
 

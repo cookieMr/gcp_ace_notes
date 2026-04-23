@@ -13,13 +13,20 @@ Compute Engine is Google Cloud's _Infrastructure as a Service (IaaS)_ offering, 
   - **Compute-optimized:** High performance per core. Includes **C2**, **C3**, and **C4** (the latest generation for high-performance computing).
   - **Memory-optimized:** High memory/vCPU ratio. Includes **M1**, **M2**, and **M3**.
   - **Accelerator-optimized:** GPUs attached (e.g., **A2**, **A3**).
+  - **Custom Machine Types:** Variable vCPU and RAM configurations when preset types don't fit your needs.
 
 ## 2. Pricing and Discounts
 
 - **Cost of Stopped VMs:** If you stop a VM, you stop paying for CPU and RAM, but you still pay for attached _Persistent Disks_ and any reserved _Static External IPs_.
+- **External IPs:**
+  - **Ephemeral:** Automatically assigned when VM starts, released when VM stops/deletes
+  - **Static:** Reserved IP address that persists independently of VM lifecycle (incurs charges when unused)
 - **Sustained Use Discounts (SUD):** Automatic discounts for running instances for a significant portion of the month (N1, N2).
 - **Committed Use Discounts (CUD):** 1 or 3-year commitment for a predictable workload.
 - **Spot VMs:** Up to 91% discount. These can be terminated by Google at any time with a 30-second notice. Best for fault-tolerant, stateless batch jobs.
+  - Use **shutdown scripts** to handle graceful termination and save state.
+  - Preemption of a Spot VM is called a _preemption_, not a system crash.
+- **Reservations:** Ensure resources are available when needed. Often used with CUDs to guarantee capacity.
 
 ## 3. Instance Templates and Managed Instance Groups (MIGs)
 
@@ -37,10 +44,27 @@ Compute Engine is Google Cloud's _Infrastructure as a Service (IaaS)_ offering, 
 ## 4. Persistent Disks, Snapshots and Images
 
 - **Persistent Disks (PD):** Durable network storage. You can resize a disk up but never down.
+- **Disk Types:**
+  - **Standard PD:** HDD-based, cost-effective for sequential read/write workloads
+  - **SSD PD:** Higher IOPS and throughput for demanding workloads (databases, apps)
+  - **Hyperdisk:** Independent performance scaling (see [Section 4.1](./compute_engine.md#41-hyperdisk))
+- **Disk Encryption:**
+  - **Google-managed:** Default, encryption handled by Google
+  - **Customer-Managed Keys (CMEK):** You control keys in Cloud KMS
+  - **Customer-Supplied Keys (CSEK):** You provide and manage encryption keys
 - **Snapshots:** Incremental backups of disks, stored globally. Best for disaster recovery.
 - **Custom Images:** A _Gold Master_ boot disk with your OS and software pre-installed. Best for consistent deployments in MIGs.
 - **Local SSD:** Physical drives attached directly to the host. Data is ephemeral and lost if the VM is stopped or deleted.
   > You can attach up to 24 local SSDs to a single VM, depending on the machine type. Each local SSD is 375 GB, providing up to 9 TB of local SSD storage per VM. Local SSDs provide high-performance ephemeral storage.
+
+## 4.1. Hyperdisk
+
+High-performance block storage with independent scaling of performance and capacity.
+
+- **Hyperdisk Balanced**: SSD-like performance at lower cost. Good balance of price and performance.
+- **Hyperdisk Extreme**: Ultra-high throughput and IOPS for demanding workloads (databases, AI/ML training, HPC).
+- Performance scales independently from capacity (unlike standard Persistent Disks).
+- Can be attached to sole-tenant nodes and used with MIGs.
 
 ## 5. Sole-Tenant Nodes
 
@@ -78,10 +102,26 @@ Useful for keeping related workloads together or separating sensitive workloads 
 
 ## 7. Service Accounts and Metadata
 
-- **Service Accounts:** VMs use these to authenticate to other Google Cloud services (GCS, BigQuery). Always use custom service accounts with _Least Privilege_ for production.
+- **Service Accounts**: VMs use these to authenticate to other Google Cloud services (GCS, BigQuery). Always use custom service accounts with _Least Privilege_ for production.
   > The default Compute Engine service account `PROJECT_NUMBER-compute@developer.gserviceaccount.com` is automatically created and has the Editor role on the project. It is automatically attached to new VMs unless you specify a different service account or disable it.
-- **Metadata:** Used to pass configuration data. Startup scripts are automated scripts that run every time the VM boots.
-- **Metadata Server:** Accessible at `http://metadata.google.internal/computeMetadata/v1/`.
+- **Service Account Scopes**: Control what APIs the service account can access
+  - **Project-wide**: Applies to all VMs using the default service account
+  - **Instance-level**: Set per-VM for granular control
+- **Metadata**: Used to pass configuration data. Startup scripts are automated scripts that run every time the VM boots.
+- **Metadata Server**: Accessible at `http://metadata.google.internal/computeMetadata/v1/`.
+
+## 7.1. VM Security and Availability
+
+- **Shielded VMs:** Hardened VMs with security features to protect against boot-level malware/rootkits
+  - **Secure Boot:** Blocks untrusted boot loaders and drivers
+  - **vTPM:** Virtual Trusted Platform Module for key storage and measurement
+  - **Integrity Monitoring:** Verifies VM boot chain hasn't been compromised
+- **Confidential Computing:** Encryption at runtime using AMD SEV-SNP. Protects data while it's being processed.
+- **Availability Policies:**
+  - **On-host maintenance:** Controls behavior during host maintenance (Migrate/Terminate)
+  - **Automatic restart:** Whether GCP restarts VM after unexpected failure
+  - **Provisioning model:** Standard vs Spot (affects pricing and preemptibility)
+- **GPUs Available:** T4, A100, H100. Each has specific licensing requirements and zone availability.
 
 ## 8. Essential `gcloud` Commands
 
@@ -96,7 +136,7 @@ Useful for keeping related workloads together or separating sensitive workloads 
 - **Metadata Header:** Requests to the metadata server require the header `Metadata-Flavor: Google`.
 - **Machine Type Selection:** If a question asks for the best cost-performance for a general workload, consider **E2** or **N4**. For high-performance databases, consider **C4** or **M3**.
 
-## 8. External Links
+## 10. External Links
 
 - [Compute Engine - The Cloud Girl](https://www.thecloudgirl.dev/compute/compute-engine)
 - [Where should I run my staff - The Cloud Girl](https://www.thecloudgirl.dev/compute/where-should-i-run-my-stuff)

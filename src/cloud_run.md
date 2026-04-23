@@ -43,7 +43,7 @@ Knative consists of two main parts: **Serving**, which handles request‑driven 
 - **Tagging:** Assign a specific URL to a revision for testing before routing main traffic.
 - **Rollbacks:** Instantly roll back to a previous revision by shifting 100% of traffic.
 
-### Deployment Strategies: Blue‑Green vs A/B Testing vs Canary
+### Deployment Strategies
 
 #### Blue‑Green Deployment
 
@@ -87,11 +87,27 @@ Gradually roll out a new version to a small subset of users.
 
 _Image source: Own work (Mermaid diagram)._
 
+#### Rolling Update Deployment
+
+A _rolling update_ replaces application instances gradually, updating a few replicas at a time until the entire fleet runs the new version.
+
+1. New version is deployed in small batches (e.g., 1 pod at a time).
+2. Each new instance must pass readiness checks before receiving traffic.
+3. Old instances are terminated only after new ones become healthy.
+4. Traffic is continuously served throughout the process — zero downtime.
+5. Rollback is performed by reversing the rollout (deploying the previous version again), but it is slower than Blue‑Green.
+
+**Purpose**: Safe, incremental rollout without requiring two full environments.  
+**Traffic behavior**: Traffic is always routed to a mix of old and new instances during the transition.
+
+> Rolling updates require _strict backward compatibility_ because old and new versions run simultaneously. Breaking API changes cause runtime failures. Use versioning, tolerant readers, and the expand‑migrate‑contract pattern to safely evolve APIs.
+
 ### Summary
 
-- **Blue‑Green:** Two full environments. Switch traffic all at once. Best for fast rollback.
-- **A/B Testing:** Runs two versions in parallel to compare user behavior and performance metrics for data‑driven decisions.
-- **Canary:** Gradual traffic shifting. Best for testing new versions with minimal risk.
+- **Blue‑Green** Two full environments. Switch traffic all at once. Best for fast rollback.
+- **A/B Testing**: Runs two versions in parallel to compare user behavior and performance metrics for data‑driven decisions.
+- **Canary**: Gradual traffic shifting. Best for testing new versions with minimal risk.
+- **Rolling Update**: Gradual replacement of old instances with new ones. Zero downtime, no duplicate environments, slower rollback than Blue‑Green but simpler and resource‑efficient.
 
 ## 4. Scaling, Resources & Probes
 
@@ -161,3 +177,5 @@ _Image source: Own work (Mermaid diagram)._
 - [Cloud Run - The Cloud Girl](https://www.thecloudgirl.dev/compute/cloud-run)
 - [Where should I run my staff - The Cloud Girl](https://www.thecloudgirl.dev/compute/where-should-i-run-my-stuff)
 - [Google Cloud Documentation - Canary Deployment](https://docs.cloud.google.com/deploy/docs/deployment-strategies/canary)
+- [Blue-Green, Canary and Other K8s Deployment Strategies - Traefik Labs](https://traefik.io/glossary/kubernetes-deployment-strategies-blue-green-canary)
+- [Most Common Kubernates Deployments Strategies (Example & Code) - Anton Putra - Youtube](https://youtu.be/lxc4EXZOOvE)
