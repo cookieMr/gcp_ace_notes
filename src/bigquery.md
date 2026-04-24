@@ -32,6 +32,30 @@ The exam frequently tests your ability to run queries efficiently without genera
 - **Partitioning:** Segments tables by time (e.g., `_PARTITIONTIME`), date, or integer range. Drastically reduces costs by "pruning" partitions.
 - **Clustering:** Sorts data based on specific columns (up to 4). Best for queries using filters (`WHERE`) or aggregations (`GROUP BY`). Unlike partitioning, clustering is "best effort" but highly effective for high-cardinality columns.
 
+### 3.1. Partitioning
+
+Partitioning divides a large table into smaller segments, called partitions, based on a specific column (usually a date, timestamp, or integer).
+
+- **How it works**: When you run a query with a filter on the partition column (e.g., `WHERE date = '2024-01-01'`), BigQuery "prunes" the table and only scans the specific partition that matches the filter, ignoring everything else.
+- **Best for**: Time-series data or data with a natural "range" (like ID ranges).
+- **Impact**: Significantly reduces the number of bytes billed and improves query speed for large datasets.
+
+![BigQuery Partitioning](images/bigquery_partitioning_diagram.png)
+
+_Image source: Own work (Mermaid diagram)._
+
+### 3.2. Clustering
+
+Clustering sorts the data within your table (or within each partition) based on the values in one or more columns.
+
+- _How it works_: BigQuery organizes the storage blocks so that similar values are physically stored together. When a query filters or aggregates based on a clustered column (e.g., `WHERE customer_id = 123`), BigQuery can quickly locate the specific blocks containing that data and skip the rest.
+- _Best for_: Columns with high cardinality (many unique values) that are frequently used for filtering, grouping, or joining.
+- **Impact**: It improves performance for specific query patterns and can further reduce costs when used alongside partitioning by allowing "block pruning" within a partition.
+
+![BigQuery Clustering](images/bigquery_clustering_diagram.png)
+
+_Image source: Own work (Mermaid diagram)._
+
 ## 4. Pricing Models
 
 - **On-Demand Pricing:** Pay per TB scanned ($6.25/TB as of current pricing). Best for unpredictable workloads. Includes a 1TB/month free tier.

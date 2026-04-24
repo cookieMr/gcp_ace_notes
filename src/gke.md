@@ -80,7 +80,6 @@ Google Kubernetes Engine (GKE) is a managed environment for deploying, managing,
 
 > **GKE** → Use Deployments for stateless workloads. ReplicaSets are created automatically.
 
-
 ## 4. GKE Networking
 
 - Services:
@@ -165,7 +164,69 @@ That’s where _Persistent Volumes_ (PV) and _Persistent Volume Claims_ (PVC) co
 
 For more details see [Persistant Disk](./persistent_disk.md)
 
-## 6. GKE Security
+## 6. Connecting GKE Pod to Memorystore (standard)
+
+To connect a GKE Pod to a Google Cloud Memorystore (Redis) instance, you need to ensure they share a network and then inject the connection details into your Kubernetes deployment.
+
+### Network Prerequisites
+
+- **Same VPC**: The Redis instance and GKE cluster must be in the same VPC network and same region.
+- **VPC-Native GKE**: Your GKE cluster must be VPC-native (IP Aliasing enabled). Standard route-based clusters cannot natively route traffic to the Google-managed VPC where Redis lives.
+
+### Find Connection Details
+
+Once the Redis instance is created, retrieve its internal IP address and port from the Google Cloud Console or CLI:
+
+- Host IP: `10.x.x.x`
+- Port: `6379` (Default)
+- Auth String: If _Auth_ is enabled, you will also need the password string.
+
+### Store Credentials in Kubernetes
+
+The best practice is to store these details in a Kubernetes Secret so they aren't hardcoded in your application code.
+
+```bash
+kubectl create secret generic redis-creds \
+  --from-literal=REDIS_HOST=10.x.x.x \
+  --from-literal=REDIS_PORT=6379 \
+  --from-literal=REDIS_PASSWORD=your-auth-string
+```
+
+### Update the GKE Deployment
+
+Inject these values into your Pod as environment variables in your `deployment.yaml`.
+
+```yaml
+spec:
+  containers:
+    - name: my-app
+      image: gcr.io/my-project/my-app:v1
+      env:
+        - name: REDIS_HOST
+          valueFrom:
+            secretKeyRef:
+              name: redis-creds
+              key: REDIS_HOST
+        - name: REDIS_PORT
+          valueFrom:
+            secretKeyRef:
+              name: redis-creds
+              key: REDIS_PORT
+```
+
+### Verify Connectivity
+
+You can test the connection by running a temporary "debug" pod with `redis-cli` installed:
+
+```bash
+kubectl run redis-test --rm -it --image=redis:7 -- \
+  redis-cli -h [YOUR_REDIS_IP] -p 6379 ping
+# Expected Output: PONG
+```
+
+> Note on Security: By default, Memorystore does not have a firewall. Use Kubernetes `NetworkPolicies` to restrict which Pods in your cluster are allowed to send egress traffic to the Redis IP address.
+
+## 7. GKE Security
 
 - Workload Identity: The recommended way for GKE workloads to access Google Cloud services.
   > _Workload Identity_ lets GKE pods access Google Cloud APIs without service account keys. It maps a _Kubernetes Service Account_ to a _Google Cloud Service Account_, giving pods secure, short‑lived credentials managed automatically by GKE and IAM.
