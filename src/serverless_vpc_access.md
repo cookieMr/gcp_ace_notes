@@ -52,7 +52,7 @@ _Image source: [Google Cloud Blog](https://cloud.google.com/blog/products/server
 
 _Image source: [Google Cloud Blog](https://cloud.google.com/blog/products/serverless/announcing-direct-vpc-egress-for-cloud-run)_
 
-### Key Characteristics
+### 2.1. Key Characteristics
 
 - **Managed Connector:** Acts as a bridge between serverless environment and VPC.
 - **Regional Resource:** Created in a specific region; only works with services in that same region.
@@ -62,14 +62,14 @@ _Image source: [Google Cloud Blog](https://cloud.google.com/blog/products/server
 
 ## 4. Configuration
 
-### Egress Settings
+### 4.1. Egress Settings
 
-| Mode                              | Behavior                                                                                     |
-| --------------------------------- | -------------------------------------------------------------------------------------------- |
-| **Private ranges only** (default) | Only RFC 1918 traffic goes through connector. Internet traffic uses standard public gateway. |
-| **All traffic**                   | All outbound traffic routes through connector. Required for static outbound IP.              |
+| Mode                              | Behavior                                                                                                                                      |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Private ranges only** (default) | Only [RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918) traffic goes through connector. Internet traffic uses standard public gateway. |
+| **All traffic**                   | All outbound traffic routes through connector. Required for static outbound IP.                                                               |
 
-### Static Outbound IP for Cloud Run
+### 4.2. Static Outbound IP for Cloud Run
 
 To give Cloud Run a static IP (e.g., for third-party firewall whitelisting):
 
@@ -103,7 +103,7 @@ The connector's `/28` subnet must be allowed to reach target resources:
 1. **Wrong region:** Connector and serverless service must be in the same region
 2. **Subnet overlap:** `/28` must not conflict with any existing VPC subnet
 3. **Minimum instances:** Even setting min to 0 still runs 2 instances (cost!)
-4. **RFC 1918 only:** By default, only private IP ranges route through connector
+4. **[RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918) only:** By default, only private IP ranges route through connector
 5. **Inbound vs Outbound:** Connector handles outbound from serverless; for inbound **to** serverless from VPC, consider Direct VPC Egress or Serverless VPC Access (ingress mode)
 
 ## 9. Essential `gcloud` Commands
@@ -151,13 +151,13 @@ gcloud run services update [SERVICE_NAME] --vpc-egress=all
 - Egress-only scenarios where Direct VPC Egress is available (simpler, no connector needed)
 - When service and target are in different regions (not supported)
 
-## Quick Reference Summary
+## 12. Quick Reference Summary
 
-| Item                          | Value                              |
-| ----------------------------- | ---------------------------------- |
-| Subnet size                   | `/28` exactly                      |
-| Connector region              | Must match service region          |
-| Always-on instances           | 2 (even at min=0)                  |
-| Default egress                | RFC 1918 only                      |
-| Static IP                     | Requires "All traffic" + Cloud NAT |
-| Shared VPC connector location | Host Project                       |
+| Item                          | Value                                                          |
+| ----------------------------- | -------------------------------------------------------------- |
+| Subnet size                   | `/28` exactly                                                  |
+| Connector region              | Must match service region                                      |
+| Always-on instances           | 2 (even at min=0)                                              |
+| Default egress                | [RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918) only |
+| Static IP                     | Requires "All traffic" + Cloud NAT                             |
+| Shared VPC connector location | Host Project                                                   |

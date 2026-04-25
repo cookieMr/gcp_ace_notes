@@ -14,7 +14,7 @@ A _Virtual Private Cloud_ (VPC) is a global resource that provides networking fu
   - **Custom Mode:** You manually create and define subnets and their IP ranges. This is the best practice for production environments.
 - **Project Relationship:** By default, a project starts with a VPC named `default` (Auto mode).
   > **Note**: Default VPC auto-creation is **disabled by default** for projects created after 2020.
-- **RFC 1918 Private Ranges:** VPC subnets should use private IP ranges:
+- **[RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918) Private Ranges:** VPC subnets should use private IP ranges:
   - `10.0.0.0/8`
   - `172.16.0.0/12`
   - `192.168.0.0/16`

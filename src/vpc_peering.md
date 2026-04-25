@@ -8,21 +8,20 @@ _Image source: Dilbert.com_
 
 VPC Network Peering allows you to connect two VPC networks so that resources in each network can communicate via internal IP addresses.
 
-### Key Characteristics
+### 1.1. Key Characteristics
 
 - **Private Connectivity:** Traffic stays within the Google Cloud network and does not traverse the public internet.
 - **Low Latency:** Peered networks have the same latency, throughput, and security as if the resources were in the same network.
 - **Cross-Project/Cross-Org:** You can peer VPCs across different projects and even different Google Cloud Organizations.
 - **Non-Transitive:** If VPC A is peered with VPC B, and VPC B is peered with VPC C, VPC A is **not** peered with VPC C. You must create a direct peering between A and C.
 
-
 ![VPC Peering Diagram](images/vpc_peering_abc_diagram.png)
 
 _Image source: Own work (Mermaid diagram)._
 
-> This setup shows three separate VPC networks where VPC A is peered with VPC B, and VPC B is peered with VPC C. Each peering connection allows private RFC1918 traffic to flow directly between the paired VPCs without VPN, Interconnect, or NAT. However, because VPC peering in GCP is non‑transitive, VPC A cannot reach VPC C unless a direct peering connection is created. This illustrates the requirement for explicit, pairwise peering links whenever cross‑VPC communication is needed.
+> This setup shows three separate VPC networks where VPC A is peered with VPC B, and VPC B is peered with VPC C. Each peering connection allows private [RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918) traffic to flow directly between the paired VPCs without VPN, Interconnect, or NAT. However, because VPC peering in GCP is non‑transitive, VPC A cannot reach VPC C unless a direct peering connection is created. This illustrates the requirement for explicit, pairwise peering links whenever cross‑VPC communication is needed.
 
-### Requirements and Constraints
+### 1.2. Requirements and Constraints
 
 - **No Overlapping IP Ranges:** Peering will fail if any subnet IP ranges overlap between the two networks.
 - **Two-Way Configuration:** Peering must be configured in **both** networks (A to B and B to A) for it to become active.

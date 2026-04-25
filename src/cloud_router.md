@@ -83,10 +83,10 @@ gcloud compute routers add-advertisement ROUTER_NAME \
 
 ## 6. Route Advertisement Modes
 
-| Mode        | Behavior                                          |
-| ----------- | ------------------------------------------------- |
-| **DEFAULT** | Advertises all VPC subnets with RFC 1918 ranges   |
-| **CUSTOM**  | Only advertises prefixes you explicitly configure |
+| Mode        | Behavior                                                                                         |
+| ----------- | ------------------------------------------------------------------------------------------------ |
+| **DEFAULT** | Advertises all VPC subnets with [RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918) ranges |
+| **CUSTOM**  | Only advertises prefixes you explicitly configure                                                |
 
 ### 6.1. Default Behavior (DEFAULT Mode)
 

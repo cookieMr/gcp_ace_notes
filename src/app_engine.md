@@ -18,23 +18,23 @@ App Engine is a fully managed _Platform as a Service (PaaS)_ for building and de
 
 > This is the most frequent exam topic for App Engine.
 
-### Standard Environment
+### 2.1. Standard Environment
 
 - **Speed:** Starts in seconds. Scale-to-zero is supported.
 - **Infrastructure:** Runs in sandboxed environments (specific versions of Node.js, Python, Java, Go, PHP, Ruby).
 - **Instance Classes:** M1 (high memory), M2 (high CPU), F1-F4 (default). Determines CPU/memory ratio.
-  | Class | Memory | CPU | Cost |
-  |-------|--------|-----|------|
-  | F1 | 256MB | 600MHz | Cheapest |
-  | F2 | 512MB | 1.2GHz | |
-  | F4 | 1GB | 2.4GHz | |
-  | M1 | 1GB | 600MHz | High memory |
-  | M2 | 2GB | 1.2GHz | High memory |
+  | Class | Memory |   CPU  |     Cost    |
+  |-------|--------|--------|-------------|
+  |   F1  |  256MB | 600MHz |   Cheapest  |
+  |   F2  |  512MB | 1.2GHz |             |
+  |   F4  |    1GB | 2.4GHz |             |
+  |   M1  |    1GB | 600MHz | High memory |
+  |   M2  |    2GB | 1.2GHz | High memory |
 - **Constraints:** Cannot modify OS; write-only to local filesystem (`/tmp`). No SSH access.
 - **Cost:** Cheaper for intermittent traffic; scale-to-zero saves money.
 - **Best For:** Web apps, APIs with varying traffic, rapid development.
 
-### Flexible Environment
+### 2.2. Flexible Environment
 
 - **Speed:** Starts in minutes (uses Compute Engine VMs). No scale-to-zero.
 - **Infrastructure:** Runs in Docker containers. Any language/version supported.
@@ -65,7 +65,7 @@ Understanding the relationship between components is essential for resource mana
 | Basic     | Yes      | No       | On-demand; scale to zero when idle        |
 | Manual    | Yes      | Yes      | Fixed instance count                      |
 
-### Automatic Scaling Parameters
+### 4.1. Automatic Scaling Parameters
 
 ```yaml
 automatic_scaling:
@@ -75,7 +75,7 @@ automatic_scaling:
   max_instances: 10
 ```
 
-### Basic Scaling Parameters
+### 4.2. Basic Scaling Parameters
 
 ```yaml
 basic_scaling:
@@ -111,7 +111,7 @@ basic_scaling:
 
 - **`app.yaml`**: The core configuration file used for deployment. Defines runtime, scaling, handlers, and more.
 
-### Standard Environment Example
+### 6.1. Standard Environment Example
 
 ```yaml
 runtime: python312
@@ -133,7 +133,7 @@ handlers:
 warmup: enabled
 ```
 
-### Flexible Environment Example
+### 6.2. Flexible Environment Example
 
 ```yaml
 runtime: java21
@@ -195,7 +195,7 @@ readiness_check:
 | Long-running processes, custom hardware    | Compute Engine      |
 | App Engine Standard features + custom deps | App Engine Flexible |
 
-### App Engine vs Cloud Run Quick Reference
+### 9.1. App Engine vs Cloud Run Quick Reference
 
 | Feature           | App Engine    | Cloud Run              |
 | ----------------- | ------------- | ---------------------- |

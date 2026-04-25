@@ -45,7 +45,7 @@ Memorystore instances are **VPC-only** (no public IPs).
 - **Standard/Basic Tiers:** Use Private Service Access (PSA).
 - **Cluster/Valkey Tiers:** Use **Private Service Connect (PSC)**. Clients connect to a single IP (discovery endpoint) in their own VPC.
 
-> _Private Service Access_ lets your VPC connect privately to Google‑managed services that run inside your project, such as _Cloud SQL_, _**Memorystore**_, _AlloyDB_, and _Filestore_. It works through _VPC peering_ and a reserved IP range, giving those services private [RFC 1918](https://en.wikipedia.org/wiki/Private_network#Private_IPv4_addresses) addresses. PSA is regional and meant for accessing Google‑managed backends you own.
+> _Private Service Access_ lets your VPC connect privately to Google‑managed services that run inside your project, such as _Cloud SQL_, _**Memorystore**_, _AlloyDB_, and _Filestore_. It works through _VPC peering_ and a reserved IP range, giving those services private [RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918) addresses. PSA is regional and meant for accessing Google‑managed backends you own.
 
 > _Private Service Connect_ creates private endpoints that let your VPC reach Google APIs, third‑party SaaS, or services in other projects using private IPs. It uses Google’s internal load balancing instead of VPC peering, making it ideal for cross‑project or cross‑organization service consumption or publishing.
 

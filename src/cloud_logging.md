@@ -8,13 +8,13 @@ _Image source: Google Cloud Documentation_
 
 Cloud Logging is a fully managed service that allows you to store, search, analyze, and alert on log data and events from Google Cloud.
 
-### Key Characteristics
+### 1.1. Key Characteristics
 
 - **Unified:** Collects logs from all GCP services (Compute Engine, GKE, Cloud Run, etc.) and even multi-cloud/on-premises sources.
 - **Integrated:** Works seamlessly with Cloud Monitoring and Cloud Error Reporting.
 - **Retention:** Logs are kept for a specific period (standard is 30 days) and then automatically deleted.
 
-### Log Entry Structure
+### 1.2. Log Entry Structure
 
 Each log entry contains:
 
@@ -27,13 +27,13 @@ Each log entry contains:
 | **Labels**                  | Key-value pairs for metadata                            |
 | **TextPayload/JSONPayload** | The actual log message                                  |
 
-### Severity Levels
+### 1.3. Severity Levels
 
 ```
 DEBUG < INFO < NOTICE < WARNING < ERROR < CRITICAL < ALERT < EMERGENCY
 ```
 
-### Log Router Flow
+### 1.4. Log Router Flow
 
 ```
 Log Sources (GKE, Cloud Run, VM, etc.)
@@ -47,7 +47,7 @@ Storage    Sinks
 (30 days)  (export)
 ```
 
-### Console Location
+### 1.5. Console Location
 
 View logs in Cloud Console: **Cloud Console → Logging → Logs Explorer**
 
@@ -64,7 +64,7 @@ Logs are stored in **Log Buckets** (not Cloud Storage buckets).
 
 Log Sinks allow you to export specific logs to other destinations for long-term storage or analysis.
 
-### Log Router and Flow
+### 3.1 Log Router and Flow
 
 Logs first pass through the **Log Router**, which:
 
@@ -72,7 +72,7 @@ Logs first pass through the **Log Router**, which:
 - Can apply inclusion and exclusion filters
 - Determines which logs go to storage vs. exported
 
-### Sink Destinations (Critical for Exam)
+### 3.2. Sink Destinations (Critical for Exam)
 
 | Destination            | Best For                                 | Retention                 |
 | ---------------------- | ---------------------------------------- | ------------------------- |
@@ -83,7 +83,7 @@ Logs first pass through the **Log Router**, which:
 
 - **Filters:** You use the **Logging Query Language (LQL)** to define which logs should be exported.
 
-### LQL (Logging Query Language) Examples
+### 3.3. LQL (Logging Query Language) Examples
 
 ```sql
 # All error logs from a specific service
@@ -124,9 +124,13 @@ Log-based Metrics allow you to create numerical metrics based on the content of 
 > - **90th/95th/99th Percentiles:** Often used in performance monitoring (e.g., latency) to understand the experience of the "worst-case" users.
 >
 > **Practical Example**
-> If your exam score is in the **85th percentile**, you scored better than 85% of the people who took the test. It does not mean you got 85% of the questions correct; it only describes your rank relative to others.
+> If your exam score is in the **95th percentile**, you scored better than 95% of the people who took the test. It does not mean you got 95% of the questions correct; it only describes your rank relative to others.
+>
+> ![P95 example](images/p95_percentile_example.png)
+> 
+> _Image source: Own work._
 
-### Creating Log-based Metrics
+### 4.1. Creating Log-based Metrics
 
 ```sql
 # Counter Metric: Count HTTP 500 errors
@@ -139,7 +143,7 @@ filter: httpRequest.latency
 valueExtractor: regex_extract(httpRequest.latency, "(\d+)s", 1)
 ```
 
-### Use Cases
+### 4.2. Use Cases
 
 | Metric Type      | Example                                          |
 | ---------------- | ------------------------------------------------ |
@@ -159,13 +163,13 @@ These are critical for security and compliance.
 | **System Event**   | Google-managed actions (maintenance, autoscaling)        | Always ON | 400 days  | Free |
 | **Policy Denied**  | Security policy denials                                  | Always ON | 400 days  | Free |
 
-### Key Points
+### 5.1. Key Points
 
 - **Admin Activity:** Records are stored for 400 days. This is fixed, automatic, and free — **you cannot shorten or disable it**.
 - **Data Access:** Must be manually enabled per GCP service. Creates significant log volume.
 - **View Audit Logs:** Cloud Console → IAM & Admin → Audit Logs
 
-### Viewing Audit Logs
+### 5.2. Viewing Audit Logs
 
 ```bash
 # View admin activity logs
@@ -190,7 +194,7 @@ gcloud logging read "logName:\"policy.googleapis.com/policy_activity\""
 - **Delete Logs:** `gcloud logging logs delete [LOG_NAME]`
 - **Write Log Entry:** `gcloud logging write [LOG_NAME] "Log message" --severity=ERROR`
 
-### Retention Details
+### 7.1. Retention Details
 
 | Log Type                   | Default Retention | Configurable                 |
 | -------------------------- | ----------------- | ---------------------------- |
@@ -199,7 +203,7 @@ gcloud logging read "logName:\"policy.googleapis.com/policy_activity\""
 | **System Event**           | 400 days          | No (fixed)                   |
 | **Cloud Storage Archival** | Unlimited         | As long as you pay           |
 
-### Supported Environments
+### 7.2. Supported Environments
 
 | Environment               | How Logs Are Collected           |
 | ------------------------- | -------------------------------- |
