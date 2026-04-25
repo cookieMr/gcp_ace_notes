@@ -24,6 +24,7 @@ VPC Service Controls (VPC SC) is a security feature that allows you to define a 
   - Device type (e.g., encrypted, company-managed).
   - Device OS version, screen lock status.
 - **Service Perimeter Bridge:** Allows projects in different perimeters to communicate. Use when you need data sharing between perimeters.
+  > Bridge access is **non-transitive**. If Perimeter A is bridged to Perimeter B, and Perimeter B is bridged to Perimeter C, resources in Perimeter A cannot access resources in Perimeter C through the bridge chain.
 - **Ingress Rules:** Allow specific inbound traffic _into_ the perimeter.
 - **Egress Rules:** Allow specific outbound traffic _out of_ the perimeter.
   - Use ingress/egress rules instead of a bridge for more granular control.
@@ -55,7 +56,7 @@ Not all services are supported, but the most common exam-relevant services inclu
 
 > **Exam Tip:** Not all services support VPC SC. Always check the VPC SC documentation for the latest list.
 
-## 4a. GKE Integration with VPC SC
+### 4.1. GKE Integration with VPC SC
 
 - **Private GKE Clusters:** Work well with VPC SC perimeters.
 - **Configuration:**
@@ -64,13 +65,14 @@ Not all services are supported, but the most common exam-relevant services inclu
   3. Use Private Google Access or Private Service Connect.
 - **DNS:** Configure Private Google DNS zones to resolve internal service names.
 
-## 4b. Cloud Armor vs VPC SC
+### 4.2. Cloud Armor vs VPC SC
 
-| | VPC SC | Cloud Armor |
-|--------|--------|-----------|Scope | Data exfiltration perimeter | DDoS + WAF protection|
-| Layer | Application/API layer | Network layer |
-| Protects | Cloud Storage, BigQuery, etc. | Load balancers, CDN |
-| Use Case | Prevent data leaks | Block attacks |
+|          | VPC SC                        | Cloud Armor           |
+| -------- | ----------------------------- | --------------------- |
+| Scope    | Data exfiltration perimeter   | DDoS + WAF protection |
+| Layer    | Application/API layer         | Network layer         |
+| Protects | Cloud Storage, BigQuery, etc. | Load balancers, CDN   |
+| Use Case | Prevent data leaks            | Block attacks         |
 
 ## 5. Implementation Steps
 
@@ -103,13 +105,13 @@ Not all services are supported, but the most common exam-relevant services inclu
 - **Scenario 4:** Prevent public access to Cloud Storage bucket.
   - Solution: Use Public Access Prevention (org policy) + VPC SC perimeter.
 
-## 7a. TLS Inspection Warning
+### 7.1. TLS Inspection Warning
 
 - **Layer 7 Inspection:** If you use Cloud Armor or a proxy with TLS inspection, it can break VPC SC.
 - **Why:** VPC SC validates requests at the API layer, but TLS inspection terminates and re-encrypts traffic.
 - **Solution:** Configure inspection to trust VPC SC headers, or bypass inspection for VPC SC-protected services.
 
-## 7b. Dry-Run to Enforcement Checklist
+### 7.2. Dry-Run to Enforcement Checklist
 
 1. Create Access Policy.
 2. Define Access Levels (IPs, devices).
