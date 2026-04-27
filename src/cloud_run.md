@@ -141,6 +141,25 @@ A _rolling update_ replaces application instances gradually, updating a few repl
     ```
 - **Secrets:** Use **Secret Manager** to mount sensitive data as environment variables or volumes.
 
+### 6.1. Identity-Aware Proxy (IAP)
+
+- **IAP (Identity-Aware Proxy)** adds an authentication layer in front of Cloud Run services, requiring users or apps to authenticate via Google Identity before accessing the service.
+- **How it works:**
+  - IAP sits between the user and the Cloud Run service.
+  - All traffic passes through IAP, which validates the user's identity (Google Account, OAuth 2.0).
+  - Only authenticated and authorized users can reach the backend service.
+  - The (Load Balancer's) Backend Service receives requests with an `x-goog-authenticated-user-email` header containing the user's email.
+- **Key Benefits:**
+  - Enforces authentication at the edge — no code changes needed.
+  - Integrates with IAM for fine-grained access control (grant/deny per user or group).
+  - Works with **Cloud Load Balancing** (HTTP/HTTPS).
+- **Use Cases:**
+  - Internal tools requiring Google-only access.
+  - Adding an extra auth layer beyond IAM.
+  - Protecting services that don't have built-in authentication.
+
+For a usecase see [Cloud Run & IAP](./cloud_run_iap.md).
+
 ## 7. Storage Options
 
 - **In-memory:** Ephemeral filesystem limited by allocated RAM.
