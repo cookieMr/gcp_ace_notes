@@ -65,6 +65,16 @@ _Image source: Own work (Mermaid diagram)._
   - **Active Storage:** Data modified in the last 90 days.
   - **Long-term Storage:** Data NOT modified for 90 days (price drops by ~50%).
 
+### 4.1. Capacity (Editions) Pricing
+
+Capacity pricing uses dedicated virtual CPUs called slots that you reserve or autoscale for your workloads. You pay for those slots over time (slot‑hours) and can buy commitments or use autoscaling reservations to control cost and performance. This model is offered through BigQuery Editions and Reservations and contrasts with on‑demand pricing, which charges per TB scanned.
+
+> **Slots** are the unit of compute. More slots → more concurrent and faster queries. BigQuery assigns slots to query stages automatically.
+
+> **Reservations** let you allocate a fixed number of slots to projects or workloads. **Autoscaled reservations** expand capacity when needed. You can also buy committed slots for lower unit cost.
+
+> **Billing** is per slot‑hour for capacity pricing. On‑demand billing is per TiB scanned. Use capacity when steady heavy usage makes slot commitments cheaper than repeated on‑demand scans.
+
 ## 5. IAM Roles and Permissions
 
 Understanding the separation of access roles is a frequent exam topic.
