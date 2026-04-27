@@ -96,12 +96,12 @@ If a query needs an index:
 
 Firestore uses two layers of security:
 
-### IAM
+### 7.1. IAM
 
 - Controls administrative access
 - Example: creating indexes, backups, exports
 
-### Security Rules
+### 7.2. Security Rules
 
 - Control data-level access
 - Based on:
@@ -151,13 +151,16 @@ To avoid hotspots:
 - Use randomized document IDs
 - Avoid sequential keys
 
-### How Firestore Sharding Works
+### 11.1 How Firestore Sharding Works
 
 Firestore sharding spreads write operations across multiple shard documents instead of sending all writes to a single document. Each client writes to a randomly selected (or hash‑based) shard, which prevents write hotspots and avoids the 1‑write‑per‑second limit on individual documents. When reading, the application aggregates all shard documents (e.g., summing counters) to produce the final result. This allows Firestore to scale write throughput horizontally.
 
-![Firestore - sharded counter](images/firestore_sharding.png)
+<figure>
+  <img src="images/firestore_sharding.png" alt="Firestore - sharded counter">
+  <figcaption><center>Firestore - sharded counter<br><i>Image source: Own work (Mermaid diagram).</i></center></figcaption>
+</figure>
 
-_Image source: Own work (Mermaid diagram)._
+For more details see [_What is Database Sharding?_ - Anton Putra - Youtube](https://www.youtube.com/watch?v=XP98YCr-iXQ).
 
 ## 12. Queries and Aggregations (2026 Update)
 
@@ -179,19 +182,19 @@ Firestore supports:
 
 ## 14. Data Retention and Recovery (Critical for ACE)
 
-### TTL (Time To Live)
+### 14.1. TTL (Time To Live)
 
 - Automatically deletes documents based on a timestamp field.
 - Used for cost optimization and cleaning up stale data (e.g., sessions, logs).
 - Deletion typically happens within 24 hours of expiration.
 
-### PITR (Point-in-Time Recovery)
+### 14.2. PITR (Point-in-Time Recovery)
 
 - Allows data recovery to any version from the last 7 days.
 - Protects against accidental deletion or corruption.
 - Must be explicitly enabled at the database level.
 
-### Named Databases
+### 14.3. Named Databases
 
 - You can create multiple Firestore databases in one project (e.g., (`default`), `test-db`, `prod-db`).
 - Databases can be in different locations and even different modes (Native vs. Datastore).

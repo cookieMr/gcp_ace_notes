@@ -120,7 +120,9 @@ Session affinity ensures requests from the same client go to the same backend. T
 - Backend Service: Manages health checks, session affinity, and backend pools.
 - Health Check: Regularly polls backends to ensure they are healthy.
 
-### Backend Service
+> It does not restart or rotate instances. That's task of a [_Managed Instance Group_](./compute_engine.md#3-instance-templates-and-managed-instance-groups-migs).
+
+### 5.1.  Backend Service
 
 A backend service defines how a load balancer sends traffic to backends like MIGs or NEGs. It applies health checks, balancing policies, timeouts, and routing rules. The load balancer never talks directly to VMs - traffic always flows through a backend service, which decides which instances are healthy and ready to receive requests.
 

@@ -6,7 +6,7 @@ _Image source: Google Cloud Documentation_
 
 ## 1. Overview
 
-**Cloud Pub/Sub** is a fully managed, global, serverless messaging service that enables asynchronous, event-driven communication between services. It decouples **publishers** (services that send messages) from **subscribers** (services that receive and process messages).
+**Cloud Pub/Sub** is a fully managed, **global**, serverless messaging service that enables asynchronous, event-driven communication between services. It decouples **publishers** (services that send messages) from **subscribers** (services that receive and process messages).
 
 > **Key Concept**: Pub/Sub provides **at-least-once delivery**. Applications must be **idempotent** to handle potential duplicate messages.
 
@@ -130,20 +130,20 @@ _Image source: Own work (Mermaid diagram)._
 
 ## 7. Configuration Commands
 
-### Create Topic
+### 7.1. Create Topic
 
 ```bash
 gcloud pubsub topics create TOPIC_NAME
 ```
 
-### Create Pull Subscription
+### 7.2. Create Pull Subscription
 
 ```bash
 gcloud pubsub subscriptions create SUB_NAME \
     --topic=TOPIC_NAME
 ```
 
-### Create Push Subscription
+### 7.3. Create Push Subscription
 
 ```bash
 gcloud pubsub subscriptions create SUB_NAME \
@@ -151,19 +151,19 @@ gcloud pubsub subscriptions create SUB_NAME \
     --push-endpoint=https://example.com/webhook
 ```
 
-### Publish Message
+### 7.4. Publish Message
 
 ```bash
 gcloud pubsub topics publish TOPIC_NAME --message="Hello World"
 ```
 
-### Pull Messages
+### 7.5. Pull Messages
 
 ```bash
 gcloud pubsub subscriptions pull SUB_NAME --auto-ack
 ```
 
-### Configure Dead Letter Topic
+### 7.6. Configure Dead Letter Topic
 
 ```bash
 gcloud pubsub subscriptions update SUB_NAME \
@@ -171,7 +171,7 @@ gcloud pubsub subscriptions update SUB_NAME \
     --max-delivery-attempts=5
 ```
 
-### Enable Message Ordering
+### 7.7. Enable Message Ordering
 
 ```bash
 gcloud pubsub topics update TOPIC_NAME --enable-message-ordering
@@ -222,7 +222,7 @@ public class MessagingService {
 
 ## 10. Exam Prep Summary
 
-### Key Points to Remember
+### 10.1. Key Points to Remember
 
 1. **Global Service**: Topics and subscriptions are global resources (not regional)
 2. **At-least-once Delivery**: Applications must be idempotent
@@ -233,14 +233,14 @@ public class MessagingService {
 7. **Retention**: Messages stored for up to **7 days**
 8. **Dead Letter Topics**: For failed messages after max retries
 
-### When to Choose Pub/Sub
+### 10.2. When to Choose Pub/Sub
 
 - Decoupling microservices for independent scaling
 - Buffering traffic spikes (IoT, analytics)
 - Event-driven architectures
 - Asynchronous communication between services
 
-### Common Exam Traps
+### 10.3. Common Exam Traps
 
 | Trap                      | Explanation                                                |
 | ------------------------- | ---------------------------------------------------------- |
