@@ -54,6 +54,53 @@ Cloud DNS supports common DNS record types:
 - **Outbound Query Forwarding:** Allows GCP instances to resolve on-premises DNS records. Accomplished via _Forwarding Zones_.
 - **DNS Peering:** Connects the DNS namespace of two VPCs. Unlike VPC Peering, this only affects DNS resolution, not network connectivity.
 
+### 4.1. DNS Inbound Forwarding Policy
+
+<figure>
+  <img src="images/dns_inbound_formawring_policy_diagram.png" alt="DNS Inbound Forwarding Policy">
+  <figcaption><center>DNS Inbound Forwarding Policy<br><i>Image source: Own work (Mermaid diagram).</i></center></figcaption>
+</figure>
+
+A user on-premises wants to access a GCP-hosted database (e.g., `db.app.internal`) using its friendly DNS name.
+
+1. The On-Prem Client sends a query to its local On-Prem DNS Server (e.g., `10.50.0.10`).
+2. The On-Prem DNS server is configured with a conditional forwarder. It knows that any request ending in `.internal` (or specifically `app.internal`) must be forwarded to a specific GCP entry point IP address (in this diagram, `10.128.0.5`).
+3. The DNS query travels across the private hybrid connection (VPN or Interconnect) and reaches the Inbound Forwarding Policy IP.
+4. This entry point IP address acts as a bridge, forwarding the query to the VPC Metadata Server.
+5. The Metadata Server identifies the query for `db.app.internal` as belonging to a configured Cloud DNS Private Zone.
+6. Cloud DNS retrieves the correct `A` Record (e.g., the IP `10.128.2.3`) from the Private Zone database
+7. and relays it back to the entry point.
+8. The answer is relayed back through the tunnel
+9. to the On-Prem DNS server,
+10. which finally provides the internal GCP IP address to the on-prem user.
+
+### 4.2. DNS Formawring Zone
+
+<figure>
+  <img src="images/dns_formawring_zone_diagram.png" alt="DNS Formawring Zone">
+  <figcaption><center>DNS Formawring Zone<br><i>Image source: Own work (Mermaid diagram).</i></center></figcaption>
+</figure>
+
+**Scenario A: Query Resolved by Cloud DNS (GCP Internal)**  
+This path covers how Google Cloud resolves names for resources that live entirely within your cloud environment.
+
+1. **Query**: A GCP VM Client sends a DNS request for `db.app.internal` to the VPC Metadata Server (`35.199.191.8`).
+2. **Match**: The Metadata Server checks its local configuration and finds a Match in a configured Cloud DNS Private Zone.
+3. **Answer**: Cloud DNS retrieves the specific `A` Record (IP address) for that resource from its internal database.
+4. **Relay**: The Metadata Server relays the final answer back to the VM, allowing it to connect to the internal database.
+
+**Scenario B: Query Resolved by On-Prem DNS (Forwarded)**  
+This path demonstrates the Forwarding Zone in action, where Cloud DNS acts as a middleman between the cloud and your physical datacenter.
+
+1. **Query**: The GCP VM Client sends a DNS request for `dc1.corp.local` (an on-premises server) to the VPC Metadata Server.
+2. **Match**: The Metadata Server finds a match in the Cloud DNS Forwarding Zone specifically created for the `.corp.local` suffix.
+3. **Forward**: Cloud DNS identifies the Target Name Server (e.g., `10.50.0.10`) and forwards the DNS packet.
+4. **Hybrid Transit**: The query travels through the Encrypted Tunnel (Cloud VPN or Interconnect).
+5. **On-Prem Resolution**: The On-Prem DNS Server receives the query, looks up its local record, and finds the answer (e.g., `dc1` is at `10.50.1.5`).
+6. **Return**: The answer is sent back through the hybrid connection.
+7. **Processing**: The Forwarding Zone receive the result and passes it back to the Metadata Server.
+8. **Final Relay**: The Metadata Server provides the on-prem IP address to the original GCP VM.
+
 ## 5. DNS Policies
 
 DNS policies allow you to control how the VPC handles DNS queries.
