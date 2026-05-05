@@ -9,8 +9,8 @@ _Image source: Own work (Gemini Prompting)._
 The diagram depicts a three-step journey for your data:
 
 1. Public to Private Entry - a User sends an HTTP request from the public internet. This hits your Cloud Run Service, which houses your Application Logic.
-2. The "Direct" Tunnel - Instead of going back out to the internet to find the database, Cloud Run uses Direct VPC Egress. This assigns the Cloud Run instance a private IP address from your VPC Network (e.g., 10.x.x.x), allowing it to act like it is physically inside your private network.
-3. Private Communication: The request travels over Google's internal network to the Memorystore for Redis instance. Because Memorystore has no public endpoint, it only accepts connections from within the VPC on its internal IP and port (usually 6379).
+2. The "Direct" Tunnel - Instead of going back out to the internet to find the database, Cloud Run uses Direct VPC Egress. This assigns the Cloud Run instance a private IP address from your VPC Network (e.g., `10.x.x.x`), allowing it to act like it is physically inside your private network.
+3. Private Communication: The request travels over Google's internal network to the Memorystore for Redis instance. Because Memorystore has no public endpoint, it only accepts connections from within the VPC on its internal IP and port (usually `6379`).
 
 ## Why this matters (VPC Connector vs. Direct Egress)
 

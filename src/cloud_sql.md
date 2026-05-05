@@ -54,6 +54,8 @@ Understanding the difference between HA and Read Replicas is heavily tested on t
 - **Cloud SQL Auth Proxy:** The **Gold Standard** for secure connections. It uses IAM for authentication and automatically handles SSL/TLS. No need to whitelist IP addresses when using the proxy.
 - **IAM Authentication:** Allows users and service accounts to log in using their Google Cloud identity instead of static database passwords.
 
+Also see the [_AlloyDB Auth Proxy vs Cloud SQL Auth Proxy_](./alloy_db.md#92-alloydb-auth-proxy-vs-cloud-sql-auth-proxy) comparison.
+
 ## 6. Maintenance
 
 - **Maintenance Windows:** You define a specific day and time when Google can perform updates.

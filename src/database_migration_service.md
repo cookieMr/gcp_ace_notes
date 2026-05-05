@@ -50,6 +50,21 @@ Database Migration Service (DMS) is a managed, serverless service used to migrat
 - Primary Keys: For PostgreSQL migrations, tables without primary keys will not be replicated during the continuous phase.
 - Connectivity: If the source is on-premises, a VPN or Interconnect is highly recommended over the public internet. Use Reverse SSH Tunneling if you cannot modify firewall rules easily.
 
+### 6.1. Reversed SSH Tunneling
+
+Reverse SSH tunneling lets you reach a remote machine that you cannot normally SSH into by having that machine initiate the SSH connection to you, and then you “ride back” through that connection.
+
+It’s the standard solution when the remote host is behind NAT, firewalls, or has no public IP.
+
+<figure>
+  <img src="images/dms_reversed_ssh_tunneling_diagram.png" alt="Reversed SSH Tunneling">
+  <figcaption><center>Reversed SSH Tunneling<br><i>Image source: Own work (Mermaid diagram).</i></center></figcaption>
+</figure>
+
+1. **The Initiation** - The machine inside the private network (on-prem) reaches out to the GCP VM. Firewalls usually allow outbound traffic, so this connection succeeds.
+2. **The Forwarding** - The -R 8080:localhost:5432 flag tells the GCP VM: "Anything you receive on your port 8080, send it back through this SSH connection to my local port 5432."
+3. **The Result** - The GCP VM's port 8080 is now a "portal" leading directly to the database behind the firewall.
+
 ## 7. 2026 Updates
 
 - AlloyDB: Now a major target for DMS, especially for high-performance enterprise workloads.

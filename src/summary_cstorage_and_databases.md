@@ -12,6 +12,10 @@ Scalable object storage for unstructured data (images, backups, logs). Features 
 
 Fully managed relational database (RDBMS) for **MySQL**, **PostgreSQL**, and **SQL Server**. Best for standard web applications and transactional (OLTP) workloads at a regional scale.
 
+### **[AlloyDB](./alloy_db.md)**
+
+AlloyDB is Google’s high-performance, PostgreSQL-compatible database. It disaggregates compute from storage for 4x faster performance, featuring a columnar engine for analytics and 99.99% availability.
+
 ### **[Cloud Spanner](./cloud_spanner.md)**
 
 Enterprise-grade, globally distributed relational database. Provides **horizontal scalability** for both reads and writes with strong global consistency and up to 99.999% availability.
