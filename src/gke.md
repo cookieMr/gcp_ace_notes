@@ -1,8 +1,9 @@
 # GKE: ACE Exam Study Guide (2026)
 
-![Google Kubernetes Engine](images/google_kubernetes_engine.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/google_kubernetes_engine.png" alt="Google Kubernetes Icon" width=200>
+  <figcaption><center>Google Kubernetes Engine<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. GKE Fundamentals
 
@@ -12,6 +13,11 @@ Google Kubernetes Engine (GKE) is a managed environment for deploying, managing,
 - Cluster Types:
   - Autopilot: The default and recommended mode for 2026. Fully managed; Google manages nodes, scaling, and security. You pay only for running pods.
   - Standard: You manage the node infrastructure. Full control over nodes, SSH access, and custom machine types.
+
+<figure>
+  <img src="images/gke_summary.png" alt="Google Kubernetes Engine Summary">
+  <figcaption><center>Google Kubernetes Engine Summary<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
+</figure>
 
 ## 2. Cluster Configurations
 
@@ -28,6 +34,8 @@ Google Kubernetes Engine (GKE) is a managed environment for deploying, managing,
 
 > **Deployment** → Manages app lifecycle: rolling updates, rollbacks, scaling. Creates and controls ReplicaSets.
 > This is a recommented way to run stateless apps in GKE.
+>
+> **Resource Limits** → Set CPU/memory requests and limits per pod to control resource allocation and prevent starvation.
 >
 > ```yaml
 > apiVersion: apps/v1
@@ -54,6 +62,13 @@ Google Kubernetes Engine (GKE) is a managed environment for deploying, managing,
 >           image: nginx:1.25
 >           ports:
 >             - containerPort: 80
+>           resources:
+>             requests:
+>               cpu: "250m"
+>               memory: "128Mi"
+>             limits:
+>               cpu: "500m"
+>               memory: "256Mi"
 > ```
 
 > **ReplicaSet** → Ensures a fixed number of Pods are running. Usually not used directly. Managed (created automatically) by Deployments.
@@ -78,7 +93,7 @@ Google Kubernetes Engine (GKE) is a managed environment for deploying, managing,
 >           image: nginx:1.25
 > ```
 
-> **GKE** → Use Deployments for stateless workloads. ReplicaSets are created automatically.
+> **GKE** → Use `Deployments` for stateless workloads. `ReplicaSets` are created automatically.
 
 ## 4. GKE Networking
 
@@ -236,6 +251,11 @@ kubectl run redis-test --rm -it --image=redis:7 -- \
   > _Role‑Based Access Control_ in Kubernetes controls who can do what in the cluster. It uses _Roles/ClusterRoles_ to define permissions and _RoleBindings/ClusterRoleBindings_ to assign them to users, groups, or service accounts. It provides fine‑grained, namespace‑scoped or cluster‑wide access control without exposing unnecessary privileges.
 - IAM: Manages permissions outside the cluster (e.g., cluster creation).
 - Shielded GKE Nodes: Provides node identity and integrity.
+
+<figure>
+  <img src="images/gke_summary_2.png" alt="Google Kubernetes Engine Summary">
+  <figcaption><center>Google Kubernetes Engine Summary<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
+</figure>
 
 ## 8. Essential `gcloud` and `kubectl` Commands
 

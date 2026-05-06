@@ -1,8 +1,9 @@
 # Cloud Run: ACE Exam Study Guide (2026)
 
-![Cloud Run](images/cloud_run.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/cloud_run.png" alt="Cloud Run Icon" width=200>
+  <figcaption><center>Cloud Run<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. Cloud Run Overview
 
@@ -68,9 +69,10 @@ Two versions run **simultaneously**, each receiving a portion of traffic.
 **Purpose:** Experimentation and data‑driven decision‑making.  
 **Traffic behavior:** Parallel traffic to both versions for comparison.
 
-![A/B Testing Deployment Sequence](images/ab_deployment_diagram.png)
-
-_Image source: Own work (Mermaid diagram)._
+<figure>
+  <img src="images/ab_deployment_diagram.png" alt="A/B Testing Deployment Sequence">
+  <figcaption><center>A/B Testing Deployment Sequence<br><i>Image source: Own work (Mermaid diagram)</i></center></figcaption>
+</figure>
 
 #### Canary Deployment
 
@@ -83,9 +85,10 @@ Gradually roll out a new version to a small subset of users.
 
 **Use cases:** risk‑reduction, real‑world testing, incremental rollout.
 
-![Canary Deployment Sequence](images/canary_deployment_diagram.png)
-
-_Image source: Own work (Mermaid diagram)._
+<figure>
+  <img src="images/canary_deployment_diagram.png" alt="Canary Deployment">
+  <figcaption><center>Canary Deployment<br><i>Image source: Own work (Mermaid diagram)</i></center></figcaption>
+</figure>
 
 #### Rolling Update Deployment
 

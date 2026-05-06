@@ -1,8 +1,9 @@
 # Cloud Functions: ACE Exam Study Guide (2026)
 
-![Cloud Functions](images/cloud_functions.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/cloud_functions.png" alt="Cloud Functions Icon" width=200>
+  <figcaption><center>Cloud Functions<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. Cloud Functions Overview
 
@@ -72,6 +73,11 @@ In 2nd Generation, Cloud Functions use **Eventarc** to deliver events from over 
 - **Cloud Logging:** All `stdout` and `stderr` output is automatically sent to Cloud Logging.
 - **Error Reporting:** Automatically captures unhandled exceptions.
 - **Cloud Monitoring:** Tracks execution counts, execution times, and memory usage.
+
+<figure>
+  <img src="images/cloud_fun_summary.png" alt="Cloud Functions Summary">
+  <figcaption><center>Cloud Functions Summary<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
+</figure>
 
 ## 8. Essential `gcloud` Commands
 

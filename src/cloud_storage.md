@@ -1,8 +1,9 @@
 # Cloud Storage: ACE Exam Study Guide (2026)
 
-![Cloud Storage](images/cloud_storage.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/cloud_storage.png" alt="Cloud Storage Icon" width=200>
+  <figcaption><center>Cloud Storage<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. Cloud Storage Overview
 
@@ -83,6 +84,29 @@ Cloud Storage is Google Cloud's object storage service for storing unstructured 
 - **Scenario**: High Availability for a single region? → Use **Dual-Region**.
 - **Scenario**: Protect against "fat-finger" accidental deletion? → Enable **Soft Delete** or **Object Versioning**.
 - **Scenario**: Give a non-GCP user temporary access to a file? → Use a **Signed URL**.
+
+### 10.1. Storing Terraform state remotely in Cloud Storage
+
+To store infrastructure state remotely on GCP while enabling state locking for team collaboration, you should use the **GCS (Google Cloud Storage)** backend.
+
+> In Terraform, a **backend** defines where state files are stored. The `gcs` backend is specifically designed for Google Cloud and provides native support for both remote storage and state locking.
+
+**Key Features of the GCS Backend**:
+
+- **Remote Storage** - Stores the terraform.tfstate file as an object in a Google Cloud Storage bucket, making it accessible to all team members.
+- **Native State Locking** - Unlike some other providers that require a separate database (like AWS DynamoDB) for locking, **GCS supports locking natively**. When a team member runs a command that modifies state, Terraform creates a .tflock file in the bucket to prevent others from making concurrent changes.
+- **Versioning** - By enabling Object Versioning on the GCS bucket, you can recover previous versions of your state if it becomes corrupted.
+
+**Configuration Example**:
+
+```terraform
+terraform {
+  backend "gcs" {
+    bucket  = "my-terraform-state-bucket"
+    prefix  = "terraform/state"
+  }
+}
+```
 
 ## 11. External Links
 

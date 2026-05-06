@@ -1,8 +1,9 @@
 # GCP VPC Networks: ACE Exam Study Guide (2026)
 
-![VPC Networks](images/virtual_private_cloud.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/virtual_private_cloud.png" alt="VPC Networks Icon" width=200>
+  <figcaption><center>VPC Networks<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. VPC Fundamentals
 
@@ -21,7 +22,7 @@ A _Virtual Private Cloud_ (VPC) is a global resource that provides networking fu
 
 ## 2. Subnets (Regional)
 
-While a VPC is global, subnets are **regional** resources.
+While a VPC is _global_, subnets are **regional** resources.
 
 - **Regional Isolation:** A subnet exists only within one region (e.g., `us-central1`).
 - **IP Ranges:** Subnet ranges must not overlap within the same VPC.
@@ -110,6 +111,18 @@ In 2026, **Network Firewall Policies** (Global and Regional) are the modern stan
 - **Conflict Resolution:** Longest Prefix Match always wins in routing.
 - **IAP for SSH/RDP:** Remember the range `35.235.240.0/20` must be allowed for IAP TCP forwarding (TCP:22 for SSH, TCP:3389 for RDP).
 - **Networking Costs:** Egress traffic usually incurs costs; Ingress is usually free. Traffic within the same Zone is free; traffic between Zones in the same Region has a cost.
+
+### 9.1. Adding a New Subnet to an Existing VPC Network
+
+1. Navigate to VPC Networks.
+2. Select Your VPC.
+3. Initiate Subnet Creation.
+4. Configure Subnet Details (name, region & IP range).
+5. (Optional) Advanced Settings:
+   - _Secondary IP ranges_ - Often used for GKE (Google Kubernetes Engine) pods and services.
+   - _Private Google Access_ - Enable this if you want VMs in this subnet to access Google APIs without a public IP address.
+   - _Flow Logs_ - Enable this to record a sample of network traffic for monitoring and security.
+6. Finalize - click `Add` or `Done` to create the subnet.
 
 ## 10. External Links
 

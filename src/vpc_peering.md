@@ -1,8 +1,9 @@
 # GCP VPC Peering and Shared VPC: ACE Exam Study Guide (2026)
 
-![Dilbert helps when no image for VPC Peering can be found](images/00_image_is_needed.png)
-
-_Image source: Dilbert.com_
+<figure>
+  <img src="images/00_image_is_needed.png" alt="No VPC Peering Icon Available">
+  <figcaption><center>Dilber Strip (no Icon for VPC Peering)<br><i>Image source: Dilbert.com</i></center></figcaption>
+</figure>
 
 ## 1. VPC Network Peering
 
@@ -36,7 +37,7 @@ Shared VPC allows an organization to connect resources from multiple projects to
   - **Host Project:** The project that contains one or more Shared VPC networks.
   - **Service Project:** A project that is attached to the Host Project. Resources in a service project (like VM instances or GKE clusters) use the subnets in the Host Project.
 - **Administrative Roles (Critical for Exam):**
-  - **Shared VPC Admin:** Typically an Organization Admin. Responsible for enabling the Host Project and attaching Service Projects.
+  - **Shared VPC Admin:** Typically an _Organization Admin_. Responsible for enabling the Host Project and attaching Service Projects.
   - **Network Admin:** Manages the network resources (subnets, firewall rules, etc.) in the Host Project.
   - **Service Project Admin:** Manages the resources (VMs, GKE) within their specific service project. They can only see and use the specific subnets in the Host Project that the Shared VPC Admin has granted them access to.
 - **Use Cases:**

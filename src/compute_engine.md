@@ -1,8 +1,9 @@
 # Compute Engine: ACE Exam Study Guide (2026)
 
-![Compute Engine](images/compute_engine.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/compute_engine.png" alt="Compute Engine Icon" width=200>
+  <figcaption><center>Compute Engine<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. Compute Engine Overview
 
@@ -39,7 +40,7 @@ Compute Engine is Google Cloud's _Infrastructure as a Service (IaaS)_ offering, 
 > - [Zonal MIG - Google Cloud Documentation](https://docs.cloud.google.com/compute/docs/instance-groups/create-zonal-mig)
 > - [Regional MIG - Google Cloud Documentation](https://docs.cloud.google.com/compute/docs/instance-groups/distributing-instances-with-regional-instance-groups)
 
-> Live migration is the process of moving a running VM from one physical host to another without downtime. Google uses this for infrastructure maintenance, allowing your VMs to keep running during host updates. It requires no action from you.
+> **Live migration** is the process of moving a running VM from one physical host to another without downtime. Google uses this for infrastructure maintenance, allowing your VMs to keep running during host updates. It requires no action from you.
 
 ## 4. Persistent Disks, Snapshots and Images
 
@@ -66,6 +67,11 @@ High-performance block storage with independent scaling of performance and capac
 - Performance scales independently from capacity (unlike standard Persistent Disks).
 - Can be attached to sole-tenant nodes and used with MIGs.
 
+<figure>
+  <img src="images/compute_engine_summary.png" alt="Compute Engine Summary">
+  <figcaption><center>Compute Engine Summary<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
+</figure>
+
 ## 5. Sole-Tenant Nodes
 
 Dedicated, single‑tenant physical servers in Google Cloud that run only your project’s Compute Engine VMs. They provide hardware‑level isolation by ensuring no other customer’s workloads share the same underlying host.
@@ -85,6 +91,11 @@ Nodes are organized into node groups, which act as pools of dedicated hosts.
 VMs use **node affinity/anti‑affinity** rules to control placement, ensuring they land on the correct physical nodes.
 You can enforce strict placement (must run on a specific node type) or preferred placement (try this node type first).
 Useful for keeping related workloads together or separating sensitive workloads across different hosts.
+
+<figure>
+  <img src="images/compute_engine_sole_tenant.png" alt="Compute Engine Sole Tenant Summary">
+  <figcaption><center>Compute Engine Sole Tenant Summary<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
+</figure>
 
 ## 6. Connecting to Instances
 

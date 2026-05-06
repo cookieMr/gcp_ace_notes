@@ -1,8 +1,9 @@
 # Identity and Access Management (IAM): ACE Exam Study Guide (2026)
 
-![IAM](images/identity_and_access_management.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/identity_and_access_management.png" alt="IAM Icon" width=200>
+  <figcaption><center>IAM<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. IAM Overview
 
@@ -86,7 +87,7 @@ Google Cloud supports **denied permissions** to explicitly block access even whe
 
 - **Purpose:** Implement "deny" logic to prevent access in specific scenarios.
 - **Example:** Deny `compute.instances.delete` for all users in the production project.
-- **Admin Access:** Requires Organization Admin or specialized roles to configure.
+- **Admin Access:** Requires _Organization Admin_ or specialized roles to configure.
 - **Exam Tip:** Denied permissions take precedence over allowed permissions in the evaluation order.
 
 ## 5. Resource Hierarchy and Inheritance
