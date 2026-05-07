@@ -1,14 +1,15 @@
 # Cloud VPN: ACE Exam Study Guide (2026)
 
-![Cloud VPN](images/cloud_vpn.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/cloud_vpn.png" alt="Cloud VPN Icon" width=200>
+  <figcaption><center>Cloud VPN<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. Cloud VPN Overview
 
 Cloud VPN securely connects your peer network (on-premises or another VPC) to your Google Cloud VPC network through an IPsec VPN connection.
 
-### Key Characteristics
+### 1.1. Key Characteristics
 
 - **Encrypted Traffic:** Data travels over the public internet but remains private due to IPsec encryption.
 - **SLA:** Up to 99.99% availability for HA VPN.

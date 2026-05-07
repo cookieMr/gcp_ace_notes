@@ -122,13 +122,14 @@ IAM policies are hierarchical and permissions are inherited.
 
 ## 7. Essential `gcloud` Commands
 
-- **View Project Policy:** `gcloud projects get-iam-policy [PROJECT_ID]`
-- **Add Role Binding:** `gcloud projects add-iam-policy-binding [PROJECT_ID] --member='user:[EMAIL]' --role='roles/viewer'`
-- **Remove Role Binding:** `gcloud projects remove-iam-policy-binding [PROJECT_ID] --member='user:[EMAIL]' --role='roles/viewer'`
-- **Create Service Account:** `gcloud iam service-accounts create [SA_NAME] --display-name="[DISPLAY_NAME]"`
-- **List Service Accounts:** `gcloud iam service-accounts list`
-- **Grant SA User Role to another SA:** `gcloud projects add-iam-policy-binding [PROJECT_ID] --member='serviceAccount:[SA_EMAIL]' --role='roles/iam.serviceAccountUser'`
-- **Add IAM Condition:** `gcloud projects add-iam-policy-binding [PROJECT_ID] --member='user:[EMAIL]' --role='roles/viewer' --condition='expression=resource.name.startsWith("projects/_/buckets/prod-"),title=Prod-Only'`
+- **View Project Policy**: `gcloud projects get-iam-policy [PROJECT_ID]`
+- **Add Role Binding**: `gcloud projects add-iam-policy-binding [PROJECT_ID] --member='user:[EMAIL]' --role='roles/viewer'`
+- **Remove Role Binding**: `gcloud projects remove-iam-policy-binding [PROJECT_ID] --member='user:[EMAIL]' --role='roles/viewer'`
+- **Create Service Account**: `gcloud iam service-accounts create [SA_NAME] --display-name="[DISPLAY_NAME]"`
+- **List Service Accounts**: `gcloud iam service-accounts list`
+- **Grant SA User Role to another SA**: `gcloud projects add-iam-policy-binding [PROJECT_ID] --member='serviceAccount:[SA_EMAIL]' --role='roles/iam.serviceAccountUser'`
+- **Add IAM Condition**: `gcloud projects add-iam-policy-binding [PROJECT_ID] --member='user:[EMAIL]' --role='roles/viewer' --condition='expression=resource.name.startsWith("projects/_/buckets/prod-"),title=Prod-Only'`
+- **Replicate Custom IAM Roles Between Projects**: `gcloud iam roles copy shared-proj.securityAuditor dev-proj.securityAuditor --source-project=shared-proj --destination-project=dev-proj --update-title="Dev Security Auditor"`
 
 ## 8. External Links
 

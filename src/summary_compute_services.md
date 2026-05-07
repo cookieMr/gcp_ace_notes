@@ -1,13 +1,12 @@
 # Compute Services
 
-![Compute Services](images/Compute-512-color.png)
+<figure>
+  <img src="images/Compute-512-color.png" alt="Compute Services Icon" width=200>
+  <figcaption><center>Compute Services<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
-_Image source: Google Cloud Documentation_
-
----
-
-* [Wait... what is Cloud again - The Cloud Girl](https://www.thecloudgirl.dev/compute/what-is-cloud)
-* [Where should I run my staff - The Cloud Girl](https://www.thecloudgirl.dev/compute/where-should-i-run-my-stuff)
+- [Wait... what is Cloud again - The Cloud Girl](https://www.thecloudgirl.dev/compute/what-is-cloud)
+- [Where should I run my staff - The Cloud Girl](https://www.thecloudgirl.dev/compute/where-should-i-run-my-stuff)
 
 ### **[Compute Engine](./compute_engine.md)**
 

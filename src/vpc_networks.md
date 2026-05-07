@@ -105,6 +105,22 @@ In 2026, **Network Firewall Policies** (Global and Regional) are the modern stan
 - **Create Firewall Rule:** `gcloud compute firewall-rules create [NAME] --network=[VPC] --allow tcp:80 --target-tags=http-server`
 - **Enable Private Google Access:** `gcloud compute networks subnets update [SUBNET] --region=[REGION] --enable-private-ip-google-access`
 
+### 8.1. Subnet Expansion
+
+If you have a subnet `subnet-a` in `us-central1` with range `10.0.0.0/24` and want to expand it to `10.0.0.0/20`:
+
+```bash
+gcloud compute networks subnets update subnet-a \
+  --region=us-central1 \
+  --range=10.0.0.0/20
+```
+
+- You can only make the CIDR range larger (smaller prefix number), never smaller
+- The new range **must contain the original range entirely**
+- Cannot overlap with other subnets in the same VPC
+- Works with regional subnets (not zonal)
+- You can also add/expand secondary IP ranges separately
+
 ## 9. Exam Tips
 
 - **Global vs. Regional:** VPC is Global, Subnets are Regional, Firewall Rules/Policies are Global (legacy rules) or Regional/Global (policies).

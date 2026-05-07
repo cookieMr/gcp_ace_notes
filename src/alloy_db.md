@@ -1,7 +1,7 @@
 # AlloyDB: ACE Exam Study Guide (2026)
 
 <figure>
-  <img src="images/alloy_db_icon.png" alt="AlloyDB Icon">
+  <img src="images/alloy_db_icon.png" alt="AlloyDB Icon" width=200>
   <figcaption><center>AlloyDB<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
 </figure>
 
@@ -31,8 +31,8 @@ AlloyDB is a fully managed, PostgreSQL-compatible database service on Google Clo
 - **Use Cases:** Demanding PostgreSQL workloads, HTAP (hybrid transactional/analytical processing), replacing self-managed PostgreSQL, applications requiring low latency, high throughput, and both OLTP and OLAP capabilities.
 
 <figure>
-  <img src="images/alloy_db_features_diagram.png" alt="AlloyDB Icon">
-  <figcaption><center>AlloyDB<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
+  <img src="images/alloy_db_features_diagram.png" alt="AlloyDB Feature Overview">
+  <figcaption><center>AlloyDB Feature Overview<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
 </figure>
 
 ## 2. High Availability (HA) and Replication

@@ -1,8 +1,9 @@
 # Cloud Logging: ACE Exam Study Guide (2026)
 
-![Cloud Logging](images/cloud_logging.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/cloud_logging.png" alt="Cloud Logging Icon" width=200>
+  <figcaption><center>Cloud Logging<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. Cloud Logging Overview
 
@@ -126,9 +127,10 @@ Log-based Metrics allow you to create numerical metrics based on the content of 
 > **Practical Example**
 > If your exam score is in the **95th percentile**, you scored better than 95% of the people who took the test. It does not mean you got 95% of the questions correct; it only describes your rank relative to others.
 >
-> ![P95 example](images/p95_percentile_example.png)
-> 
-> _Image source: Own work._
+> <figure>
+>  <img src="images/p95_percentile_example.png" alt="95th Percentile Example">
+>  <figcaption><center>95th Percentile<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
+> </figure>
 
 ### 4.1. Creating Log-based Metrics
 

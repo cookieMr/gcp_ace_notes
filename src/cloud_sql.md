@@ -1,8 +1,9 @@
 # Cloud SQL: ACE Exam Study Guide (2026)
 
-![Cloud SQL](images/cloud_sql.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/cloud_sql.png" alt="Cloud SQL Icon" width=200>
+  <figcaption><center>Cloud SQL<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. Core Overview
 

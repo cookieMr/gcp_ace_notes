@@ -45,7 +45,25 @@ The core content and technical facts within these Markdown files were initially 
 ## Mock Tests
 
 - [OpenExamPrep](https://open-exam-prep.com/practice/gcp-ace)
+  - 200 short questions
+  - 3/5 ⭐
 - [Trusted Institute](https://trustedinstitute.com/practice/gcp-associate-cloud-engineer)
+  - limited access, maybe 10-20 total questions for free
+  - long questions with lots of text, good exam approximation
+  - 1/5 ⭐
+- [Certification Practice](https://certificationpractice.com/practice-exams/google-associate-cloud-engineer)
+  - Full-length exam-style questions, realistic format
+  - cannot review questions after answering all 60 quesitons
+  - 2/5 ⭐
+- [Exam Cert App](https://www.examcert.app/exams/gcp-ace/)
+  - 3 free exam sets
+  - ?/5 ⭐
+- [IT Exams](https://www.itexams.com/info/Associate-Cloud-Engineer)
+  - 3 free exam sets
+  - ?/5
+- [Examzify](https://certifiedassociatecloudengineerstudyguide.examzify.com/)
+  - ? free exam sets
+  - ?/5
 
 ## License
 

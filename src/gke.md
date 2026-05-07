@@ -183,12 +183,12 @@ For more details see [Persistant Disk](./persistent_disk.md)
 
 To connect a GKE Pod to a Google Cloud Memorystore (Redis) instance, you need to ensure they share a network and then inject the connection details into your Kubernetes deployment.
 
-### Network Prerequisites
+### 6.1. Network Prerequisites
 
 - **Same VPC**: The Redis instance and GKE cluster must be in the same VPC network and same region.
 - **VPC-Native GKE**: Your GKE cluster must be VPC-native (IP Aliasing enabled). Standard route-based clusters cannot natively route traffic to the Google-managed VPC where Redis lives.
 
-### Find Connection Details
+### 6.2. Find Connection Details
 
 Once the Redis instance is created, retrieve its internal IP address and port from the Google Cloud Console or CLI:
 
@@ -196,7 +196,7 @@ Once the Redis instance is created, retrieve its internal IP address and port fr
 - Port: `6379` (Default)
 - Auth String: If _Auth_ is enabled, you will also need the password string.
 
-### Store Credentials in Kubernetes
+### 6.3. Store Credentials in Kubernetes
 
 The best practice is to store these details in a Kubernetes Secret so they aren't hardcoded in your application code.
 
@@ -207,7 +207,7 @@ kubectl create secret generic redis-creds \
   --from-literal=REDIS_PASSWORD=your-auth-string
 ```
 
-### Update the GKE Deployment
+### 6.4. Update the GKE Deployment
 
 Inject these values into your Pod as environment variables in your `deployment.yaml`.
 
@@ -229,7 +229,7 @@ spec:
               key: REDIS_PORT
 ```
 
-### Verify Connectivity
+### 6.5. Verify Connectivity
 
 You can test the connection by running a temporary "debug" pod with `redis-cli` installed:
 
@@ -240,6 +240,12 @@ kubectl run redis-test --rm -it --image=redis:7 -- \
 ```
 
 > Note on Security: By default, Memorystore does not have a firewall. Use Kubernetes `NetworkPolicies` to restrict which Pods in your cluster are allowed to send egress traffic to the Redis IP address.
+
+### 6.6. View Detailed Lifecycle Information and Events for a Specific Pod Named `web-server`
+
+```bash
+kubectl describe pod web-server
+```
 
 ## 7. GKE Security
 

@@ -21,7 +21,7 @@ Compute Engine is Google Cloud's _Infrastructure as a Service (IaaS)_ offering, 
 - **Cost of Stopped VMs:** If you stop a VM, you stop paying for CPU and RAM, but you still pay for attached _Persistent Disks_ and any reserved _Static External IPs_.
 - **External IPs:**
   - **Ephemeral:** Automatically assigned when VM starts, released when VM stops/deletes
-  - **Static:** Reserved IP address that persists independently of VM lifecycle (incurs charges when unused)
+  - **Static:** Reserved IP address that persists independently of VM lifecycle (incurs charges when unused & survives instance stop/start/restart actions)
 - **Sustained Use Discounts (SUD):** Automatic discounts for running instances for a significant portion of the month (N1, N2).
 - **Committed Use Discounts (CUD):** 1 or 3-year commitment for a predictable workload.
 - **Spot VMs:** Up to 91% discount. These can be terminated by Google at any time with a 30-second notice. Best for fault-tolerant, stateless batch jobs.
@@ -78,14 +78,14 @@ Dedicated, single‑tenant physical servers in Google Cloud that run only your p
 
 > [Sole-tenancy overview - Google Cloud Documentation](https://docs.cloud.google.com/compute/docs/nodes/sole-tenant-nodes)
 
-#### Primary Use Cases
+**Primary Use Cases**
 
 Regulatory or compliance requirements that mandate physical isolation (e.g., healthcare, finance, government).
 Security boundaries where you must avoid multi‑tenant hardware for risk or policy reasons.
 _Bring‑Your‑Own‑License (BYOL)_ scenarios for software that is licensed per physical core, socket, or host.
 Workload placement control, such as pinning specific VMs to specific hardware types.
 
-#### Node Groups & Placement
+**Node Groups & Placement**
 
 Nodes are organized into node groups, which act as pools of dedicated hosts.
 VMs use **node affinity/anti‑affinity** rules to control placement, ensuring they land on the correct physical nodes.
@@ -121,7 +121,7 @@ Useful for keeping related workloads together or separating sensitive workloads 
 - **Metadata**: Used to pass configuration data. Startup scripts are automated scripts that run every time the VM boots.
 - **Metadata Server**: Accessible at `http://metadata.google.internal/computeMetadata/v1/`.
 
-## 7.1. VM Security and Availability
+### 7.1. VM Security and Availability
 
 - **Shielded VMs:** Hardened VMs with security features to protect against boot-level malware/rootkits
   - **Secure Boot:** Blocks untrusted boot loaders and drivers
@@ -139,6 +139,30 @@ Useful for keeping related workloads together or separating sensitive workloads 
 - **Create a VM:** `gcloud compute instances create [NAME] --zone=[ZONE] --machine-type=[TYPE]`
 - **Resize a MIG:** `gcloud compute instance-groups managed resize [NAME] --size=[NEW_SIZE]`
 - **List Instances:** `gcloud compute instances list`
+
+### 8.1. Deletion Protection
+
+Enabling **deletion protection** on a Google Cloud Compute Engine instance prevents accidental deletion of the VM. When this setting is active, any attempt to delete the instance (via the Console, gcloud, API, or Terraform) will fail with an error unless you explicitly disable the protection first.
+
+Enabling:
+
+```bash
+gcloud compute instances update my-web-server \
+  --region=us-central1 \
+  --project=my-gcp-project \
+  --deletion-protection
+```
+
+Disabling:
+
+```bash
+gcloud compute instances update my-web-server \
+  --region=us-central1 \
+  --project=my-gcp-project \
+  --no-deletion-protection
+```
+
+For more details see [Prevent accidental VM deletion](https://docs.cloud.google.com/compute/docs/instances/preventing-accidental-vm-deletion).
 
 ## 9. Exam Tips
 

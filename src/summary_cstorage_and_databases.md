@@ -1,8 +1,9 @@
 # Storage & Databases
 
-![Database & Storage](images/Databases-512-color.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/Databases-512-color.png" alt="Database & Storage Icon" width=200>
+  <figcaption><center>Database & Storage<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ### **[Cloud Storage](./cloud_storage.md)**
 
@@ -43,4 +44,3 @@ Managed **NFS** file storage for applications that require a **POSIX-compliant**
 ### **[Persistent Disk](./persistent_disk.md)**
 
 Persistent Disk is durable, high‑performance block storage for VM instances. It’s replicated for reliability, supports snapshots, resizing, and can detach/reattach across VMs.
-
