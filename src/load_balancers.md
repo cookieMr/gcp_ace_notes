@@ -1,8 +1,9 @@
 # Load Balancing: ACE Exam Study Guide (2026)
 
-![Load Balancing](images/cloud_load_balancing.png)
-
-_Image source: [Cloud Icons](https://cloud-icons.onemodel.app/gcp/networking/cloud_load_balancing)_
+<figure>
+  <img src="images/cloud_load_balancing.png" alt="Load Balancing Icon" width=200>
+  <figcaption><center>Load Balancing<br><i>Image source: <a href="https://cloud-icons.onemodel.app/gcp/networking/cloud_load_balancing">Cloud Icons</a></i></center></figcaption>
+</figure>
 
 ## 1. Load Balancing Overview
 
@@ -25,15 +26,17 @@ Google Cloud Load Balancing is a fully managed, software-defined service. It is 
 
 > _SSL Termination_ is the process where a load balancer decrypts incoming HTTPS traffic before passing it to backend services over HTTP. This offloads CPU‑heavy encryption work from the servers, simplifies certificate management, and allows the load balancer to inspect and route requests (e.g., via URL maps).
 
-![Use Case for Global Load Balancing](images/cloud_load_balancing_diagram.png)
-
-_Image source: Own work (Mermaid diagram)._
+<figure>
+  <img src="images/cloud_load_balancing_diagram.png" alt="Use Case for Global Load Balancing">
+  <figcaption><center>Use Case for Global Load Balancing<br><i>Image source: Own work (Mermaid diagram)</i></center></figcaption>
+</figure>
 
 There is no functional difference today — TLS is simply the modern, secure successor to SSL. But people still say SSL termination even though they actually mean TLS termination.
 
-![Use Case for Global Load Balancing](images/cloud_load_balancing_tls_termination_diagram.png)
-
-_Image source: Own work (Mermaid diagram)._
+<figure>
+  <img src="images/cloud_load_balancing_tls_termination_diagram.png" alt="Use Case for TLS Termination">
+  <figcaption><center>Use Case for TLS Termination<br><i>Image source: Own work (Mermaid diagram)</i></center></figcaption>
+</figure>
 
 ### External Proxy Network Load Balancer (TCP/SSL)
 
@@ -80,6 +83,9 @@ Session affinity ensures requests from the same client go to the same backend. T
 - **L4 Proxy Load Balancers**: Use source IP/port hashing.
 - **Passthrough Load Balancers**: Do not support session affinity.
 
+> **Example use case**:  
+> You are designing an application that uses _WebSockets_ and _HTTP sessions_ that are _not distributed across the web servers_. You want to ensure the application runs properly on GCP.
+
 ## 3. Internal Load Balancers
 
 ### Internal Application Load Balancer (HTTP/S)
@@ -122,7 +128,7 @@ Session affinity ensures requests from the same client go to the same backend. T
 
 > It does not restart or rotate instances. That's task of a [_Managed Instance Group_](./compute_engine.md#3-instance-templates-and-managed-instance-groups-migs).
 
-### 5.1.  Backend Service
+### 5.1. Backend Service
 
 A backend service defines how a load balancer sends traffic to backends like MIGs or NEGs. It applies health checks, balancing policies, timeouts, and routing rules. The load balancer never talks directly to VMs - traffic always flows through a backend service, which decides which instances are healthy and ready to receive requests.
 

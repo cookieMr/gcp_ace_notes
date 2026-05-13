@@ -68,7 +68,7 @@ Understanding HA and read scaling is critical for the ACE exam, as AlloyDB's beh
 
 ## 5. Security and Networking
 
-- **Private IP:** Instances use a private, internal IP via Private Services Access (VPC Peering) by default. No public IP is assigned unless explicitly enabled.
+- **Private IP:** Instances use a private, internal IP via Private Service Access (VPC Peering) by default. No public IP is assigned unless explicitly enabled.
 - **AlloyDB Auth Proxy:** The recommended secure connection method. Uses IAM for authentication, automatically handles TLS/SSL, and eliminates the need for IP whitelisting. Compatible with all PostgreSQL clients.
 - **IAM Database Authentication:** Users and service accounts log in using their Google Cloud identity instead of static database passwords.
 - **Encryption:** Data encrypted at rest (Google-managed keys or customer-managed keys via Cloud KMS) and in transit (TLS 1.3).

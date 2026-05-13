@@ -60,7 +60,8 @@ The core content and technical facts within these Markdown files were initially 
   - ?/5 ⭐
 - [IT Exams](https://www.itexams.com/info/Associate-Cloud-Engineer)
   - 3 free exam sets
-  - ?/5
+  - only on mobile, can review progress
+  - 3/5
 - [Examzify](https://certifiedassociatecloudengineerstudyguide.examzify.com/)
   - ? free exam sets
   - ?/5

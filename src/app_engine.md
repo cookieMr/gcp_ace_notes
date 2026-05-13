@@ -24,13 +24,13 @@ App Engine is a fully managed _Platform as a Service (PaaS)_ for building and de
 - **Speed:** Starts in seconds. Scale-to-zero is supported.
 - **Infrastructure:** Runs in sandboxed environments (specific versions of Node.js, Python, Java, Go, PHP, Ruby).
 - **Instance Classes:** M1 (high memory), M2 (high CPU), F1-F4 (default). Determines CPU/memory ratio.
-  | Class | Memory |   CPU  |     Cost    |
+  | Class | Memory | CPU | Cost |
   |-------|--------|--------|-------------|
-  |   F1  |  256MB | 600MHz |   Cheapest  |
-  |   F2  |  512MB | 1.2GHz |             |
-  |   F4  |    1GB | 2.4GHz |             |
-  |   M1  |    1GB | 600MHz | High memory |
-  |   M2  |    2GB | 1.2GHz | High memory |
+  | F1 | 256MB | 600MHz | Cheapest |
+  | F2 | 512MB | 1.2GHz | |
+  | F4 | 1GB | 2.4GHz | |
+  | M1 | 1GB | 600MHz | High memory |
+  | M2 | 2GB | 1.2GHz | High memory |
 - **Constraints:** Cannot modify OS; write-only to local filesystem (`/tmp`). No SSH access.
 - **Cost:** Cheaper for intermittent traffic; scale-to-zero saves money.
 - **Best For:** Web apps, APIs with varying traffic, rapid development.
@@ -156,6 +156,27 @@ readiness_check:
 
 - **Deployment**: Use `gcloud app deploy`. By default, this promotes the new version to handle 100% of traffic. Use `--no-promote` to deploy without switching traffic.
 
+### 6.3. Traffic Spritting (of 1%) → Canary Deployment
+
+App Engine allows you to run multiple versions of a service simultaneously and divide incoming requests between them based on percentages.
+
+1. First, deploy your new code as a specific version (e.g. `v2`) without immediately routing all traffic to it.
+   ```bash
+   gcloud app deploy --version=v2 --no-promote
+   ```
+2. Use the set-traffic command to allocate 99% to your stable version (`v1`) and 1% to your new test version (`v2`).
+   ```bash
+   gcloud app services set-traffic default --splits=v1=0.99,v2=0.01 --split-by=ip
+   ```
+
+**Choosing the Split Method**  
+To minimize complexity while ensuring a consistent user experience, you must choose how the traffic is divided:
+
+| Method               | Best Use Case                     | Consistency                                                                                         |
+| -------------------- | --------------------------------- | --------------------------------------------------------------------------------------------------- |
+| IP Address Splitting | Simple Tests / Minimal Complexity | Moderate: Users with the same IP see the same version.                                              |
+| Cookie Splitting     | Precise A/B Testing               | High: Uses a GOOGAPPUID cookie to ensure a user stays on the same version regardless of IP changes. |
+
 ## 7. Networking and Security
 
 - **App Engine Firewall:** Control access by IP range (Allow or Deny).
@@ -174,17 +195,18 @@ readiness_check:
 
 ## 8. Essential `gcloud` Commands
 
-| Command                                                              | Description                       |
-| -------------------------------------------------------------------- | --------------------------------- |
-| `gcloud app create --region [REGION]`                                | Initialize App Engine in a region |
-| `gcloud app deploy [YAML_FILE]`                                      | Deploy application                |
-| `gcloud app deploy --no-promote`                                     | Deploy without shifting traffic   |
-| `gcloud app services set-traffic [SERVICE] --splits [V1=0.5,V2=0.5]` | Split traffic                     |
-| `gcloud app browse`                                                  | Open app in browser               |
-| `gcloud app logs read`                                               | View application logs             |
-| `gcloud app versions list`                                           | List all versions                 |
-| `gcloud app services list`                                           | List all services                 |
-| `gcloud app instances list`                                          | List running instances            |
+| Command                                                              | Description                                             |
+| -------------------------------------------------------------------- | ------------------------------------------------------- |
+| `gcloud app create --region [REGION]`                                | Initialize App Engine in a region                       |
+| `gcloud app deploy [YAML_FILE]`                                      | Deploy application                                      |
+| `gcloud app deploy --no-promote`                                     | Deploy without shifting traffic                         |
+| `gcloud app services set-traffic [SERVICE] --splits [V1=0.5,V2=0.5]` | Split traffic                                           |
+| `gcloud app browse`                                                  | Open app in browser                                     |
+| `gcloud app logs read`                                               | View application logs                                   |
+| `gcloud app versions list`                                           | List all versions                                       |
+| `gcloud app services list`                                           | List all services                                       |
+| `gcloud app instances list`                                          | List running instances                                  |
+| `gcloud app versions list --hide-no-traffic`                         | List only versions that are currently receiving traffic |
 
 ## 9. When to Use App Engine vs Alternatives
 

@@ -1,8 +1,9 @@
 # Memorystore: ACE Exam Study Guide (2026)
 
-![Memorystore](images/memorystore.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/memorystore.png" alt="Memorystore Icon" width=200>
+  <figcaption><center>Memorystore<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. Memorystore Overview
 
@@ -25,9 +26,10 @@ Memorystore is Google Cloud’s fully managed in-memory data store service. It i
 
 _Redis Pub/Sub_ in Memorystore provides fast, in‑memory, real‑time messaging for apps inside a VPC. Publishers send messages to channels, and Redis instantly delivers them to connected subscribers. Messages aren’t stored, replayed, or persisted, and failovers or disconnects cause loss. It’s ideal for low‑latency notifications or cache invalidation, but not for durable or reliable event processing.
 
-![Fan-out](images/redis_pubsub_diagram.png)
-
-_Image source: Own work (Mermaid diagram)._
+<figure>
+  <img src="images/redis_pubsub_diagram.png" alt="Fan-out Diagram">
+  <figcaption><center>Fan-out<br><i>Image source: Own work (Mermaid diagram)</i></center></figcaption>
+</figure>
 
 Redis Pub/Sub supports filtering only through channel names and pattern subscriptions (`PSUBSCRIBE`). It does not support content‑based or attribute‑based filtering.
 
@@ -46,6 +48,8 @@ Memorystore instances are **VPC-only** (no public IPs).
 - **Cluster/Valkey Tiers:** Use **Private Service Connect (PSC)**. Clients connect to a single IP (discovery endpoint) in their own VPC.
 
 > _Private Service Access_ lets your VPC connect privately to Google‑managed services that run inside your project, such as _Cloud SQL_, _**Memorystore**_, _AlloyDB_, and _Filestore_. It works through _VPC peering_ and a reserved IP range, giving those services private [RFC 1918](https://datatracker.ietf.org/doc/html/rfc1918) addresses. PSA is regional and meant for accessing Google‑managed backends you own.
+>
+> It uses `199.36.153.4/30` route (used by `restricted.googleapis.com`).
 
 > _Private Service Connect_ creates private endpoints that let your VPC reach Google APIs, third‑party SaaS, or services in other projects using private IPs. It uses Google’s internal load balancing instead of VPC peering, making it ideal for cross‑project or cross‑organization service consumption or publishing.
 

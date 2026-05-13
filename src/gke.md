@@ -32,66 +32,132 @@ Google Kubernetes Engine (GKE) is a managed environment for deploying, managing,
 - Horizontal Pod Autoscaler (HPA): Scales pod replicas based on CPU or custom metrics.
 - Vertical Pod Autoscaler (VPA): Adjusts CPU and memory reservations for pods.
 
-> **Deployment** → Manages app lifecycle: rolling updates, rollbacks, scaling. Creates and controls ReplicaSets.
-> This is a recommented way to run stateless apps in GKE.
->
-> **Resource Limits** → Set CPU/memory requests and limits per pod to control resource allocation and prevent starvation.
->
-> ```yaml
-> apiVersion: apps/v1
-> kind: Deployment
-> metadata:
->   name: my-app
-> spec:
->   replicas: 3
->   strategy:
->     type: RollingUpdate
->     rollingUpdate:
->       maxSurge: 1
->       maxUnavailable: 1
->   selector:
->     matchLabels:
->       app: my-app
->   template:
->     metadata:
->       labels:
->         app: my-app
->     spec:
->       containers:
->         - name: app
->           image: nginx:1.25
->           ports:
->             - containerPort: 80
->           resources:
->             requests:
->               cpu: "250m"
->               memory: "128Mi"
->             limits:
->               cpu: "500m"
->               memory: "256Mi"
-> ```
+### 3.1. `Deployment`
 
-> **ReplicaSet** → Ensures a fixed number of Pods are running. Usually not used directly. Managed (created automatically) by Deployments.
+Manages app lifecycle: rolling updates, rollbacks, scaling. Creates and controls ReplicaSets.  
+This is a recommented way to run stateless apps in GKE.
+
+> **Resource Limits** → Set CPU/memory requests and limits per pod to control resource allocation and prevent starvation.
+
+```yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 3
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: app
+          image: nginx:1.25
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
+```
+
+### 3.2. `ReplicaSet`
+
+Ensures a fixed number of Pods are running. Usually not used directly. Managed (created automatically) by Deployments.
+
+```yaml
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: my-app-rs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: app
+          image: nginx:1.25
+```
+
+### 3.3. `DaemonSet`
+
+A DaemonSet is a specific type of Kubernetes controller that ensures a copy of a particular Pod is running on _every node_ (or a specific subset of nodes) within your cluster.
+
+DaemonSets are typically used for _infrastructure-level services_ or "daemons" that need to run in the background on every machine to support the cluster's health and visibility.
+
+> Use cases:
 >
-> ```yaml
-> apiVersion: apps/v1
-> kind: ReplicaSet
-> metadata:
->   name: my-app-rs
-> spec:
->   replicas: 3
->   selector:
->     matchLabels:
->       app: my-app
->   template:
->     metadata:
->       labels:
->         app: my-app
->     spec:
->       containers:
->         - name: app
->           image: nginx:1.25
-> ```
+> - _Log Collection_ → Running an agent like Fluentd or Logstash on each node to collect and ship logs.
+> - _Cluster Monitoring_ → Deploying monitoring agents like Prometheus Node Exporter or Datadog to gather hardware metrics from every node.
+
+```yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: fluentd-logging
+  namespace: kube-system
+  labels:
+    k8s-app: fluentd-logging
+spec:
+  selector:
+    matchLabels:
+      name: fluentd-logging
+  template:
+    metadata:
+      labels:
+        name: fluentd-logging
+    spec:
+      # DaemonSets often need to tolerate taints to run on all nodes
+      tolerations:
+        - key: node-role.kubernetes.io/master
+          effect: NoSchedule
+        - key: node-role.kubernetes.io/control-plane
+          effect: NoSchedule
+      containers:
+        - name: fluentd
+          image: quay.io/fluentd_elasticsearch/fluentd:v2.5.2
+          resources:
+            limits:
+              memory: 200Mi
+            requests:
+              cpu: 100m
+              memory: 200Mi
+          volumeMounts:
+            - name: varlog
+              mountPath: /var/log
+      # DaemonSets usually interact with the host system
+      volumes:
+        - name: varlog
+          hostPath:
+            path: /var/log
+```
+
+**Key Components Explained**:
+
+- `kind` → DaemonSet: Tells Kubernetes to run exactly one instance of this pod per node.
+- `selector` → Must match the labels defined in the template so the controller knows which pods it owns.
+- `tolerations` → Crucial for DaemonSets. By default, master/control-plane nodes have a "taint" that prevents regular pods from running. Adding these allows the DaemonSet to monitor those nodes as well.
+- `volumes`/`hostPath` → Since DaemonSets are usually for system-level tasks (like logging or monitoring), they often need to mount a path directly from the physical Node's file system.
+
+---
 
 > **GKE** → Use `Deployments` for stateless workloads. `ReplicaSets` are created automatically.
 
@@ -263,21 +329,73 @@ kubectl describe pod web-server
   <figcaption><center>Google Kubernetes Engine Summary<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
 </figure>
 
-## 8. Essential `gcloud` and `kubectl` Commands
+### 7.1. GKE Sandbox & gVisor
+
+Provides a high-security defense layer for GKE clusters running untrusted or arbitrary code from multiple customers (multi-tenancy).
+
+- _gVisor_ - An open-source, user-space kernel that intercepts and handles system calls. It acts as a "buffer" between the container and the host OS kernel.
+- _Isolation_ - Standard containers share the host's kernel. GKE Sandbox provides each Pod with its own dedicated guest kernel (gVisor), preventing "container escape" attacks from compromising the host or other Pods.
+- _Usage Case_ - Essential for SaaS platforms where users can upload and execute their own scripts or binaries.
+
+**Implementation**
+
+1. **Node Pool** - Enable the "GKE Sandbox" feature on a specific Node Pool.
+2. **Pod Spec** - Direct the Pod to use the sandbox by adding the `runtimeClassName`:
+   ```yaml
+   spec:
+     runtimeClassName: gvisor
+     containers:
+       - name: untrusted-customer-code
+         image: node:18
+   ```
+
+> While _gVisor_ adds security, it can introduce a small performance overhead for system-call-heavy applications. Always test latency-sensitive apps before full deployment.
+
+## 8. Troubleshooting
+
+### 8.1. Pod stays in a `Pending` state
+
+A Pod is `Pending` when it has been accepted by Kubernetes but hasn't been assigned to a Node yet. It’s essentially stuck in the "waiting room" of the scheduler.
+
+**Top 3 Reasons**:
+
+- _Insufficient Resources_ → No node has enough free CPU or Memory to satisfy the Pod's `requests`.
+- _Scheduling Constraints_ → `nodeSelector`, `affinity`, or `taints` are preventing the Pod from fitting onto the available nodes.
+- _Storage Issues_ → The Pod is waiting for a Persistent Volume (Disk) to be created or attached.
+
+**How to Fix**  
+Run this command and look at the Events section at the bottom:
+
+```bash
+kubectl describe pod [POD_NAME]
+```
+
+It will tell you exactly why the scheduler rejected the available nodes (e.g., _"0/3 nodes are available: 3 Insufficient cpu"_).
+
+## 9. Essential `gcloud` and `kubectl` Commands
 
 - Create a Cluster: `gcloud container clusters create [CLUSTER_NAME] --zone [ZONE] --num-nodes [NUMBER]`
 - Get Credentials: `gcloud container clusters get-credentials [CLUSTER_NAME] --zone [ZONE]`
 - Resize a Cluster: `gcloud container clusters resize [CLUSTER_NAME] --node-pool [POOL_NAME] --num-nodes [NEW_SIZE]`
+- Enable Cluster Nodes autoscaling: `gcloud container clusters update [CLUSTER_NAME] --enable-autoscaling --min-nodes=1 --max-nodes=10`
+  > This is used e.g. in case when a pod cannot find available CPU/memory (e.g. when `Insufficient cpu` error happens during pod scheduling).
 - Deploy an Application: `kubectl apply -f [FILENAME.YAML]`
 - Check Pod Status: `kubectl get pods`
 
-## 9. Exam Tips and Gotchas
+> Important: "Per Zone" vs "Total"
+>
+> | Flag                                    | Meaning        | Scope                                                                                                   |
+> | --------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------- |
+> | `--min-nodes`/`--max-nodes`             | Per Zone       | If you have a regional cluster with 3 zones, a max of 10 means your cluster can grow to 30 nodes total. |
+> | `--total-min-nodes`/`--total-max-nodes` | Entire Cluster | Limits the sum of all nodes across all zones to the specified number.                                   |
+
+## 10. Exam Tips and Gotchas
 
 - Control Plane Upgrade: Google automatically upgrades the Control Plane. Define Maintenance Windows and Exclusions.
 - Preemptible/Spot VMs: Use for cost savings in fault-tolerant workloads.
 - Autopilot vs Standard: Choose Autopilot for reduced operational overhead unless specific node customization is required.
 
-## 10. External Links
+## 11. External Links
 
 - [Google Kubernetes Engine - The Cloud Girl](https://www.thecloudgirl.dev/compute/google-kubernetes-engine)
 - [Where should I run my staff - The Cloud Girl](https://www.thecloudgirl.dev/compute/where-should-i-run-my-stuff)

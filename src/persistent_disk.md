@@ -1,8 +1,9 @@
 # Persistent Disk: ACE Exam Study Guide
 
-![Persistent Disk](images/persistent_disk.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/persistent_disk.png" alt="Persistent Disk Icon" width=200>
+  <figcaption><center>Persistent Disk<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. Overview
 
@@ -18,20 +19,20 @@ Persistent Disk is a durable storage solution for Google Cloud VMs. Data is repl
 
 ## 2. Disk Types
 
-### Standard Hard Disks
+### 2.1. Standard Hard Disks
 
 | Type                       | Use Case                                               | Performance           |
 | -------------------------- | ------------------------------------------------------ | --------------------- |
 | **Standard (pd-standard)** | Bulk storage, sequential reads (logs, data warehouses) | HDD-based, lower cost |
 
-### SSD Hard Disks
+### 2.2. SSD Hard Disks
 
 | Type                       | Use Case                   | Performance                            |
 | -------------------------- | -------------------------- | -------------------------------------- |
 | **Balanced (pd-balanced)** | General purpose workloads  | SSD-based, balance of cost/performance |
 | **SSD (pd-ssd)**           | Databases, high IOPS needs | High IOPS, consistent performance      |
 
-### Extreme (Extreme Persistent Disk)
+### 2.3. Extreme (Extreme Persistent Disk)
 
 | Type                     | Use Case                                 | Performance                                      |
 | ------------------------ | ---------------------------------------- | ------------------------------------------------ |
@@ -114,11 +115,36 @@ gcloud compute disks snapshot [DISK_NAME] --region=[REGION]
 gcloud compute disks create [NEW_DISK] --source-snapshot=[SNAPSHOT]
 ```
 
----
+### 7.1. Snapshot Schedule
+
+A snapshot schedule is a Google Cloud resource policy that automatically automates the backup and lifecycle management of Compute Engine persistent disks.
+
+Instead of manually taking snapshots, you define a policy and attach it to one or more disks.
+
+- _Frequency_ → Snapshots can be taken hourly (every 1–23 hours), daily, or weekly.
+- _Retention Policy_ → You can set snapshots to _auto-delete_ after a certain number of days (e.g., keep the last 30 days of backups) to manage storage costs.
+- _Deletion Behavior_ → You can choose whether to keep or delete auto-snapshots if the source disk itself is deleted.
+- _Same Region_ → The schedule policy must be created in the same region as the disks it will manage.
+- _Cost Management_ → Always set a retention policy; without one, snapshots are kept indefinitely, leading to high storage fees.
+
+1. Create the Schedule (Resource Policy):
+   ```bash
+   gcloud compute resource-policies create snapshot-schedule [SCHEDULE_NAME] \
+     --region=[REGION] \
+     --start-time=04:00 \
+     --daily-schedule \
+     --max-retention-days=14
+   ```
+2. Attach to a disk:
+   ```bash
+   gcloud compute disks add-resource-policies [DISK_NAME] \
+     --resource-policies=[SCHEDULE_NAME] \
+     --zone=[ZONE]
+   ```
 
 ## 8. Disk Operations
 
-### Attaching/Detaching
+### 8.1. Attaching/Detaching
 
 | Operation      | Command                                                         |
 | -------------- | --------------------------------------------------------------- |
@@ -131,7 +157,7 @@ gcloud compute disks create [NEW_DISK] --source-snapshot=[SNAPSHOT]
 - Can attach while VM is running (hot-add)
 - Must unmount filesystem before detaching
 
-### Resizing
+### 8.2. Resizing
 
 ```
 gcloud compute disks resize [DISK] --size=[NEW_SIZE_GB]
@@ -141,7 +167,7 @@ gcloud compute disks resize [DISK] --size=[NEW_SIZE_GB]
 - **Never possible:** Decrease disk size (must recreate disk at smaller size)
 - After resizing: Must extend filesystem within the VM (`resize2fs`, `diskpart`, etc.)
 
-### Moving Disks Between Zones
+### 8.3. Moving Disks Between Zones
 
 ```
 gcloud compute disks move [DISK] --destination-zone=[ZONE] --zone=[CURRENT_ZONE]
@@ -149,12 +175,12 @@ gcloud compute disks move [DISK] --destination-zone=[ZONE] --zone=[CURRENT_ZONE]
 
 ## 9. Sharing Disks
 
-### Read-only Sharing
+### 9.1. Read-only Sharing
 
 - Attach a single Persistent Disk to multiple VMs in read-only mode
 - Use case: Sharing OS images, read-only data
 
-### Multi-writer Mode (Hyperdisk)
+### 9.2. Multi-writer Mode (Hyperdisk)
 
 - Allows attaching a disk to multiple VMs in read-write mode
 - Requires hyperdisk type (Extreme, Throughput, or Balanced)
@@ -172,7 +198,7 @@ gcloud compute disks move [DISK] --destination-zone=[ZONE] --zone=[CURRENT_ZONE]
 
 Google Kubernetes Engine uses Persistent Disk primarily through _Kubernetes_ `PersistentVolumes` (PV) and `PersistentVolumeClaims` (PVC).
 
-### Storage Classes
+### 11.1. Storage Classes
 
 GKE uses predefined Storage Classes to provision Persistent Disks:
 
@@ -183,12 +209,12 @@ GKE uses predefined Storage Classes to provision Persistent Disks:
 | `ssd`         | pd-ssd      | High-performance databases   |
 | `extreme`     | pd-extreme  | Maximum IOPS workloads       |
 
-### Volume Modes
+### 11.2. Volume Modes
 
 - **Filesystem (default):** Mount as directory; supports `ReadWriteOnce` and `ReadOnlyMany`
 - **Block:** Raw block device; supports `ReadWriteOnce` and `ReadWriteMany` (hyperdisk only)
 
-### Access Modes
+### 11.3. Access Modes
 
 | Mode            | Description                                         |
 | --------------- | --------------------------------------------------- |
@@ -196,7 +222,7 @@ GKE uses predefined Storage Classes to provision Persistent Disks:
 | `ReadOnlyMany`  | Multiple nodes read-only                            |
 | `ReadWriteMany` | Multiple nodes read-write (requires hyperdisk only) |
 
-### StatefulSets
+### 11.4. StatefulSets
 
 Use Persistent Disk with **StatefulSets** for workloads requiring stable identity and persistent storage:
 
@@ -204,7 +230,7 @@ Use Persistent Disk with **StatefulSets** for workloads requiring stable identit
 - Pods are ordered for deployment/deletion
 - Volume persists across pod rescheduling
 
-### Key Points for Exam
+### 11.5. Key Points for Exam
 
 - **Zonal:** GKE nodes and PD must be in the same zone
 - **Regional clusters:** Use Regional PD for HA across zones
@@ -212,7 +238,7 @@ Use Persistent Disk with **StatefulSets** for workloads requiring stable identit
 - **Disk size:** Cannot decrease PVC size (same as standalone PD)
 - **Regional PD:** Requires GKE 1.26+ or GKE Standard mode for multi-zone volume placement
 
-### Kubernetes config files
+### 11.6. Kubernetes config files
 
 PersistentVolume (PV):
 

@@ -51,7 +51,7 @@ Understanding the difference between HA and Read Replicas is heavily tested on t
 
 ## 5. Security and Networking
 
-- **Private IP:** Instances can have a private, internal IP via Private Services Access (VPC Peering).
+- **Private IP:** Instances can have a private, internal IP via Private Service Access (VPC Peering).
 - **Cloud SQL Auth Proxy:** The **Gold Standard** for secure connections. It uses IAM for authentication and automatically handles SSL/TLS. No need to whitelist IP addresses when using the proxy.
 - **IAM Authentication:** Allows users and service accounts to log in using their Google Cloud identity instead of static database passwords.
 

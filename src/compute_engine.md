@@ -136,9 +136,24 @@ Useful for keeping related workloads together or separating sensitive workloads 
 
 ## 8. Essential `gcloud` Commands
 
-- **Create a VM:** `gcloud compute instances create [NAME] --zone=[ZONE] --machine-type=[TYPE]`
-- **Resize a MIG:** `gcloud compute instance-groups managed resize [NAME] --size=[NEW_SIZE]`
-- **List Instances:** `gcloud compute instances list`
+- **Create a VM**: `gcloud compute instances create [NAME] --zone=[ZONE] --machine-type=[TYPE]`
+- **Resize a MIG**: `gcloud compute instance-groups managed resize [NAME] --size=[NEW_SIZE]`
+- **List Instances**: `gcloud compute instances list`
+- **Restart instances in a _rolling-action_** (e.g. use case → reclaim leaked memory):
+  ```bash
+  gcloud compute instance-groups managed rolling-action restart [MIG_NAME] \
+    --max-unavailable=20% \
+    --region=[REGION]
+  ```
+- **Replace instances _rolling-action_** (e.g. use case → update a start-up script (new template)):
+  ```bash
+  gcloud compute instance-groups managed rolling-action start-update [MIG_NAME] \
+    --version=template=[TEMPLATE_NAME] \
+    --max-unavailable=0 \
+    --max-surge=1
+    --zone=[ZONE]
+  ```
+  > For more details see [`gcloud compute instance-groups managed rolling-action start-update`](https://docs.cloud.google.com/sdk/gcloud/reference/compute/instance-groups/managed/rolling-action/start-update) Google Cloud Documentation.
 
 ### 8.1. Deletion Protection
 
@@ -163,6 +178,22 @@ gcloud compute instances update my-web-server \
 ```
 
 For more details see [Prevent accidental VM deletion](https://docs.cloud.google.com/compute/docs/instances/preventing-accidental-vm-deletion).
+
+### 8.2. First login to Windows VM via RDP
+
+Generates or resets local admin credentials for Windows VMs. Essential for RDP access since Windows doesn't use SSH keys.
+
+- _Injection_ → Sends a request to the Metadata Server; the Google Guest Agent inside the VM picks it up and updates the OS password locally.
+- _Initial Login_ → Mandatory for first-time access to generic Windows images.
+- _Recovery_ → Used to regain access if local credentials are lost.
+
+```bash
+gcloud compute reset-windows-password [VM_NAME] --user=[USER] --zone=[ZONE]
+```
+
+- _Permissions_ → Needs `compute.instances.setMetadata`.
+- _Prerequisite_ → VM must be Running with _Guest Agent_ installed.
+- _Scope_ → Only affects local accounts, not Active Directory (domain) accounts.
 
 ## 9. Exam Tips
 

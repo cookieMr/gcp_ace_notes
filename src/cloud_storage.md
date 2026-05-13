@@ -45,6 +45,9 @@ Cloud Storage is Google Cloud's object storage service for storing unstructured 
   - **Common Conditions:** `Age` (days), `CreatedBefore` (date), `IsLive` (true/false), `MatchesStorageClass`.
 - **Soft Delete (2026 Standard):** A bucket-level setting that allows you to recover deleted objects for a configurable retention period (default 7 days) even after they are deleted.
 
+> When deleting a _live version_ it becomes a _noncurrent version_ (thus it can be recovered).  
+> When deleting a _noncurrent version_ it's removed pernamently.
+
 ## 6. Retention Policies and Holds
 
 - **Retention Policy:** Ensures objects are not deleted or overwritten for a specific duration.

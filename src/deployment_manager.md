@@ -1,8 +1,9 @@
 # Deployment Manager: ACE Exam Study Guide (2026)
 
-![Deployment Manager](images/google-cloud-deployment-manager.png)
-
-_Image source: [Vecta.io](https://vecta.io/symbols/4/google-cloud-platform/20/google-cloud-deployment-manager)_
+<figure>
+  <img src="images/google_kubernetes_engine.png" alt="Deployment Manager Icon" width=200>
+  <figcaption><center>Deployment Manager<br><i>Image source: <a href="https://vecta.io/symbols/4/google-cloud-platform/20/google-cloud-deployment-manager">Vecta.io</a></i></center></figcaption>
+</figure>
 
 ## 1. Deployment Manager Overview
 
@@ -121,6 +122,13 @@ gcloud deployment-manager deployments delete [DEPLOYMENT_NAME] --delete-policy=A
   `gcloud deployment-manager deployments list`
 - **Delete a Deployment:**
   `gcloud deployment-manager deployments delete [NAME]`
+
+> `create` is used to create a new deployment while `apply` is to update existing deployment with new changes.
+>
+> ```bash
+> gcloud deployment-manager deployments create [NAME] --config [FILE.YAML]
+> gcloud deployment-manager deployments apply [NAME] --config [FILE.YAML]
+> ```
 
 ## 8. Exam Tips
 
