@@ -15,7 +15,7 @@ Cloud Run is a fully managed, serverless compute platform that enables you to ru
   - **Stateless**: Containers must be stateless. Persistent data should be stored in Cloud Storage, Filestore, or a database.
   - **Concurrency**: Cloud Run can handle multiple concurrent requests per container instance (default is 80, up to 1000).
 
-### Knative Framework
+### 1.1. Knative Framework
 
 **Knative** is an open‑source framework that brings serverless capabilities to Kubernetes by providing standardized components for building, deploying, and running containerized applications.
 
@@ -44,9 +44,9 @@ Knative consists of two main parts: **Serving**, which handles request‑driven 
 - **Tagging:** Assign a specific URL to a revision for testing before routing main traffic.
 - **Rollbacks:** Instantly roll back to a previous revision by shifting 100% of traffic.
 
-### Deployment Strategies
+### 3.1. Deployment Strategies
 
-#### Blue‑Green Deployment
+#### 3.1.1. Blue‑Green Deployment
 
 Two identical environments exist: **Blue (current)** and **Green (new)**.
 
@@ -57,7 +57,7 @@ Two identical environments exist: **Blue (current)** and **Green (new)**.
 
 **Use cases:** zero‑downtime releases, fast rollback, predictable behavior.
 
-#### A/B Testing
+#### 3.1.2. A/B Testing
 
 Two versions run **simultaneously**, each receiving a portion of traffic.
 
@@ -74,7 +74,7 @@ Two versions run **simultaneously**, each receiving a portion of traffic.
   <figcaption><center>A/B Testing Deployment Sequence<br><i>Image source: Own work (Mermaid diagram)</i></center></figcaption>
 </figure>
 
-#### Canary Deployment
+#### 3.1.3. Canary Deployment
 
 Gradually roll out a new version to a small subset of users.
 
@@ -90,7 +90,7 @@ Gradually roll out a new version to a small subset of users.
   <figcaption><center>Canary Deployment<br><i>Image source: Own work (Mermaid diagram)</i></center></figcaption>
 </figure>
 
-#### Rolling Update Deployment
+#### 3.1.4. Rolling Update Deployment
 
 A _rolling update_ replaces application instances gradually, updating a few replicas at a time until the entire fleet runs the new version.
 
@@ -105,12 +105,17 @@ A _rolling update_ replaces application instances gradually, updating a few repl
 
 > Rolling updates require _strict backward compatibility_ because old and new versions run simultaneously. Breaking API changes cause runtime failures. Use versioning, tolerant readers, and the expand‑migrate‑contract pattern to safely evolve APIs.
 
-### Summary
+### 3.2. Summary
 
-- **Blue‑Green** Two full environments. Switch traffic all at once. Best for fast rollback.
+- **Blue‑Green**: Two full environments. Switch traffic all at once. Best for fast rollback.
 - **A/B Testing**: Runs two versions in parallel to compare user behavior and performance metrics for data‑driven decisions.
 - **Canary**: Gradual traffic shifting. Best for testing new versions with minimal risk.
 - **Rolling Update**: Gradual replacement of old instances with new ones. Zero downtime, no duplicate environments, slower rollback than Blue‑Green but simpler and resource‑efficient.
+
+<figure>
+  <img src="images/cloud_run_deployment_summary.png" alt="Deployments Summary">
+  <figcaption><center>Deployments Summary<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
+</figure>
 
 ## 4. Scaling, Resources & Probes
 

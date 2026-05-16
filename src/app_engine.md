@@ -172,10 +172,10 @@ App Engine allows you to run multiple versions of a service simultaneously and d
 **Choosing the Split Method**  
 To minimize complexity while ensuring a consistent user experience, you must choose how the traffic is divided:
 
-| Method               | Best Use Case                     | Consistency                                                                                         |
-| -------------------- | --------------------------------- | --------------------------------------------------------------------------------------------------- |
-| IP Address Splitting | Simple Tests / Minimal Complexity | Moderate: Users with the same IP see the same version.                                              |
-| Cookie Splitting     | Precise A/B Testing               | High: Uses a GOOGAPPUID cookie to ensure a user stays on the same version regardless of IP changes. |
+| Method               | Best Use Case                     | Consistency                                                                                           |
+| -------------------- | --------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| IP Address Splitting | Simple Tests / Minimal Complexity | Moderate: Users with the same IP see the same version.                                                |
+| Cookie Splitting     | Precise A/B Testing               | High: Uses a `GOOGAPPUID` cookie to ensure a user stays on the same version regardless of IP changes. |
 
 ## 7. Networking and Security
 

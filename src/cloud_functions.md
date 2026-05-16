@@ -100,7 +100,9 @@ dependencies {
 
 _Cloud Functions_ doesn’t run on Knative directly, but uses the Knative‑compatible Functions Framework, allowing the same function code to run on _Cloud Run_ or any Knative environment.
 
-#### For HTTP-triggered functions
+> These interfaces define the entry point that Google Cloud invokes when your function runs.
+
+### 9.1. For HTTP-triggered functions
 
 `com.google.cloud.functions.HttpFunction`
 
@@ -115,7 +117,7 @@ public class HelloHttp implements HttpFunction {
 }
 ```
 
-#### For background (event-driven) functions
+### 9.2. For background (event-driven) functions
 
 `com.google.cloud.functions.BackgroundFunction<T>`
 
@@ -134,7 +136,7 @@ record PubSubMessage(String data) {
 }
 ```
 
-#### For raw event payloads
+### 9.3. For raw event payloads
 
 `com.google.cloud.functions.RawBackgroundFunction`
 
@@ -148,8 +150,6 @@ public class HelloRawBackground implements RawBackgroundFunction {
 }
 ```
 
-These interfaces define the entry point that Google Cloud invokes when your function runs.
-
 ## 10. Exam Tips & Comparison
 
 - **Cloud Functions vs. Cloud Run**
@@ -158,7 +158,7 @@ These interfaces define the entry point that Google Cloud invokes when your func
   - Use _Cloud Run_ for full web applications, containers with multiple routes, or complex dependencies.
 - **Cold Starts**: Occur when a new instance is spun up from zero. Mitigated by setting a `min-instances` value.
 - **Idempotency**: Event-driven functions should be idempotent to handle retries correctly.
-  > **Idempotency** - An operation is idempotent if performing it multiple times produces the same result as performing it once.
+  > **Idempotency** - An operation is idempotent if performing it multiple times produces the same result as performing it once (subsequent calls don't change system state any further). 
 
 ## 11. External Links
 
