@@ -65,6 +65,9 @@ The core content and technical facts within these Markdown files were initially 
 - [Examzify](https://certifiedassociatecloudengineerstudyguide.examzify.com/)
   - ? free exam sets
   - ?/5 ⭐
+- [ExamTopics](https://www.examtopics.com/exams/google/associate-cloud-engineer/view)
+  - 20 free questions, answers need to be verified as they show only user's votes
+  - 2/5 ⭐ (i would give way more stars if there were more questions)
 
 ## License
 

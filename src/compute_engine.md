@@ -42,6 +42,47 @@ Compute Engine is Google Cloud's _Infrastructure as a Service (IaaS)_ offering, 
 
 > **Live migration** is the process of moving a running VM from one physical host to another without downtime. Google uses this for infrastructure maintenance, allowing your VMs to keep running during host updates. It requires no action from you.
 
+### 3.1. Separate Health Checks for Load Balancing and for Autohealing in MIG
+
+In a Managed Instance Group (MIG), you can configure two distinct types of health checks that serve different operational purposes. While they can point to the same endpoint, separating them allows for more granular control over availability versus instance lifecycle.
+
+#### 3.1.1. Load Balancing Health Check
+
+The primary goal of this check is traffic management. It determines whether an instance is ready to receive requests from the Load Balancer (LB).
+
+- **Action on Failure** - If the health check fails, the Load Balancer stops sending new connections to that specific instance.
+- **Instance State** - The VM remains running and is not deleted or restarted. It is simply "taken out of rotation."
+- **Use Case** - Ideal for scenarios like "draining" an instance for maintenance or if a service is temporarily overloaded but expected to recover without a reboot.
+
+#### 3.1.2. Autohealing Health Check
+
+The primary goal of this check is instance repair. It monitors the underlying health of the application to ensure it hasn't crashed or entered an unrecoverable state.
+
+- **Action on Failure** - If the instance is consistently marked "Unhealthy" based on the autohealing policy, the MIG controller _recreates_ the instance.
+- **Instance State** - The VM is terminated and a new one is started in its place using the same instance template.
+- **Use Case** - Necessary for recovering from application freezes, memory leaks, or disk failures where a simple restart of the service or VM is the only solution.
+
+#### 3.1.3. Comparison Table
+
+| Feature          | Load Balancing Health Check | Autohealing Health Check     |
+| ---------------- | --------------------------- | ---------------------------- |
+| Primary Goal     | Traffic Routing             | Instance Reliability         |
+| Failure Response | Stop sending traffic        | Recreate/Restart VM          |
+| Impact on VM     | None (VM stays up)          | Destructive (VM is replaced) |
+| Triggered By     | Google Cloud Load Balancer  | MIG Autohealer               |
+
+#### 3.1.4. Best Practices for Separation
+
+It is often recommended to use separate checks or at least different thresholds for these two functions:
+
+- **Grace Periods** - Autohealing should have a longer initial delay to allow the application to fully boot before the MIG starts killing "unhealthy" instances.
+- **Thresholds** - You might want the Load Balancer to be sensitive (failing quickly to preserve user experience), while making the Autohealer more conservative (waiting longer before performing a full VM recreation).
+
+<figure>
+  <img src="images/compute_engine_separate_health_checks.png" alt="Separate Health Checks for Load Balancer and Autohealing">
+  <figcaption><center>Separate Health Checks for Load Balancer and Autohealing<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
+</figure>
+
 ## 4. Persistent Disks, Snapshots and Images
 
 - **Persistent Disks (PD):** Durable network storage. You can resize a disk up but never down.
@@ -121,6 +162,13 @@ Useful for keeping related workloads together or separating sensitive workloads 
 - **Metadata**: Used to pass configuration data. Startup scripts are automated scripts that run every time the VM boots.
 - **Metadata Server**: Accessible at `http://metadata.google.internal/computeMetadata/v1/`.
 
+> For more details see [Create a VM that uses a user-managed service account](https://docs.cloud.google.com/compute/docs/access/create-enable-service-accounts-for-instances#changeserviceaccountandscopes).
+>
+> <figure>
+>   <img src="images/compute_engine_service_account.png" alt="Compute Engine Service Account">
+>   <figcaption><center>Compute Engine Service Account<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
+> </figure>
+
 ### 7.1. VM Security and Availability
 
 - **Shielded VMs:** Hardened VMs with security features to protect against boot-level malware/rootkits
@@ -178,6 +226,11 @@ gcloud compute instances update my-web-server \
 ```
 
 For more details see [Prevent accidental VM deletion](https://docs.cloud.google.com/compute/docs/instances/preventing-accidental-vm-deletion).
+
+<figure>
+  <img src="images/compute_engine_delete_prevention.png" alt="Compute Engine - Deletion Protection">
+  <figcaption><center>Compute Engine - Deletion Protection<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
+</figure>
 
 ### 8.2. First login to Windows VM via RDP
 
