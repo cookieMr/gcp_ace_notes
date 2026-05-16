@@ -1,12 +1,15 @@
 # Google Cloud Associate Cloud Engineer (ACE) Study Guide
 
-![Google Cloud Platform - Associate Cloud Engineer](https://miro.medium.com/v2/resize:fit:640/format:webp/0*XdPsBsUseYD08_Ne)
+<figure>
+  <img src="https://miro.medium.com/v2/resize:fit:640/format:webp/0*XdPsBsUseYD08_Ne" alt="Google Cloud Platform - Associate Cloud Engineer" width=200>
+  <figcaption><center>CGoogle Cloud Platform - Associate Cloud Engineer<br><i><a href="https://wings.medium.com/how-to-ace-the-google-cloud-platform-associate-cloud-engineer-exam-5a39e12f091f">Image source: Medium</a></i></center></figcaption>
+</figure>
 
-**Note: These are my personal study notes that I am using to prepare myself for the Google Cloud Associate Cloud Engineer (ACE) certification exam.**
+> **Note: These are my personal study notes that I am using to prepare myself for the Google Cloud Associate Cloud Engineer (ACE) certification exam.**
 
 ## Read the Book
 
-The notes in this repository are compiled into a highly readable, searchable online book using **mdBook**.
+Notes in this repository are compiled into a highly readable, searchable online book using **mdBook**.
 
 **[Read the live study guide here](https://cookieMr.github.io/gcp_ace_notes/)**
 
@@ -42,34 +45,41 @@ If you want to run this book locally to study offline or modify the notes, you w
 
 The core content and technical facts within these Markdown files were initially structured and generated with the assistance of AI, then curated, reviewed, and formatted specifically for this mdBook layout.
 
-## Mock Tests
+## Mock Tests (Free)
+
+IMHO these are a poor aproximation of the real exam. So I suggest to look for a paid options (I used Udemy).
 
 - [OpenExamPrep](https://open-exam-prep.com/practice/gcp-ace)
   - 200 short questions
   - 3/5 ⭐
-- [Trusted Institute](https://trustedinstitute.com/practice/gcp-associate-cloud-engineer)
-  - limited access, maybe 10-20 total questions for free
-  - long questions with lots of text, good exam approximation
-  - 1/5 ⭐
+- [Exam Cert App](https://www.examcert.app/exams/gcp-ace/)
+  - 3 free exam sets
+  - only on mobile, can review progress, no copy-text so i had to rewrite quesiton to GTP Friend for verification
+  - 3/5 ⭐
 - [Certification Practice](https://certificationpractice.com/practice-exams/google-associate-cloud-engineer)
   - Full-length exam-style questions, realistic format
   - cannot review questions after answering all 60 quesitons
   - 2/5 ⭐
-- [Exam Cert App](https://www.examcert.app/exams/gcp-ace/)
-  - 3 free exam sets
-  - ?/5 ⭐
-- [IT Exams](https://www.itexams.com/info/Associate-Cloud-Engineer)
-  - 3 free exam sets
-  - only on mobile, can review progress
-  - 3/5 ⭐
 - [Examzify](https://certifiedassociatecloudengineerstudyguide.examzify.com/)
-  - ? free exam sets
-  - ?/5 ⭐
+  - 20 free questions looped in a set of 400 questions
+  - 2/5 ⭐
 - [ExamTopics](https://www.examtopics.com/exams/google/associate-cloud-engineer/view)
   - 20 free questions, answers need to be verified as they show only user's votes
   - 2/5 ⭐ (i would give way more stars if there were more questions)
+- [Trusted Institute](https://trustedinstitute.com/practice/gcp-associate-cloud-engineer)
+  - limited access, maybe 10-20 total questions for free
+  - long questions with lots of text, good exam approximation
+  - 1/5 ⭐
+- [IT Exams](https://www.itexams.com/info/Associate-Cloud-Engineer)
+  - 10 free exam questions already seen elsewere
+  - 1/5 ⭐
 
 ## License
+
+<figure>
+  <img src="https://fsfe.org/graphics/gplv3-logo-red.png" alt="GNU GPL v3 Logo" width=200>
+  <figcaption><center>GNU General Public License v3.0<br><i><a href="https://fsfe.org/activities/gplv3/diff-draft2-draft3.en.html">Image source: FSFE</a></i></center></figcaption>
+</figure>
 
 This project is licensed under the [GNU General Public License v3.0 (GPLv3)](https://www.gnu.org/licenses/gpl-3.0.en.html#license-text).
 
