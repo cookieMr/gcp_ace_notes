@@ -59,6 +59,7 @@
   - [Cloud Run & IAP](./cloud_run_iap.md)
   - [Cloud Run & Direct VPC Egress for Memorystore](./cloud_run_direct_vpc_egress.md)
   - [Cloud Run connecting to DB on-prem](./cloud_run_db_on_prem.md)
+  - [Configure CDC sync from Cloud SQL (PostgreSQL) into Memorystore (Redis)](./cdc_postgresql_redis.md)
 - [Appendix](./summary_appendix.md)
   - [mTLS](./mtls.md)
   - [OIDC, OAuth2 & JWT](./oicd_oauth2_jwt.md)

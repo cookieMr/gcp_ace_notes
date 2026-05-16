@@ -1,10 +1,11 @@
 # Cloud Run &amp; Direct VPC Egress for Memorystore
 
-![Cloud Run & Memorystore connection](images/cloud_run_direct_vpc_egress_memorystore.png)
+<figure>
+  <img src="images/cloud_run_direct_vpc_egress_memorystore.png" alt="Cloud Run & Memorystore connection">
+  <figcaption><center>Cloud Run & Memorystore connection<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
+</figure>
 
-_Image source: Own work (Gemini Prompting)._
-
-## The Request Flow
+## 1. The Request Flow
 
 The diagram depicts a three-step journey for your data:
 
@@ -12,14 +13,14 @@ The diagram depicts a three-step journey for your data:
 2. The "Direct" Tunnel - Instead of going back out to the internet to find the database, Cloud Run uses Direct VPC Egress. This assigns the Cloud Run instance a private IP address from your VPC Network (e.g., `10.x.x.x`), allowing it to act like it is physically inside your private network.
 3. Private Communication: The request travels over Google's internal network to the Memorystore for Redis instance. Because Memorystore has no public endpoint, it only accepts connections from within the VPC on its internal IP and port (usually `6379`).
 
-## Why this matters (VPC Connector vs. Direct Egress)
+## 2. Why this matters (VPC Connector vs. Direct Egress)
 
 The image highlights a shift in Google Cloud architecture:
 
 - The "Old" Way (VPC Access Connector): Used to require a separate set of managed VMs (connectors) to bridge the gap. These cost extra and added a "hop" of latency.
 - The "New" Way (Direct VPC Egress): As shown in the image, this removes the need for those connector VMs. It is faster, cheaper (scales to zero cost), and simpler to set up.
 
-## Key Components in the Image
+## 3. Key Components in the Image
 
 | Component         | Function                                                    |
 | ----------------- | ----------------------------------------------------------- |
@@ -30,11 +31,11 @@ The image highlights a shift in Google Cloud architecture:
 
 This setup is ideal for applications that need high-performance caching while maintaining strict security by never exposing database data to the public internet.
 
-## Opentofu Code
+## 4. Opentofu Code
 
 Put all following code snippets in a `mail.tf` file.
 
-### 1. VPC Network and Subnet
+### 4.1. VPC Network and Subnet
 
 ```terraform
 resource "google_compute_network" "private_network" {
@@ -50,7 +51,7 @@ resource "google_compute_subnetwork" "app_subnet" {
 }
 ```
 
-### 2. Memorystore (Redis) Instance
+### 4.2. Memorystore (Redis) Instance
 
 ```terraform
 resource "google_redis_instance" "cache" {
@@ -66,7 +67,7 @@ resource "google_redis_instance" "cache" {
 }
 ```
 
-### 3. Cloud Run Service with Direct VPC Egress
+### 4.3. Cloud Run Service with Direct VPC Egress
 
 ```terraform
 resource "google_cloud_run_v2_service" "main_app" {
