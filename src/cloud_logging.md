@@ -48,9 +48,22 @@ Storage    Sinks
 (30 days)  (export)
 ```
 
-### 1.5. Console Location
+#### 1.4.1. Sink with Filter and storage in a Coldline
 
-View logs in Cloud Console: **Cloud Console → Logging → Logs Explorer**
+This diagram depicts a cost-optimized pipeline for archiving Compute Engine logs into Google Cloud Storage (Coldline). Instead of routing logs to BigQuery for active analysis, this flow uses Cloud Logging to filter and export data directly to a Coldline bucket.
+
+Key Benefits:
+
+- _Lowest Cost_ - Ideal for long-term retention of data accessed rarely (e.g., <1x/year).
+- _Compliance_ - Meets regulatory requirements for audit trails with minimal expense.
+- _Trade-off_ - Higher retrieval latency and fees make it unsuitable for real-time debugging, but perfect for historical archives.
+
+This approach eliminates the overhead of intermediate services (like Pub/Sub or Functions), providing a simple, direct path from VM logs to secure, low-cost storage.
+
+<figure>
+  <img src="images/cloud_logging_sink_to_coldline.png" alt="Cloud Logging with Sink and Filter into Cloud Storage (Coldline)">
+  <figcaption><center>Cloud Logging with Sink and Filter into Cloud Storage (Coldline)<br><i>Image source: Own work (Mermaid diagram)</i></center></figcaption>
+</figure>
 
 ## 2. Log Buckets and Log Analytics
 

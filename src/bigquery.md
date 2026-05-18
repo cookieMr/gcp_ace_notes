@@ -1,8 +1,9 @@
 # BigQuery: ACE Exam Study Guide (2026)
 
-![BigQuery](images/bigquery.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/bigquery.png" alt="BigQuery Icon" width=200>
+  <figcaption><center>BigQuery<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. Core Overview
 
@@ -22,6 +23,17 @@ For the ACE exam, you are expected to know how to interact with BigQuery beyond 
   - `bq extract`: Export data from a BigQuery table out to Cloud Storage.
   - `bq show`: Display the schema or metadata for a specific dataset or table.
 
+> To **impersonate a service account** locally, you must first ensure you have the correct permissions, then apply the impersonation setting either to specific commands, your global configuration, or your local Application Default Credentials (ADC).
+>
+> To run a BigQuery command with Service Account used e.g. on production use account impersonation:
+>
+> ```bash
+> gcloud bq query --use_legacy_sql=false \
+>   --impersonate-service-account="SA_NAME@PROJECT_ID.iam.gserviceaccount.com" \
+>   --dry-run \
+>   'SELECT * FROM `your_project.your_dataset.your_table` LIMIT 10'
+> ```
+
 ## 3. Cost Optimization and Performance (Heavily Tested)
 
 The exam frequently tests your ability to run queries efficiently without generating unexpected costs.
@@ -40,9 +52,10 @@ Partitioning divides a large table into smaller segments, called partitions, bas
 - **Best for**: Time-series data or data with a natural "range" (like ID ranges).
 - **Impact**: Significantly reduces the number of bytes billed and improves query speed for large datasets.
 
-![BigQuery Partitioning](images/bigquery_partitioning_diagram.png)
-
-_Image source: Own work (Mermaid diagram)._
+<figure>
+  <img src="images/bigquery_partitioning_diagram.png" alt="BigQuery Partitioning">
+  <figcaption><center>BigQuery Partitioning<br><i>Image source: Own work (Mermaid diagram)</i></center></figcaption>
+</figure>
 
 ### 3.2. Clustering
 
@@ -52,9 +65,10 @@ Clustering sorts the data within your table (or within each partition) based on 
 - _Best for_: Columns with high cardinality (many unique values) that are frequently used for filtering, grouping, or joining.
 - **Impact**: It improves performance for specific query patterns and can further reduce costs when used alongside partitioning by allowing "block pruning" within a partition.
 
-![BigQuery Clustering](images/bigquery_clustering_diagram.png)
-
-_Image source: Own work (Mermaid diagram)._
+<figure>
+  <img src="images/bigquery_clustering_diagram.png" alt="BigQuery Clustering">
+  <figcaption><center>BigQuery Clustering<br><i>Image source: Own work (Mermaid diagram)</i></center></figcaption>
+</figure>
 
 ## 4. Pricing Models
 

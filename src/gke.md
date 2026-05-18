@@ -64,6 +64,28 @@ spec:
           image: nginx:1.25
           ports:
             - containerPort: 80
+          startupProbe:
+            httpGet:
+              path: /
+              port: 80
+            failureThreshold: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 0
+            periodSeconds: 20
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 10
+            timeoutSeconds: 1
+            successThreshold: 1
+            failureThreshold: 3
           resources:
             requests:
               cpu: "250m"
@@ -72,6 +94,114 @@ spec:
               cpu: "500m"
               memory: "256Mi"
 ```
+
+Updating a container image and doing a _rolling update_ is as easy as changing `image` in a deployment `yaml` file
+and then executing `kubectl` command:
+
+```bash
+kubectl apply -f deployment.yaml
+```
+
+_Undo/Rollback_ if the new image is buggy, revert to the previous version instantly:
+
+```bash
+kubectl rollout undo deployment/my-app
+```
+
+> **Note**: For the rollout to work effectively, ensure your Pod has Readiness Probes configured. This tells Kubernetes to stop sending traffic to an old Pod only after the new Pod is actually ready to handle requests.
+
+#### 3.1.1. Probes
+
+Kubernetes probes manage the container lifecycle:
+
+- **Startup Probe** - verified if the application has finished its boot cycle. It disables other probes until success, preventing slow-starting apps from being killed prematurely by the liveness check.
+- **Liveness Probe** - determines if the container is still running and healthy. If it fails, Kubernetes kills and restarts the container to recover from deadlocks or internal application crashes.
+- **Readiness Probe** - checks if the container is ready to handle incoming user requests. If it fails, the Pod is temporarily removed from service load balancers to prevent users from seeing error pages.
+
+<figure>
+  <img src="images/gke_probes.png" alt="Pod Probes">
+  <figcaption><center>Pod Probes<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
+</figure>
+
+#### 3.1.2. Vertical Pod Autoscaling (VPA)
+
+Before applying YAML, ensure the VPA feature is enabled on your cluster (it is disabled by default in many standard clusters).
+
+```bash
+gcloud container clusters update CLUSTER_NAME \
+  --enable-vertical-pod-autoscaling
+```
+
+VPA works by targeting your Deployment via a `targetRef`. You do not need to modify the Deployment's `resources` section manually. The VPA will handle the overrides.
+The VPA _will restart_ your Pods to apply updated CPU or Memory requests.
+
+```yaml
+apiVersion: autoscaling.k8s.io/v1
+kind: VerticalPodAutoscaler
+metadata:
+  name: my-app-vpa
+spec:
+  targetRef:
+    apiVersion: "apps/v1"
+    kind: Deployment
+    name: my-app
+  updatePolicy:
+    updateMode: "Auto"
+  resourcePolicy:
+    containerPolicies:
+      - containerName: "app"
+        minAllowed:
+          cpu: "100m"
+          memory: "64Mi"
+        maxAllowed:
+          cpu: "1"
+          memory: "1Gi"
+        controlledResources: ["cpu", "memory"]
+```
+
+#### 3.1.3. Horizontal Pod Autoscaling (HPA)
+
+To configure _Horizontal Pod Autoscaling_ (HPA) in GKE, you define a resource that automatically scales the number of Pod replicas based on CPU/memory usage or custom metrics.
+
+Prerequisites:
+
+- _Metrics Server_ - This must be running in your cluster (enabled by default in GKE) to provide resource usage data.
+- _Resource Requests_ - You must define `resources.requests` (specifically CPU) in your Deployment YAML. Without these, the HPA cannot calculate the percentage of utilization and will not scale.
+
+> _VPA Conflict_ - **never** use HPA and VPA on the same metric (like CPU or Memory). They will fight each other.
+> VPA will try to make the Pod bigger while HPA will try to add more Pods.
+
+```yaml
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: my-app-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: my-app
+  minReplicas: 2
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: AverageValue
+          averageValue: 512Mi
+```
+
+<figure>
+  <img src="images/gke_hpa_vpa.png" alt="Horizontal vs Vertical Pod Autoscaping">
+  <figcaption><center>Horizontal vs Vertical Pod Autoscaping<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
+</figure>
 
 ### 3.2. `ReplicaSet`
 
