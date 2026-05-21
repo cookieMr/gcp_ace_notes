@@ -1,8 +1,9 @@
 # Cloud DNS: ACE Exam Study Guide (2026)
 
-![Cloud DNS](images/cloud_dns.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/cloud_dns.png" alt="Cloud DNS Icon" width=200>
+  <figcaption><center>Cloud DNS<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. Cloud DNS Overview
 
@@ -23,9 +24,10 @@ An authoritative name server stores and serves the official DNS records for a do
 
 _Anycast IP_ means a single IP address is advertised from multiple global locations. Traffic is routed to the nearest or lowest‑latency Google edge. Cloud DNS uses Anycast for its public authoritative name servers, giving global low‑latency DNS resolution, built‑in failover, and high availability without extra configuration.
 
-![Cluod DNS - Anycast IP Use Case](images/cloud_dns_anycast_diagram.png)
-
-_Image source: Own work (Mermaid diagram)._
+<figure>
+  <img src="images/cloud_dns_anycast_diagram.png" alt="Cluod DNS - Anycast IP Use Case">
+  <figcaption><center>Cluod DNS - Anycast IP Use Case<br><i>Image source: Own work (Mermaid diagram)</i></center></figcaption>
+</figure>
 
 ## 2. Managed Zones
 
@@ -47,6 +49,15 @@ Cloud DNS supports common DNS record types:
 - **MX:** Specifies mail servers for a domain.
 - **TXT:** Arbitrary text data (often used for domain verification like SPF (_Sender Policy Framework_) or DKIM (_DomainKeys Identified Mail_)).
 - **SOA (Start of Authority):** Contains administrative info about the zone.
+
+| Record Type     | Hostname          | Value                                                                | TTL    | Notes                              |
+| --------------- | ----------------- | -------------------------------------------------------------------- | ------ | ---------------------------------- |
+| **A Record**    | `example.com`     | `93.184.216.34`                                                      | `3600` | IPv4 address                       |
+| **AAAA Record** | `example.com`     | `2606:2800:220:1:248:1893:25c8:1946`                                 | `3600` | IPv6 address                       |
+| **CNAME**       | `www.example.com` | `example.com`                                                        | `3600` | Alias pointing to another hostname |
+| **MX Record**   | `example.com`     | `10 mail.example.com`                                                | `3600` | Mail server with priority          |
+| **TXT Record**  | `example.com`     | `"v=spf1 include:\_spf.example.com ~all"`                            | `3600` | SPF, DKIM, verification, etc.      |
+| **SOA Record**  | `example.com`     | `ns1.example.com admin.example.com 2024052101 3600 600 1209600 3600` | `3600` | Primary DNS server + zone metadata |
 
 ## 4. DNS Forwarding and Peering
 
@@ -146,9 +157,10 @@ DNS policies allow you to control how the VPC handles DNS queries.
 
 Split-horizon DNS lets you create a public zone and a private zone with the same domain name (e.g. `example.com`) but different DNS records. Public clients receive the public IPs (e.g. `203.0.113.10`) from the public zone, while internal VPC clients receive private IPs (e.g. `10.0.0.5`) from the private zone. Cloud DNS automatically selects the correct zone based on the source of the query.
 
-![Cluod DNS - Split-Horizon Use Case](images/cloud_dns_split_horizon_diagram.png)
-
-_Image source: Own work (Mermaid diagram)._
+<figure>
+  <img src="images/cloud_dns_split_horizon_diagram.png" alt="Cluod DNS - Split-Horizon Use Case">
+  <figcaption><center>Cluod DNS - Split-Horizon Use Case<br><i>Image source: Own work (Mermaid diagram)</i></center></figcaption>
+</figure>
 
 ## 9. External Links
 
