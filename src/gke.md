@@ -203,6 +203,8 @@ spec:
   <figcaption><center>Horizontal vs Vertical Pod Autoscaping<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
 </figure>
 
+>
+
 ### 3.2. `ReplicaSet`
 
 Ensures a fixed number of Pods are running. Usually not used directly. Managed (created automatically) by Deployments.
@@ -286,6 +288,17 @@ spec:
 - `selector` → Must match the labels defined in the template so the controller knows which pods it owns.
 - `tolerations` → Crucial for DaemonSets. By default, master/control-plane nodes have a "taint" that prevents regular pods from running. Adding these allows the DaemonSet to monitor those nodes as well.
 - `volumes`/`hostPath` → Since DaemonSets are usually for system-level tasks (like logging or monitoring), they often need to mount a path directly from the physical Node's file system.
+
+### 3.4. GKE Cluster Autoscaling
+
+**GKE Cluster Autoscaler (CA)** automatically adjusts the size of your Kubernetes cluster by adding or removing underlying Compute Engine Virtual Machine (VM) instances (nodes) based on workload demands.
+How It Works:
+
+- **Scaling Up** - When developers deploy applications and Pods cannot be scheduled because the existing nodes lack sufficient CPU or memory resources (leaving the Pods in a `Pending` state), the Cluster Autoscaler requests Google Cloud to provision new VMs into the node pool.
+- **Scaling Down** - It continuously monitors the utilization of nodes. If a node is underutilized for a period of time and all of its running Pods can be easily rescheduled onto other existing nodes, the Cluster Autoscaler safely deletes that VM to optimize infrastructure costs.
+
+**Key Distinction**  
+Unlike the HPA which creates more copies of your application containers (Pods), the Cluster Autoscaler operates at the infrastructure layer, making sure there is enough physical hardware available to run those containers.
 
 ---
 
