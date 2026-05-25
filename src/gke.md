@@ -34,7 +34,7 @@ Google Kubernetes Engine (GKE) is a managed environment for deploying, managing,
 
 ### 3.1. `Deployment`
 
-Manages app lifecycle: rolling updates, rollbacks, scaling. Creates and controls ReplicaSets.  
+[Deployment](https://kubernetes.io/docs/concepts/workloads/controllers/deployment/) manages app lifecycle: rolling updates, rollbacks, scaling. Creates and controls `ReplicaSets`.  
 This is a recommented way to run stateless apps in GKE.
 
 > **Resource Limits** → Set CPU/memory requests and limits per pod to control resource allocation and prevent starvation.
@@ -207,7 +207,7 @@ spec:
 
 ### 3.2. `ReplicaSet`
 
-Ensures a fixed number of Pods are running. Usually not used directly. Managed (created automatically) by Deployments.
+[ReplicaSet](https://kubernetes.io/docs/concepts/workloads/controllers/replicaset/) ensures a fixed number of Pods are running. Usually not used directly. Managed (created automatically) by `Deployments`.
 
 ```yaml
 apiVersion: apps/v1
@@ -231,7 +231,7 @@ spec:
 
 ### 3.3. `DaemonSet`
 
-A DaemonSet is a specific type of Kubernetes controller that ensures a copy of a particular Pod is running on _every node_ (or a specific subset of nodes) within your cluster.
+A [DaemonSet](https://kubernetes.io/docs/concepts/workloads/controllers/daemonset/) is a specific type of Kubernetes controller that ensures a copy of a particular Pod is running on _every node_ (or a specific subset of nodes) within your cluster.
 
 DaemonSets are typically used for _infrastructure-level services_ or "daemons" that need to run in the background on every machine to support the cluster's health and visibility.
 
@@ -289,7 +289,25 @@ spec:
 - `tolerations` → Crucial for DaemonSets. By default, master/control-plane nodes have a "taint" that prevents regular pods from running. Adding these allows the DaemonSet to monitor those nodes as well.
 - `volumes`/`hostPath` → Since DaemonSets are usually for system-level tasks (like logging or monitoring), they often need to mount a path directly from the physical Node's file system.
 
-### 3.4. GKE Cluster Autoscaling
+### 3.4. `StatefulSet`
+
+A [StatefulSet](https://kubernetes.io/docs/concepts/workloads/controllers/statefulset/) is a Kubernetes workload controller designed to manage applications that require a persistent state, stable identities, and unique storage.
+
+Unlike standard `Deployments` — where Pods are completely anonymous, interchangeable, and easily replaced — a `StatefulSet` provides explicit guarantees for each of its Pod replicas.
+
+- _Stable Network Identity_ - Pods are assigned fixed, predictable hostnames based on sequential integers (e.g., `app-0`, `app-1`, `app-2`). If a Pod restarts or moves to a different cluster node, it retains its exact name and DNS record.
+- _Dedicated Persistent Storage_ - Through a `volumeClaimTemplates` configuration, every Pod automatically spins up its own dedicated `PersistentVolumeClaim` (PVC). If a Pod is rescheduled, it automatically reattaches to its original cloud storage disk, ensuring no data loss.
+- _Ordered Deployment and Scaling_ - Pods are created, updated, and terminated sequentially (e.g., `app-1` won't deploy until `app-0` is completely healthy), which is essential for safely initializing clustered systems.
+
+**Common Use Cases**  
+It is predominantly used for stateful, distributed software architectures that coordinate data replication amongst themselves, such as databases (PostgreSQL, MongoDB, MySQL), message queues (Apache Kafka, RabbitMQ), and key-value stores (Redis).
+
+<figure>
+  <img src="images/gke_stateful_set_summary.png" alt="GKE StatefulSet Summary">
+  <figcaption><center>GKE StatefulSet Summary<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
+</figure>
+
+### 3.5. GKE Cluster Autoscaling
 
 **GKE Cluster Autoscaler (CA)** automatically adjusts the size of your Kubernetes cluster by adding or removing underlying Compute Engine Virtual Machine (VM) instances (nodes) based on workload demands.
 How It Works:
@@ -306,7 +324,9 @@ Unlike the HPA which creates more copies of your application containers (Pods), 
 
 ## 4. GKE Networking
 
-- Services:
+For more details see [Services, Load Balancing, and Networking](https://kubernetes.io/docs/concepts/services-networking/).
+
+- [Services](https://kubernetes.io/docs/concepts/services-networking/service/) - Expose an application running in your cluster behind a single outward-facing endpoint, even when the workload is split across multiple backends:
   - **ClusterIP** (default)
     - Internal-only virtual IP.
     - Accessible only inside the cluster.

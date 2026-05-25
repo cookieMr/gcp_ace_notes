@@ -182,6 +182,19 @@ Useful for keeping related workloads together or separating sensitive workloads 
   - **Provisioning model:** Standard vs Spot (affects pricing and preemptibility)
 - **GPUs Available:** T4, A100, H100. Each has specific licensing requirements and zone availability.
 
+### 7.2. OS Config Agent
+
+The OS Config Agent (`google-osconfig-agent`) is a native, lightweight background service running inside your Google Cloud Compute Engine virtual machines (VMs). It serves as the local execution engine for VM Manager, GCP’s suite of tools used to manage, patch, and track operating systems at scale across huge fleets of Linux and Windows instances.
+
+Essentially, while you manage rules and configurations globally via the GCP Console, API, or `gcloud` CLI, the OS Config agent is the worker bee on the actual VM that enforces those rules.
+
+To activate the agent, you must set the following metadata configuration:
+
+```
+Key:   enable-osconfig
+Value: TRUE
+```
+
 ## 8. Essential `gcloud` Commands
 
 - **Create a VM**: `gcloud compute instances create [NAME] --zone=[ZONE] --machine-type=[TYPE]`
