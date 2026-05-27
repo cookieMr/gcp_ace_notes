@@ -1,7 +1,7 @@
 # mTLS
 
 <figure>
-  <img src="images/mtls-512.png" alt="mTLS Icon" width=256>
+  <img src="images/mtls-512.png" alt="mTLS Icon" width=200>
   <figcaption><center>mTLS<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
 </figure>
 

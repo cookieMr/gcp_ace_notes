@@ -9,7 +9,7 @@
 
 Google Cloud Load Balancing is a fully managed, software-defined service. It is not instance-based, so you don't need to manage infrastructure or scale it manually.
 
-### Key Characteristics
+### 1.1. Key Characteristics
 
 - External vs. Internal: Internet-facing or private within your VPC.
 - Global vs. Regional: Traffic distribution across multiple regions or a single region.
@@ -17,7 +17,7 @@ Google Cloud Load Balancing is a fully managed, software-defined service. It is 
 
 ## 2. External Load Balancers
 
-### Global External Application Load Balancer (HTTP/S)
+### 2.1 Global External Application Load Balancer (HTTP/S)
 
 - Layer: Layer 7 (HTTP, HTTPS, HTTP/2).
 - Scope: Global. Distributes traffic to the closest available backend.
@@ -38,44 +38,44 @@ There is no functional difference today — TLS is simply the modern, secure suc
   <figcaption><center>Use Case for TLS Termination<br><i>Image source: Own work (Mermaid diagram)</i></center></figcaption>
 </figure>
 
-### External Proxy Network Load Balancer (TCP/SSL)
+### 2.2. External Proxy Network Load Balancer (TCP/SSL)
 
 - Layer: Layer 4 (TCP with SSL termination).
 - Scope: Global (Regional version available).
 - Use Case: Non-HTTP traffic that requires SSL termination or proxying.
 
-### External Passthrough Network Load Balancer (TCP/UDP)
+### 2.3. External Passthrough Network Load Balancer (TCP/UDP)
 
 - Layer: Layer 4 (TCP, UDP, ICMP).
 - Scope: Regional.
 - Nature: Passthrough. Preserves the source IP address of the client.
 - Use Case: Simple TCP/UDP traffic where low latency is critical.
 
-## 2.1. Load Balancing Methods
+## 3. Load Balancing Methods
 
 When distributing traffic across multiple backend services or instances, load balancers can use different algorithms to determine which backend receives each request.
 
-### Round Robin
+### 3.1. Round Robin
 
 The simplest method — requests are distributed sequentially to each backend in order. Each backend gets an equal number of requests in rotation. This works well when all backends have similar capacity.
 
-### Least Connections
+### 3.2. Least Connections
 
 The load balancer sends new requests to the backend with the fewest active connections. This accounts for varying request processing times — backends handling longer requests will receive fewer new requests.
 
-### Least Request
+### 3.3. Least Request
 
 Similar to Least Connections but uses a more general approach based on outstanding request count rather than established connections. The External Application Load Balancer uses this method.
 
-### Weighted Round Robin
+### 3.4. Weighted Round Robin
 
 Each backend is assigned a weight indicating its capacity. Backends with higher weights receive proportionally more requests. For example, a backend with weight 3 receives 3 requests for every 1 sent to a weighted backend.
 
-### IP Hash
+### 3.5. IP Hash
 
 The client's IP address is hashed to determine which backend receives the request. This ensures the same client always reaches the same backend — useful when session data is stored locally on the backend.
 
-### Session Affinity (Sticky Sessions)
+### 3.6. Session Affinity (Sticky Sessions)
 
 Session affinity ensures requests from the same client go to the same backend. This is critical when applications store session data in memory on specific instances. The load balancer uses cookies or source IP to track and route requests to the same backend.
 
@@ -86,28 +86,28 @@ Session affinity ensures requests from the same client go to the same backend. T
 > **Example use case**:  
 > You are designing an application that uses _WebSockets_ and _HTTP sessions_ that are _not distributed across the web servers_. You want to ensure the application runs properly on GCP.
 
-## 3. Internal Load Balancers
+## 4. Internal Load Balancers
 
-### Internal Application Load Balancer (HTTP/S)
+### 4.1. Internal Application Load Balancer (HTTP/S)
 
 - Layer: Layer 7.
 - Scope: Regional.
 - Use Case: Microservices communication within a VPC requiring path-based routing.
 
-### Internal Proxy Network Load Balancer (TCP)
+### 4.2. Internal Proxy Network Load Balancer (TCP)
 
 - Layer: Layer 4.
 - Scope: Regional.
 - Use Case: Internal TCP traffic requiring proxying services.
 
-### Internal Passthrough Network Load Balancer (TCP/UDP)
+### 4.3. Internal Passthrough Network Load Balancer (TCP/UDP)
 
 - Layer: Layer 4.
 - Scope: Regional.
 - Nature: Passthrough. Very low latency.
 - Use Case: Database clusters, legacy applications inside the VPC.
 
-## 4. Summary Table for the Exam (with SSL Termination)
+## 5. Summary Table for the Exam (with SSL Termination)
 
 | Load Balancer Type              | Layer | Scope      | Traffic Type        | Proxy? | SSL Termination?    |
 | ------------------------------- | ----- | ---------- | ------------------- | ------ | ------------------- |
@@ -118,7 +118,7 @@ Session affinity ensures requests from the same client go to the same backend. T
 | **Internal App LB**             | L7    | Regional   | HTTP, HTTPS         | Yes    | **Yes**             |
 | **Internal Passthrough Net LB** | L4    | Regional   | TCP, UDP            | No     | **No**              |
 
-## 5. Components of a Load Balancer
+## 6. Components of a Load Balancer
 
 - Forwarding Rule: Directs traffic based on IP, protocol, and port.
 - Target Proxy: Terminates the connection and forwards it to the URL map.
@@ -128,18 +128,18 @@ Session affinity ensures requests from the same client go to the same backend. T
 
 > It does not restart or rotate instances. That's task of a [_Managed Instance Group_](./compute_engine.md#3-instance-templates-and-managed-instance-groups-migs).
 
-### 5.1. Backend Service
+### 6.1. Backend Service
 
 A backend service defines how a load balancer sends traffic to backends like MIGs or NEGs. It applies health checks, balancing policies, timeouts, and routing rules. The load balancer never talks directly to VMs - traffic always flows through a backend service, which decides which instances are healthy and ready to receive requests.
 
-## 6. Essential `gcloud` Commands
+## 7. Essential `gcloud` Commands
 
 - Create a health check: `gcloud compute health-checks create http [NAME] --port 80`
 - Create a backend service: `gcloud compute backend-services create [NAME] --protocol=HTTP --health-checks=[HC_NAME] --global`
 - Add backends to service: `gcloud compute backend-services add-backend [NAME] --instance-group=[GROUP_NAME] --global`
 - Create a URL map: `gcloud compute url-maps create [MAP_NAME] --default-service=[BACKEND_NAME]`
 
-## 7. Exam Tips
+## 8. Exam Tips
 
 - Preserving Client IP: For L4 traffic, use the External Passthrough Network Load Balancer.
 - Path-based Routing: Only Application Load Balancers (L7) support URL maps.
@@ -147,6 +147,6 @@ A backend service defines how a load balancer sends traffic to backends like MIG
 - Cloud Armor/CDN: These integrate only with the Global External Application Load Balancer.
 - Session Affinity: Use if a client needs to stick to the same backend instance.
 
-## 8. External Links
+## 9. External Links
 
 - [Cloud Load Balancing - The Cloud Girl](https://www.thecloudgirl.dev/networking/cloud-load-balancing)

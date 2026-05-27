@@ -18,6 +18,17 @@ Identity and Access Management (IAM) allows you to manage access control by defi
   - authenticatedUser (any signed-in Google account).
   - allUsers (anyone on the internet).
 
+### 1.1. Authentication vs Authorization
+
+_Authentication_ verifies who you are (identity), while _authorization_ determines what you are allowed to do (permissions).
+
+- Authentication (AuthN): The initial step of proving identity. Common methods include entering passwords, scanning biometrics, or using multi-factor authentication (MFA).
+  - Analogy: Presenting a passport at airport security to prove your identity.
+- Authorization (AuthZ): The subsequent step that checks access levels against policy engine rules. It governs resource access, API scopes, and role-based permissions (RBAC).
+  - Analogy: Your boarding pass determines whether you are permitted to enter First Class or only Economy.
+
+In short: _Authentication_ checks the credentials; _authorization_ checks the privileges.
+
 ## 2. IAM Roles
 
 A role is a collection of permissions. Permissions are typically in the format `service.resource.verb` (e.g., `compute.instances.list`).
@@ -112,6 +123,11 @@ IAM policies are hierarchical and permissions are inherited.
 - **Public Access Prevention:** Use the "Public Access Prevention" feature to prevent Cloud Storage buckets or BigQuery datasets from becoming publicly accessible.
 - **IAM Recommender:** Enable to automatically recommend removing over-grantive permissions based on usage patterns.
 - **Domain Restricted Sharing:** Restrict sharing outside your organization by enabling Domain Restricted Sharing on the Organization resource.
+
+<figure>
+  <img src="images/iam_domain_restricted_sharing.png" alt="IAM - Domain Restricted Sharing">
+  <figcaption><center>IAM - Domain Restricted Sharing<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
+</figure>
 
 ## 6.1. Policy Troubleshooter & IAM Debugging
 

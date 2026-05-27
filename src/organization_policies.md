@@ -1,8 +1,9 @@
 # Organization Policies: ACE Exam Study Guide (2026)
 
-![Dilbert helps when no image for Organization Policies can be found](images/00_image_is_needed.png)
-
-_Image source: Dilbert.com_
+<figure>
+  <img src="images/00_image_is_needed.png" alt="Organization Policies - no icon">
+  <figcaption><center>Organization Policies - no icon<br><i>Image source: <a href="http://dilbert.com">Dilbert.com</a></i></center></figcaption>
+</figure>
 
 ## 1. Organization Policies Overview
 
@@ -17,7 +18,7 @@ Organization Policies provide centralized and programmatic control over your org
 
 ## 2. Constraints and Policies
 
-- Constraint: A blueprint that defines a specific restriction (e.g., constraints/compute.disableExternalIPs).
+- Constraint: A blueprint that defines a specific restriction (e.g., `constraints/compute.disableExternalIPs`).
 - Policy: The actual configuration of a constraint applied to a specific resource (Organization, Folder, or Project).
 - Types of Constraints:
   - List Constraints: Allow or deny a specific list of values (e.g., Allowed locations for Cloud Storage or Allowed shared VPC host projects).
@@ -71,14 +72,14 @@ You should recognize these common constraints for the exam:
 
 ## 5a. Common Constraint Reference
 
-| Constraint | Description | Type |
-|------------|-------------|------|
-| `gcp.resourceLocations` | Allowed resource locations | List |
-| `iam.disableServiceAccountKeyCreation` | Block SA key downloads | Boolean |
-| `compute.disableExternalIPAccess` | No public IPs on VMs | Boolean |
-| `compute.requireShieldedVm` | Require Shielded VM | Boolean |
-| `storage.publicAccessPrevention` | Block public access | Boolean |
-| `compute.skipDefaultNetworkCreation` | Block auto VPC creation | Boolean |
+| Constraint                             | Description                | Type    |
+| -------------------------------------- | -------------------------- | ------- |
+| `gcp.resourceLocations`                | Allowed resource locations | List    |
+| `iam.disableServiceAccountKeyCreation` | Block SA key downloads     | Boolean |
+| `compute.disableExternalIPAccess`      | No public IPs on VMs       | Boolean |
+| `compute.requireShieldedVm`            | Require Shielded VM        | Boolean |
+| `storage.publicAccessPrevention`       | Block public access        | Boolean |
+| `compute.skipDefaultNetworkCreation`   | Block auto VPC creation    | Boolean |
 
 ## 6. Essential `gcloud` Commands
 
@@ -95,7 +96,7 @@ You should recognize these common constraints for the exam:
 spec:
   rules:
     - allowAll: false
-  updateTime: '2024-01-01T00:00:00Z'
+  updateTime: "2024-01-01T00:00:00Z"
 ```
 
 ## 7. Troubleshooting Tip

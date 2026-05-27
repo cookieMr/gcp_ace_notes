@@ -101,8 +101,8 @@ Understanding the separation of access roles is a frequent exam topic.
 
 ## 6. Data Loading and Federated Queries
 
-- **Ingestion:** You can batch load data into BigQuery from Cloud Storage (supporting formats like CSV, JSON, Avro, Parquet, and ORC) or stream data directly into the tables.
-- **External Tables (Federated Queries):** You can run queries against data that sits directly in Cloud Storage, Cloud SQL, or Cloud Spanner without having to load or duplicate that data into BigQuery's native storage.
+- **Ingestion**: You can batch load data into BigQuery from Cloud Storage (supporting formats like CSV, JSON, Avro, Parquet, and ORC) or stream data directly into the tables.
+- **External Tables (Federated Queries)**: You can run queries against data that sits directly in Cloud Storage, Cloud SQL, or Cloud Spanner without having to load or duplicate that data into BigQuery's native storage.
 
 ## 7. When to Choose BigQuery
 
