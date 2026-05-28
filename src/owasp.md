@@ -1,8 +1,9 @@
 # OWASP Top 10
 
-![OWASP](images/owasp_logo.png)
-
-_Image source: [OWASP.org](https://owasp.org/)_
+<figure>
+  <img src="images/owasp_logo.png" alt="OWASP Logo" width=200>
+  <figcaption><center>OWASP Logo<br><i>Image source: [OWASP.org](https://owasp.org/)</i></center></figcaption>
+</figure>
 
 The **OWASP Top 10** is a widely recognized standard that highlights the most critical security risks affecting modern web applications. It serves as an awareness document for developers, architects, and security teams, helping them understand common vulnerabilities, their impact, and how to mitigate them. Updated periodically based on real‑world data and industry trends, the OWASP Top 10 provides a practical foundation for building more secure software by focusing attention on the threats most likely to be exploited in the wild.
 
@@ -12,7 +13,7 @@ The **OWASP Top 10** is a widely recognized standard that highlights the most cr
 
 Failures in enforcing permissions allow users to access data or actions they shouldn’t.
 
-**Spring Boot example**   
+**Spring Boot example**  
 A controller exposes user details without checking ownership:
 
 ```java

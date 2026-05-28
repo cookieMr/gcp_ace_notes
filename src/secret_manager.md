@@ -1,8 +1,9 @@
 # Secret Manager: ACE Exam Study Guide (2026)
 
-![Secret Manager](images/secret_manager.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/secret_manager.png" alt="Secret Manager Icon" width=200>
+  <figcaption><center>Cloud Storage<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. Secret Manager Overview
 
@@ -10,7 +11,7 @@ Secret Manager is a secure and convenient storage system for API keys, passwords
 
 - Secret vs. Version:
   - Secret: A logical container for a sensitive object (e.g., db-password). It holds metadata and replication policies.
-  - Secret Version: The actual sensitive payload (e.g., P@ssword123). Secrets can have multiple versions (v1, v2, etc.).
+  - Secret Version: The actual sensitive payload (e.g., `P@ssword123`). Secrets can have multiple versions (v1, v2, etc.).
 - Replication:
   - Automatic: Google chooses the regions to replicate the secret for high availability.
   - User-managed: You explicitly choose which regions the secret is stored in (useful for compliance).

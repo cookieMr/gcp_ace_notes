@@ -152,6 +152,26 @@ Useful for keeping related workloads together or separating sensitive workloads 
   - Firewall must allow TCP on port `22` from **IAP’s IP range `35.235.240.0/20`**
   - SSH traffic goes through Google’s secure IAP tunnel to the VM’s **internal IP**
 
+### 6.1. OS Login
+
+OS Login is the recommended way to manage SSH access to your Linux VM instances. It ties your Linux user account to your Google identity, allowing you to manage access via IAM roles instead of manually managing SSH keys in metadata.
+
+- **Key Benefits**:
+  - **Centralized Revocation**: When a user's IAM permissions are removed or they leave the organization, their SSH access is automatically revoked.
+  - **Security**: Supports Two-Factor Authentication (2FA) and avoids the risk of "stale" keys left in metadata.
+  - **Consistent UID/GID**: Ensures the same user ID across all instances in a project.
+- **Activation**:
+  - Set the metadata key `enable-oslogin` to `TRUE` at the project or instance level.
+- **Required IAM Roles**:
+  - `roles/compute.osLogin`: Standard user access (non-root).
+  - `roles/compute.osAdminLogin`: Administrator access (includes `sudo` permissions).
+  - `roles/iam.serviceAccountUser`: Required if the user needs to use the VM's service account.
+
+<figure>
+  <img src="images/compute_engine_os_login.png" alt="Compute Engine - OS Login Summary">
+  <figcaption><center>Compute Engine - OS Login Summary<br><i>Image source: Own work (Gemini Prompting)</i></center></figcaption>
+</figure>
+
 ## 7. Service Accounts and Metadata
 
 - **Service Accounts**: VMs use these to authenticate to other Google Cloud services (GCS, BigQuery). Always use custom service accounts with _Least Privilege_ for production.
@@ -207,6 +227,7 @@ Value: TRUE
     --region=[REGION]
   ```
 - **Replace instances _rolling-action_** (e.g. use case → update a start-up script (new template)):
+
   ```bash
   gcloud compute instance-groups managed rolling-action start-update [MIG_NAME] \
     --version=template=[TEMPLATE_NAME] \
@@ -214,7 +235,15 @@ Value: TRUE
     --max-surge=1
     --zone=[ZONE]
   ```
+
   > For more details see [`gcloud compute instance-groups managed rolling-action start-update`](https://docs.cloud.google.com/sdk/gcloud/reference/compute/instance-groups/managed/rolling-action/start-update) Google Cloud Documentation.
+
+- To manually **recreate** (single) instance use following command:
+  ```bash
+  gcloud compute instance-groups managed recreate-instances [MIG_NAME] \
+    --instances=[INSTANCE_NAME] \
+    --zone=[ZONE]
+  ```
 
 ### 8.1. Deletion Protection
 
@@ -253,9 +282,9 @@ Generates or resets local admin credentials for Windows VMs. Essential for RDP a
 - _Initial Login_ → Mandatory for first-time access to generic Windows images.
 - _Recovery_ → Used to regain access if local credentials are lost.
 
-```bash
-gcloud compute reset-windows-password [VM_NAME] --user=[USER] --zone=[ZONE]
-```
+  ```bash
+  gcloud compute reset-windows-password [VM_NAME] --user=[USER] --zone=[ZONE]
+  ```
 
 - _Permissions_ → Needs `compute.instances.setMetadata`.
 - _Prerequisite_ → VM must be Running with _Guest Agent_ installed.

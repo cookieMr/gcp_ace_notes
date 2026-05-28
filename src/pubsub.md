@@ -1,8 +1,9 @@
 # Cloud Pub/Sub (GCP)
 
-![Pub/Sub](images/pubsub.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/pubsub.png" alt="Pub/Sub Icon" width=200>
+  <figcaption><center>Pub/Sub<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. Overview
 
@@ -108,9 +109,10 @@ Fan‑out in Pub/Sub means a single published message is delivered to multiple i
 
 In Pub/Sub, each subscription can define its own filter. A message is delivered to a subscription only if it matches that filter. This allows selective fan‑out without creating multiple topics.
 
-![Fan-out](images/pubsub_fan_out.png)
-
-_Image source: Own work (Mermaid diagram)._
+<figure>
+  <img src="images/pubsub_fan_out.png" alt="Pub/Sub Fun Out Pattern">
+  <figcaption><center>Pub/Sub Fun Out Pattern<br><i>Image source: Own work (Mermaid diagram)</i></center></figcaption>
+</figure>
 
 ### 5.6. Schema Registry
 

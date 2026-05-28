@@ -69,10 +69,10 @@ This approach eliminates the overhead of intermediate services (like Pub/Sub or 
 
 Logs are stored in **Log Buckets** (not Cloud Storage buckets).
 
-- **Default Buckets:**
-  - **\_Default:** For all standard logs (e.g., App Engine, Cloud Functions).
-  - **\_Required:** For essential logs like Audit Logs (cannot be disabled or deleted).
-- **Log Analytics (2026 Update):** A feature that allows you to perform SQL-based analysis directly on your logs in a log bucket without exporting them to BigQuery.
+- **Default Buckets**:
+  - **\_Default**: For all standard logs (e.g., App Engine, Cloud Functions).
+  - **\_Required**: For essential logs like Audit Logs (cannot be disabled or deleted).
+- **Log Analytics**: A feature that allows you to perform SQL-based analysis directly on your logs in a log bucket without exporting them to BigQuery.
 
 ## 3. Log Sinks (Exporting Logs)
 
