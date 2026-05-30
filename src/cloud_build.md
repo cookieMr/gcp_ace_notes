@@ -1,8 +1,9 @@
 # Cloud Build: ACE Exam Study Guide (2026)
 
-![Cloud Build](images/google-cloud-build.png)
-
-_Image source: [Vecta.io](https://vecta.io/symbols/4/google-cloud-platform/15/google-cloud-build)_
+<figure>
+  <img src="images/google-cloud-build.png" alt="Cloud Build Icon" width=200>
+  <figcaption><center>Cloud Build<br><i>Image source: [Vecta.io](https://vecta.io/symbols/4/google-cloud-platform/15/google-cloud-build)</i></center></figcaption>
+</figure>
 
 ## 1. Cloud Build Overview
 

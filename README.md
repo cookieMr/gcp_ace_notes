@@ -5,7 +5,11 @@
   <figcaption><center>CGoogle Cloud Platform - Associate Cloud Engineer<br><i><a href="https://wings.medium.com/how-to-ace-the-google-cloud-platform-associate-cloud-engineer-exam-5a39e12f091f">Image source: Medium</a></i></center></figcaption>
 </figure>
 
-> **Note: These are my personal study notes that I am using to prepare myself for the Google Cloud Associate Cloud Engineer (ACE) certification exam.**
+> **Note: These are my personal study notes that I am using to prepare myself for the _Google Cloud Associate Cloud Engineer (ACE)_ certification exam.**
+>
+> And I prompted them all out.
+
+I [passed](https://www.credly.com/badges/bdb2e192-6920-4344-8feb-bace577d3460).
 
 ## Read the Book
 

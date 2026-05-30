@@ -1,8 +1,9 @@
 # Cloud CDN: ACE Exam Study Guide (2026)
 
-![Cloud CDN](images/cloud_cdn.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/cloud_cdn.png" alt="Cloud CDN Icon" width=200>
+  <figcaption><center>Cloud CDN<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. Cloud CDN Overview
 

@@ -1,8 +1,9 @@
 # Cloud Monitoring: ACE Exam Study Guide (2026)
 
-![Cloud Monitoring](images/google-cloud-monitoring.png)
-
-_Image source: [Vecta.io](https://vecta.io/symbols/tag/google-cloud-monitoring)_
+<figure>
+  <img src="images/google-cloud-monitoring.png" alt="Cloud Monitoring Icon" width=200>
+  <figcaption><center>Cloud Monitoring<br><i>Image source: [Vecta.io](https://vecta.io/symbols/tag/google-cloud-monitoring)</i></center></figcaption>
+</figure>
 
 ## 1. Cloud Monitoring Overview
 

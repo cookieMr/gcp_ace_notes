@@ -1,8 +1,9 @@
 # Cloud Bigtable: ACE Exam Study Guide (2026)
 
-![Bigtable](images/bigtable.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/bigtable.png" alt="Bigtable Icon" width=200>
+  <figcaption><center>Bigtable<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. Core Overview
 

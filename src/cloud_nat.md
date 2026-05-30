@@ -1,8 +1,9 @@
 # Cloud NAT: ACE Exam Study Guide (2026)
 
-![Cloud NAT](images/cloud_nat.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/cloud_nat.png" alt="Cloud NAT Icon" width=200>
+  <figcaption><center>Cloud NAT<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. Cloud NAT Overview
 

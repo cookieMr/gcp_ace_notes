@@ -1,8 +1,9 @@
 # Cloud Armor: ACE Exam Study Guide (2026)
 
-![Cloud Armor](images/cloud_armor.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/cloud_armor.png" alt="Cloud Armor Icon" width=200>
+  <figcaption><center>Cloud Armor<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. Cloud Armor Overview
 

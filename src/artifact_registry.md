@@ -1,8 +1,9 @@
 # Artifact Registry: ACE Exam Study Guide (2026)
 
-![Artifact Registry](images/artifact_registry.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/artifact_registry.png" alt="Artifact Registry Icon" width=200>
+  <figcaption><center>Artifact Registry<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. Artifact Registry Overview
 

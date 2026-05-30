@@ -1,8 +1,9 @@
 # Cloud KMS: ACE Exam Study Guide (2026)
 
-![Cloud KMS](images/key_management_service.png)
-
-_Image source: Google Cloud Documentation_
+<figure>
+  <img src="images/key_management_service.png" alt="Cloud KMS Icon" width=200>
+  <figcaption><center>Cloud KMS<br><i>Image source: Google Cloud Documentation</i></center></figcaption>
+</figure>
 
 ## 1. Cloud KMS Overview
 
