@@ -1,0 +1,755 @@
+#separator:tab
+#html:true
+Can Memorystore be used across regions?	"No - it's <b>regional</b>.
+<br>But Memorystore for <b>Redis Cluster</b> supports cross-region replication for DR and global reads."
+What type of IP address does Memorystore use?	Private IP only.
+Which service should you choose for caching with persistence or pub/sub?	Redis/Valkey
+Which service should you choose for simple, ephemeral caching?	Memcached
+What happens when you overwrite a key with TTL?	TTL is <b>removed</b> unless explicitly set again or a <code>KEEPTTL</code> flag is used.
+How do you set TTL in Redis?	<ul><li>On write: <b>SET key value EX 60</b></li><li>After write: <b>EXPIRE key 60</b></li></ul>
+What is TTL in Redis?	Time‑to‑live — the expiration timer after which a key is automatically deleted.
+What monitoring tools integrate with Memorystore?	<ul><li><b>Cloud Monitoring</b> (metrics)</li><li><b>Cloud Logging</b> (audit logs)</li></ul>
+How does IAM differ from data access in Memorystore Redis?	IAM controls <b>instance management</b> (create/delete), while Redis AUTH/TLS/Network policies control <b>data access</b>.
+Does Memcached support authentication?	<b>No</b>. Memcached has <b>no authentication</b>.
+Does Redis support authentication?	Yes — Redis AUTH is supported.
+How does scaling work for Memcached?	<b>Horizontal scaling</b> by adding/removing nodes (stateless).
+How does scaling work for Redis?	<ul><li>Mostly <b>vertical scaling</b>,</li><li>May cause <b>brief downtime</b>,</li><li>Horizontal scaling available via <b>Redis Cluster</b>.</li></ul>
+Can Memorystore be accessed from outside GCP?	Only via <b>VPN</b> or <b>Interconnect</b> — no public access.
+Does Redis support persistence in Memorystore?	Yes — <b>RDB snapshots</b>, backups, and optional persistence.
+Does Memcached support persistence?	<b>No</b>. Memcached has <b>no persistence</b>.
+How do Cloud Run and Cloud Functions connect to Memorystore?	"While the older Serverless VPC Access connector is still supported, Direct VPC Egress is superior for almost all use cases.
+
+<div style="""" overflow-x:="""" auto;="""" -webkit-overflow-scrolling:="""" touch;""""="""">
+<table style="""" width:="""" 100%;="""" border-collapse:="""" collapse;="""" font-family:="""" sans-serif;="""" font-size:="""" 0.85em;="""" min-width:="""" 320px;""""="""">
+<thead>
+<tr style="""" border-bottom:="""" 2px="""" solid="""" #888;="""" text-align:="""" left;""""="""">
+<th style="""" padding:="""" 6px="""" 4px;""""="""">Feature</th>
+<th style="""" padding:="""" 6px="""" 4px;="""" color:="""" #4caf50;""""="""">Direct VPC (Best)</th>
+<th style="""" padding:="""" 6px="""" 4px;""""="""">VPC Connector</th>
+</tr>
+</thead>
+<tbody>
+<tr style="""" border-bottom:="""" 1px="""" solid="""" rgba(128,128,128,0.2);""""="""">
+<td style="""" padding:="""" 8px="""" 4px;="""" font-weight:="""" bold;""""="""">Latency</td>
+<td style="""" padding:="""" 8px="""" 4px;""""=""""><b>Lower</b> (direct path)</td>
+<td style="""" padding:="""" 8px="""" 4px;""""="""">Higher (extra hop)</td>
+</tr>
+<tr style="""" border-bottom:="""" 1px="""" solid="""" rgba(128,128,128,0.2);""""="""">
+<td style="""" padding:="""" 8px="""" 4px;="""" font-weight:="""" bold;""""="""">Cost</td>
+<td style="""" padding:="""" 8px="""" 4px;""""=""""><b>Lower</b> (egress only)</td>
+<td style="""" padding:="""" 8px="""" 4px;""""="""">Higher (fixed VM cost)</td>
+</tr>
+<tr style="""" border-bottom:="""" 1px="""" solid="""" rgba(128,128,128,0.2);""""="""">
+<td style="""" padding:="""" 8px="""" 4px;="""" font-weight:="""" bold;""""="""">Scaling</td>
+<td style="""" padding:="""" 8px="""" 4px;""""=""""><b>Instant</b></td>
+<td style="""" padding:="""" 8px="""" 4px;""""="""">Lagging (VM scaling)</td>
+</tr>
+<tr style="""" border-bottom:="""" 1px="""" solid="""" rgba(128,128,128,0.2);""""="""">
+<td style="""" padding:="""" 8px="""" 4px;="""" font-weight:="""" bold;""""="""">Setup</td>
+<td style="""" padding:="""" 8px="""" 4px;""""=""""><b>Simpler</b> (subnet selection)</td>
+<td style="""" padding:="""" 8px="""" 4px;""""="""">Complex (extra resource)</td>
+</tr>
+</tbody>
+</table>
+</div>"
+Does Memorystore provide a public IP?	<b>No</b>. Memorystore is <b>VPC‑only</b> and exposes <b>private IPs only</b>.
+What are the main use cases for Memcached?	<ul><li>Simple, ephemeral caching</li><li>High‑throughput key/value workloads</li><li>No persistence or replication needed</li></ul>
+What are the main use cases for Redis/Valkey?	<ul><li>Caching</li><li>Session storage</li><li>Pub/Sub</li><li>Rate limiting</li><li>Distributed locks</li></ul>
+What engines does Memorystore support?	<ul><li>Redis/Valkey</li><li>Memcached</li></ul>
+What is Memorystore?	A fully managed in‑memory data store service on GCP that supports <b>Redis/Valkey</b> and <b>Memcached</b>.
+What is the recommended use case for Memcached over Redis?	High‑throughput, ephemeral caching where <b>persistence and replication are not required</b>.
+Does Memorystore support PSC?	Yes — Redis Cluster and Valkey require PSC.<br>Classic Redis uses VPC Peering.<br><br><i>PSC → Private Service Connect</i>
+Can you use Memorystore with Terraform?	Yes — Terraform supports Redis and Memcached provisioning.
+Does Memorystore for <b>Redis</b> support backups? How?	Yes, using <b>RDB snapshots</b> stored in <b>Cloud Storage</b>. (Note: Memcached does <b>not</b> support backups).
+What happens when Redis memory is full?	Redis evicts keys based on the configured <b>eviction policy</b>, or returns errors if eviction is disabled.
+What is the eviction policy for Redis in Memorystore?	Default is <b>volatile-lru</b>, but eviction depends on Redis configuration and memory pressure.
+Does Memorystore support Redis Lua scripting?	Yes — Lua scripts are supported.
+Does Memorystore support Redis transactions (MULTI/EXEC)?	Yes — fully supported.
+Does Memorystore support Redis pub/sub?	Yes — fully supported.
+What is the difference between Redis Cluster and non‑clustered Redis in Memorystore?	<ul><li><b>Cluster mode</b>: horizontal scaling, sharding, higher throughput</li><li><b>Non‑clustered</b>: single primary (with optional replica), vertical scaling only</li></ul>
+What is the recommended way to connect Cloud Run and Cloud Functions (2nd Gen) to Memorystore?	<b>Direct VPC Egress</b>. It is faster, cheaper, and avoids managing connector VM instances.
+What is the recommended way to connect from Cloud Run to Memorystore?	Cloud Run now supports <b>Direct VPC Egress</b>, which is often preferred over the VPC Connector because it is faster and cheaper (no connector instances to manage).
+What is the recommended way to connect from GKE to Memorystore?	Use a <b>VPC‑native GKE cluster</b> in the <b>same VPC and region</b>.
+What happens if you try to connect to Memorystore from a different region?	"Connection fails — Memorystore is <b>region‑bound</b> and <b>VPC‑bound</b>.
+<br><br>However, using <b>Private Service Connect</b> (PSC) with <b>Global Access</b> enabled allows cross-region connectivity."
+Does Memorystore support IAM‑based data access?	No — IAM only controls <b>resource management</b>, not Redis key‑level access.
+What is the default Redis port in Memorystore?	<b>6379</b>
+Can you export or import Redis data?	Yes — using <b>RDB snapshots</b> stored in <b>Cloud Storage</b>.
+Can Memorystore Redis be placed in a Shared VPC?	Yes — it supports <b>Shared VPC</b>, but clients must be in the same <b>host project VPC</b> or connected via VPC peering.
+What is the difference between Redis Basic Tier and Standard Tier regarding maintenance?	<ul><li><b>Basic Tier</b>: maintenance causes <b>downtime</b>,</li><li><b>Standard Tier</b>: maintenance triggers <b>failover</b>, minimizing downtime.</li></ul>
+How does Memorystore handle maintenance?	Google applies maintenance automatically; Redis may experience <b>brief downtime</b> during scaling or maintenance.
+Does Memorystore support cross‑region replication?	<b>No</b>. Memorystore is <b>single‑region only</b>.
+What happens to data during a Memcached node failure?	Data is <b>lost</b>, because Memcached has <b>no persistence</b> and <b>no replication</b>.
+What happens to data during a Redis failover?	The replica becomes primary and <b>no data is lost</b>, except for in‑flight writes not yet replicated.
+How do you secure data in transit without TLS?	Use <b>private VPC networking</b>, <b>firewalls</b>, and <b>VPC Service Controls</b> for perimeter security.
+Can you connect to Memorystore using TLS?	Yes, you can connect to Memorystore for Redis and Memorystore for Redis Cluster using TLS. <br>However, Memorystore for Memcached does not natively support TLS as all.
+Does Memorystore support Redis modules?	<b>No</b>. Memorystore for Redis does <b>not</b> support Redis modules (e.g., RedisJSON, RediSearch).
+How does failover work in Standard Tier Redis?	A <b>replica in another zone</b> automatically becomes primary if the original primary fails.
+Is Memorystore regional or zonal?	Memorystore is <b>regional</b>, but Redis instances run in <b>one zone</b> with optional cross‑zone replica (Standard Tier).
+What is the recommended upload method for large files?	<b>Resumable uploads</b> — they survive network interruptions.
+What is the maximum size of a single upload request to Cloud Storage?	<b>5 TB</b> (if using resumable uploads)
+What is the maximum object size in Cloud Storage?	<b>5 TB</b>
+What is the difference between object metadata and custom metadata?	<ul><li><b>Object metadata</b>: system‑defined (size, content‑type, MD5, etc.),</li><li><b>Custom metadata</b>: user‑defined key/value pairs.</li></ul>
+Can you use IAM Conditions with Cloud Storage?	Yes — IAM Conditions allow time‑based or attribute‑based access control.
+What happens if you try to delete a bucket with objects inside?	The operation fails — you must delete all objects first.
+Are composite objects compatible with <b>MD5</b> checksums?	No. Composite objects (created via parallel uploads) do not have an MD5 hash (they only use CRC32C). This can break compatibility with some older download tools that strictly require MD5 validation.
+What is a composite object (in Cloud Storage)?	An object created by combining multiple uploaded components — used for <b>parallel composite uploads</b>.
+What does <code>gsutil -m</code> do?	Enables <b>parallel (multi‑threaded) operations</b>, speeding up large transfers.<br><br><code>gcloud storage</code> is a recomented new CLI tool:<br><code>gcloud storage cp -m gs://my-bucket/data/* ./data/</code>
+What does <b><code>gsutil rsync</code></b> do?	Synchronizes a local directory and a bucket (or two buckets), copying only differences.<br><br><code>gcloud storage rsync</code> is newer command and should be used.
+What is the difference between the JSON API and XML API (Cloud Storage)?	<ul><li><b>JSON API</b>: modern, recommended,</li><li><b>XML API</b>: S3‑compatible, legacy interoperability.</li></ul>
+What is the recommended tool for petabyte‑scale offline data migration?	<b>Transfer Appliance</b>.
+What is the recommended tool for transferring data from AWS S3 to GCS?	<b>Storage Transfer Service</b>.
+Can Cloud Storage host static websites?	Yes — using a bucket with <b>public access</b> and an <b><code>index.html</code></b> file.
+What is the default encryption method for Cloud Storage?	<b>Google‑managed encryption keys</b> (no configuration required).
+Does Cloud Storage support automatic key rotation?	Yes — for <b>CMEK</b>, rotation is handled by <b>Cloud KMS</b>.
+What is the difference between CMEK and CSEK (Cloud Storage)?	<ul><li><b>CMEK</b>: keys stored in Cloud KMS, Google manages encryption but you control the key,</li><li><b>CSEK</b>: you provide the encryption key with each request (rarely used).</li></ul>
+What is Requester Pays?	A bucket setting where <b>the requester pays</b> for access and egress costs instead of the bucket owner.
+Can lifecycle rules move objects from Archive back to Standard?	No — lifecycle rules only support <b>downward</b> transitions to colder classes.
+What is Object Lifecycle Management?	Rules that automatically:<ul><li>delete objects,</li><li>move objects to cheaper storage classes,</li><li>delete old versions.</li></ul>
+What is Object Versioning?	A feature that keeps <b>old versions</b> of objects instead of overwriting or deleting them.
+What is the difference between Signed URLs and Signed Policy Documents?	<ul><li><b>Signed URLs</b>: temporary access to download or upload a single object,</li><li><b>Signed Policy Documents</b>: allow <b>browser‑based uploads</b> with constraints (size, type, etc.)</li></ul>
+What happens when you enable Uniform Bucket‑Level Access?	<ul><li>ACLs are <b>disabled</b>,</li><li>IAM becomes the <b>only</b> access control mechanism,</li><li>Object‑level ACLs are ignored.</li></ul>
+What is the recommended access control model for Cloud Storage?	<b>IAM with Uniform Bucket‑Level Access</b> (ACLs disabled).
+What is a Dual‑Region bucket?	A bucket stored in <b>two specific regions</b> for high availability and DR.
+What is the difference between Regional and Multi‑Regional buckets?	<ul><li><b>Regional</b>: stored in one region, lowest latency for compute in same region,</li><li><b>Multi‑Regional</b>: stored across large geographic areas, best for global content distribution.</li></ul>
+What is the minimum storage duration for <i>Nearline</i>, <i>Coldline</i>, and <i>Archive</i>? And what's the retrieval cost?	<ul><li>Nearline → min duration<b> 30 days</b>,</li><li>Coldline → min duration<b> 90 days</b>,</li><li>Archive → min duration<b> 365 days</b>.</li></ul><div>Standard (no retrieval cost), Nearline/Coldline/Archive (increasingly high retrieval costs per GB).</div>
+Do storage classes affect performance (Cloud Storage)?	No — all storage classes have <b>identical performance</b>.<br>They differ only in <b>cost</b> and <b>minimum storage duration</b>.
+What is the durability of Cloud Storage?	<b>11 nines (99.999999999%)</b> durability across all storage classes.
+Are Cloud Storage buckets global or regional?	Buckets exist in a <b>global namespace</b>, but their <b>data location</b> is <b>regional, dual‑region, or multi‑region</b>.
+What does <i>Public Access Prevention</i> do?	Blocks <b>all</b> public access to the Cloud Storage Bucket, even if ACLs or IAM roles would allow it.
+What happens if a CMEK key is disabled?<br>What happens if it's destroyed?	<ul><li>Objects encrypted with that <i>disabled</i> key become <b>inaccessible</b> until the key is re‑enabled.</li><li>Data encrypted with that <i>destroyed</i> key is <b>permanently unrecoverable</b>.</li></ul>
+What happens if you upload an object to a Nearline bucket and delete it after 10 days?	You are charged for the <b>full 30‑day minimum</b>.
+"What is the difference between ""resumable uploads"" and ""multipart uploads""?"	<ul><li><b>Resumable uploads</b>: restartable, recommended for large files and/or for unstable connection,</li><li><b>Multipart uploads</b>: S3‑style; supported only via XML API, best for massive files, high connection speed.</li></ul>Resumable is for <b>continuity</b> while multipart is for <b>concurrency</b>.<br>
+Can you remove a retention policy after locking it?	No — retention lock is <b>permanent</b>.
+"What is a ""retention lock"" in Cloud Storage?"	A compliance feature that <b>prevents modification or removal</b> of a retention policy.
+"What is the difference between ""soft delete"" and ""hard delete"" in Cloud Storage?"	<ul><li><b>Soft delete</b>: when versioning is enabled, deleting creates a <b>noncurrent version</b>,</li><li><b>Hard delete</b>: permanently removes the object version.</li></ul>
+Can Firestore trigger Cloud Functions?	Yes — on <b>create, update, delete</b> events.
+Does Firestore support backups?	Yes — scheduled and on‑demand backups stored in <b>Cloud Storage</b>.
+Firestore vs Realtime Database?	<ul><li><b>Firestore</b>: structured docs, strong consistency, better queries.</li><li><b>Realtime DB</b>: JSON tree, eventual consistency.</li></ul>
+Does Firestore support real‑time updates?	Yes — via <b>real‑time listeners</b>.
+What is a collection group query in Firestore?	A query across <b>all subcollections with the same name</b>.
+Does Firestore support joins?	No — Firestore requires <b>denormalization</b>.
+How to avoid write hotspots in Firestore?	Use <b>randomized document IDs</b> or <b>sharded counters</b>.
+What is the max write rate per document in Firestore?	<b>1 write per second</b> per document.
+What is the maximum document size in Firestore?	<b>1 MB</b> per document.
+Does Firestore support offline mode?	Yes — Firestore SDKs support <b>offline caching</b> for mobile/web apps.
+IAM vs Security Rules (Firestore)?	<ul><li><b>IAM</b>: admin‑level access (indexes, backups).</li><li><b>Security rules</b>: data‑level access.</li></ul>
+What are Firestore security rules?	Rules that control <b>read/write access</b> based on user identity, document data, and request context.
+Does Firestore support ACID?	Yes — Firestore supports <b>ACID transactions</b> at the document level.<div><br></div><div>Firestore supports <strong>ACID transactions</strong>, but with scope limitations:</div><ul><li><div>ACID applies <strong>within a single document</strong></div></li><li><div>Multi‑document transactions are supported but have <strong>performance limits</strong></div></li><li><div>Firestore automatically <strong>retries</strong> transactions if data changes</div></li><li><div>Max write rate per document: <strong>1 write per second</strong></div></li></ul><div><b>ACID</b>:</div><ul><li>Atomic — all or nothing.</li><li>Consistency — a transaction must move the database from one <strong>valid state</strong> to another valid state.</li><li>Isolation — Concurrent transactions do not interfere with each other.</li><li>Durability — Once a transaction is committed, the result is <strong>permanent</strong>, even if the system crashes,</li></ul><div></div>
+How does Firestore scale?	Firestore scales horizontally using <b>automatic sharding</b> based on document keys.
+Transaction vs Batch Write (Firestore)?	<ul><li><b>Transaction</b>: read + write, atomic, auto‑retry.</li><li><b>Batch write</b>: write‑only, atomic, no reads.</li></ul>
+What is a Firestore batch write?	A batch write groups multiple <b>write‑only</b> operations into one atomic request.
+What is a Firestore transaction?	A transaction performs multiple reads/writes atomically and <b>auto‑retries</b> if data changes.
+Does Firestore support SQL?	No — Firestore uses a <b>NoSQL document query model</b>.
+What is the Firestore data hierarchy?	<b>Collections → Documents → Fields</b><br>Documents may contain <b>subcollections</b>.
+What consistency model does Firestore use?	<b>Strong consistency</b> for reads, writes, and queries.
+Is Firestore regional or multi‑regional?	Firestore is <b>multi‑regional</b> by default with automatic replication.
+What are the two Firestore modes?	"<ul><li><b>Native mode</b>: real‑time, hierarchical, mobile/web optimized.</li><li><b>Datastore mode</b>: server‑oriented, no real‑time listeners, simpler querying.</li></ul>
+Mode cannot be changed once the database is created."
+What is Firestore?	"Firestore is a <b>NoSQL document database</b> storing data as <b>collections → documents → fields</b>.  
+It is <b>serverless</b>, <b>scalable</b>, and supports <b>real‑time listeners</b>."
+Which Filestore tier is best for mission‑critical HA workloads?	<b>Enterprise tier</b> (regional replication + NFSv4.1).
+What is the main exam trap with Filestore?	<ul><li>Cloud Run (Gen2) can mount Filestore as a volume. Requires Gen2 environment and VPC connectivity.</li><li>Only Compute Engine, GKE, and hybrid via VPN/Interconnect.</li></ul>
+Which Filestore tier is best for ML and HPC workloads?	<b>High Scale SSD</b>.<br><ul><li>ML → machine learning</li><li>HPC → high‑performance computing<br></li></ul>
+What happens when a Filestore instance runs out of capacity?	Writes fail. You must <b>increase capacity</b> (cannot shrink).
+When should you NOT use Filestore?	Avoid Filestore when you need:<br><ul><li>Global object access → use <b>Cloud Storage</b></li><li>Block storage for a single VM → use <b>Persistent Disk</b></li><li>Serverless access → use <b>Cloud Storage</b></li></ul>
+When should you choose Filestore over Cloud Storage?	When you need:<br><ul><li>POSIX filesystem</li><li>Shared NFS access</li><li>Low latency</li><li>High throughput</li></ul>
+Does Filestore support snapshots?	Yes — depending on tier (Enterprise and High Scale SSD support snapshots).
+Does Filestore support backups?	Yes — Filestore supports <b>backups</b> stored in Cloud Storage and <b>restore</b> to new instances.
+Does Filestore support CMEK?	<b>Yes</b>, but only for <b>Enterprise tier</b>.
+Does IAM control file‑level access in Filestore?	"<b>No.</b> IAM controls instance management only.<br>  
+File access is controlled by <b>NFS POSIX permissions</b>."
+Does scaling Filestore cause downtime?	"Basic tiers: <b>possible brief downtime</b>.<br>  
+Enterprise tier: <b>no downtime</b>."
+Can Filestore capacity be decreased?	<b>No.</b> You can only <b>increase</b> capacity.
+How do you mount Filestore on GKE?	Use a <b>PersistentVolume</b> + <b>PersistentVolumeClaim</b> with the NFS driver.
+How do you mount Filestore on a Compute Engine VM?	"Install NFS client and mount:<br>  
+<code>mount -o nolock FILESTORE_IP:/share /mnt</code>"
+Must Filestore and clients be in the same region?	<b>Yes.</b> Same region and same VPC (or connected via VPC peering).
+How do clients connect to Filestore?	Using <b>private IP</b> over a <b>VPC network</b> via NFS.
+Which Filestore tier provides regional high availability?	<b>Enterprise tier</b>.
+Which Filestore tier supports independent scaling of performance and capacity?	<b>High Scale SSD</b>.
+What are the Filestore performance tiers?	<ul><li>Basic HDD</li><li>Basic SSD</li><li>High Scale SSD</li><li>Enterprise (HA + NFSv4.1)</li></ul>
+Can Cloud Run or Cloud Functions mount Filestore?	Yes, <b>Cloud Run (Gen 2)</b> can mount Filestore as a volume.<br><b>Cloud Functions</b> cannot natively mount it.
+Which workloads commonly use Filestore?	<ul><li>GKE shared storage</li><li>Compute Engine shared filesystem</li><li>Media rendering</li><li>ML workloads needing shared datasets</li><li>CMS systems</li><li>Linux home directories</li></ul>
+Is Filestore regional or zonal?	Filestore Basic and High-Scale are <b>zonal</b>. Only the Enterprise tier is <b>regional</b> (replicated across zones).
+Which protocol does Filestore use?	"<b>NFSv3</b> for most tiers.<br>  
+<b>NFSv4.1</b> for Enterprise tier."
+Is Filestore object storage, block storage, or file storage?	"Filestore is <b>file storage</b> using <b>NFS</b>.  
+Not object storage (Cloud Storage) and not block storage (Persistent Disk)."
+What is Google Cloud Filestore?	"A managed <b>NFS file storage</b> service providing a <b>POSIX‑compliant shared filesystem</b> for Compute Engine and GKE.  
+Designed for <b>low‑latency</b>, <b>high‑throughput</b> workloads."
+What is the main exam trap with Firestore?	"Firestore enforces a strict <b>1 write per second per document</b> limit.  
+High‑frequency writes must use <b>sharded counters</b> or <b>distributed document IDs</b> to avoid write hotspots."
+Firestore vs Filestore	Firestore → Database<br>A NoSQL document database for application data.<br><br>Filestore → Filesystem<br>A managed NFS file server for shared POSIX file storage.
+What is the modern, faster alternative to <code>gsutil</code> for Cloud Storage operations?	<code>gcloud storage</code> (e.g., <code>gcloud storage cp</code> instead of <code>gsutil cp</code>).<br>It uses a new sharding algorithm and is significantly faster.
+"You granted a user Storage Object Viewer on a bucket, but they still get <i>Access Denied</i>. ACLs are disabled. What
+  is likely the cause?"	<b>Public Access Prevention</b> (PAP) or <b>Organization Policy</b> is enforcing restricted access at the project/bucket level.
+Can a Filestore instance be shared across multiple VPCs?	No. A Filestore instance is associated with a single VPC network.
+What are the two Redis tiers in Memorystore and their key differences regarding HA?	<ul><li><b>Basic Tier</b>: Single node, no replication, goes <b>down</b> during failure/maintenance.</li><li><b>Standard Tier</b>: Primary + Replica, <b>automatic failover</b>, high availability.</li></ul>
+What is Google Cloud Filestore and what protocol does it use?	A managed <b>NFS (v3 or v4.1)</b> file storage service providing a <b>POSIX-compliant shared filesystem</b> for GKE and Compute Engine.
+How do you stop being charged for failed/unfinished large uploads in Cloud Storage?	Use an <b>Object Lifecycle Management</b> rule with the action <b>AbortIncompleteMultipartUpload</b>.
+Can you create a Filestore instance in a service project using a Shared VPC?	<b>Yes</b>, but the Filestore instance must be associated with the <b>Shared VPC network</b> in the host project.
+Does Firestore support automatic document deletion?	Yes, via <b>TTL (Time-to-Live)</b> policies based on a timestamp field.
+Which three database engines are natively supported by Cloud SQL?	<ol><li>MySQL,</li><li>PostgreSQL,</li><li>and SQL Server.</li></ol><div>Be aware that Oracle is <b>NOT</b> supported (that would be <i>Bare Metal Solution</i> or <i>Cloud SQL for SQL Server</i> is different).</div>
+What is the primary use case for Cloud SQL High Availability (HA)?	Protection against zone failures (reliability), not performance scaling.
+Are Cloud SQL HA instances located in the same zone, different zones, or different regions?	Different zones within the same region.
+How do you scale <b>read</b> performance in Cloud SQL without increasing the machine size of the primary instance?	Add <b>Read Replicas</b>.
+Does scaling up the machine type (vertical scaling) of a Cloud SQL instance require downtime?	Yes, it requires a restart of the database instance.
+Can Cloud SQL storage scale down automatically after you delete data?	<b>No</b>. Storage can auto-increase, but it cannot scale down.<br>To reduce size, you must export data, delete the instance, and import into a new, smaller instance.
+If your relational database needs to scale globally with massive write throughput, which GCP service should you use?	Cloud Spanner.
+Which utility provides secure, encrypted access to <b>Cloud SQL</b> without whitelisting IPs?	Cloud SQL Auth Proxy.
+What feature must be enabled to perform Point-in-Time Recovery (PITR) in Cloud SQL?	Binary logging (MySQL) or write-ahead logging (PostgreSQL).
+If you use a <b>Cross-Region Read Replica</b> for Disaster Recovery, what is the final step to make it your new primary database?	You must manually <b>promote</b> the replica to a standalone instance.<br><br>Note: This is not automatic - Cloud SQL HA is for zones, but cross-region failover is manual.
+What is the main difference in <b>scaling</b> between Cloud SQL and Cloud Spanner?	Cloud SQL scales <b>vertically</b> (requires downtime), while Cloud Spanner scales <b>horizontally</b> (zero downtime).
+When should you choose <b>Cloud Spanner</b> over Cloud SQL? (Name 3 scenarios)	<ul><li>When you need <b>horizontal</b> scaling for both reads and writes.</li><li>When database size exceeds Cloud SQL limits (typically &gt; 64 TB).</li><li>When you need <b>global</b> strong consistency.</li></ul>
+What is the underlying replication mechanism used by Cloud Spanner to ensure strong consistency?	It uses <b>Paxos</b> distributed consensus.
+How is compute capacity measured in Cloud Spanner?	In <b>Nodes</b> or <b>Processing Units (PUs)</b>. <br><br><i>Note: 1 Node = 1000 PUs.</i>
+What is the maximum retention period for <b>Point-in-Time Recovery (PITR)</b> in Cloud Spanner?	<b>7 days</b>.
+If a Spanner instance requires administrative access but the user should not be able to delete the instance itself, which IAM role is appropriate?	<code>roles/spanner.databaseAdmin</code>
+What is the primary use case and database type for <b>Cloud Bigtable</b>?	It is a fully managed, <b>wide-column NoSQL</b> database designed for <b>massive scale</b> (terabytes to petabytes), very low latency, and high-throughput workloads like <b>time-series data</b> and IoT telemetry.
+Which open-source database API is <b>Cloud Bigtable</b> natively compatible with?	The <b>Apache HBase</b> API.
+How does Cloud Bigtable handle the relationship between <b>compute</b> and <b>storage</b>?	They are <b>separated</b>. Compute nodes handle processing and routing, but data is stored off-node on Google's distributed file system (<b>Colossus</b>). This allows compute scaling without migrating data.
+What is the <i>only</i> way data is indexed and sorted in <b>Cloud Bigtable</b>?	By a single <b>Row Key</b>. Data is always sorted <b>lexicographically</b> (alphabetically) by this key.
+What is <b>hotspotting</b> in Cloud Bigtable, and what is its most common cause?	Hotspotting occurs when read/write traffic is heavily concentrated on a single node, bottlenecking performance. It is most commonly caused by using <b>sequential row keys</b> (such as purely sequential timestamps).
+Name three schema design strategies for Bigtable to prevent hotspotting and ensure good <b>Row Key</b> design.	<ul><li><b>Field reversing</b> (e.g., <code>com.google</code> instead of <code>google.com</code>)</li><li><b>Salting</b> (adding a random hash or calculated prefix)</li><li><b>Promoting an identifier</b> (placing a unique User ID or Device ID before the timestamp)</li></ul>
+Which command-line tool is used specifically to read and write <i>data</i> (rows and tables) in Cloud Bigtable?	The <code>cbt</code> command-line tool. <br><br><i>Note: <code>gcloud</code> is used to manage the instances and clusters, but not the actual data inside them.</i>
+What happens to your data and performance when you add more nodes to a <b>Cloud Bigtable</b> cluster?	Performance scales <b>linearly</b> (throughput increases predictably), and there is <b>zero downtime</b> because compute nodes do not store the underlying data locally (Colossus).
+When should you definitively <i>avoid</i> using Cloud Bigtable on the ACE exam?	<ul><li>When you need to store highly structured <b>relational data</b> requiring complex SQL queries or multi-row transactions.</li><li>When your dataset is small (generally under 1 Terabyte).</li></ul>
+What is the primary use case and database type for <b>BigQuery</b>?	It is a fully managed, serverless <b>Enterprise Data Warehouse (EDW)</b> designed for massive-scale analytics and <b>OLAP</b> (Online Analytical Processing) workloads.
+What is the primary command-line tool used to interact with BigQuery?	The <code>bq</code> command-line tool. <br><br><i>Note: Common commands include <code>bq query</code>, <code>bq load</code>, <code>bq extract</code>, and <code>bq show</code>.</i>
+In BigQuery's on-demand pricing model, how are query costs calculated?	Costs are based on the <b>amount of data scanned</b> (processed) by the query, <i>not</i> the amount of data returned.
+Does adding a <code>LIMIT 10</code> clause to a BigQuery SQL statement reduce the cost of the query?	<b>No.</b> BigQuery still scans the entire column(s) before applying the limit, so you are billed for the full scan.
+What is the most effective way to reduce the amount of data scanned in a standard BigQuery query?	Avoid using <code>SELECT *</code>. Instead, explicitly select <b>only the specific columns</b> you need.
+Name two table design techniques used in BigQuery to optimize query performance and reduce costs.	<ul><li><b>Partitioning</b> (dividing data into segments based on a time or integer column)</li><li><b>Clustering</b> (sorting the underlying storage based on up to 4 user-defined columns)</li></ul>
+Which <b>two</b> IAM roles are required for a user to run a query in BigQuery using a project's resources to scan a specific table?	<ul><li><code>roles/bigquery.jobUser</code> - Project level - to run the job,</li><li><code>roles/bigquery.dataViewer</code> - Table/Dataset level - to see the data</li></ul>
+What BigQuery feature allows you to run SQL queries directly against data stored in Cloud Storage or Cloud SQL without duplicating the data into BigQuery?	<b>Federated Queries</b> (by creating External Tables).
+Which <code>bq</code> command is used to export data from a BigQuery table out to a Cloud Storage bucket?	<code>bq extract</code>
+Which pricing model should you choose for BigQuery if your organization has predictable, high-volume query workloads and strict cost control requirements?	<b>Capacity (Editions) Pricing</b>, where you pay for dedicated query processing capacity (slots) rather than per byte scanned.
+When does Cloud Spanner provide global strong consistency?	When using a <b>Multi-regional</b> configuration. Regional configurations provide strong consistency within that region only.
+What tool is used to diagnose hotspotting in Cloud Bigtable?	<b>Key Visualizer</b>. It provides heatmaps to identify high-traffic row key ranges.
+What are the three ways to connect to a Cloud SQL instance from outside GCP?	<ul><li>Cloud SQL Auth Proxy (Recommended),</li><li>Authorized Networks (IP Whitelisting),</li><li>SSL/TLS certificates.</li></ul>
+What is <i>Long-term storage</i> pricing in BigQuery?	If a table/partition is not modified for <b>90 consecutive days</b>, the storage price drops by <b>~50%</b> (matching Cloud Storage Archive/Nearline prices).
+What is the recommended minimum number of nodes for a production Bigtable cluster to qualify for the SLA?	<b>3 nodes</b>. (1-2 nodes are for development/testing and don't provide the same HA guarantees).
+Which service is recommended for migrating an on-premises MySQL or PostgreSQL database to Cloud SQL with minimal downtime?	<b>Database Migration Service (DMS)</b>.<br>It uses Change Data Capture (CDC) for continuous replication.
+How can you preview BigQuery data without incurring any query costs?	Use the <b>Table Preview</b> tab in the console or the <code>bq head</code> command. Previewing data is free.
+What is the most common reason for poor write performance in Bigtable despite having enough nodes?	<b>Schema design (Hotspotting)</b>. Usually caused by sequential row keys (like timestamps) that send all writes to a single node.
+Does increasing the number of nodes in a Cloud Spanner instance cause downtime?	<b>No</b>. Scaling is horizontal and happens with zero downtime.
+Which machine family provides the best performance/price for scale-out workloads?	The <b>T2D (Tau)</b> family.
+What costs are still incurred when a Compute Engine VM is in a <b>TERMINATED</b> (stopped) state?	You stop paying for CPU and RAM, but you <b>still pay</b> for: <br>1. Attached Persistent Disks <br>2. Reserved Static External IPs.
+How can you SSH into a Compute Engine instance that has <b>no external IP address</b>?	"By using <b>Identity-Aware Proxy (IAP)</b> TCP forwarding.
+<br><code>gcloud compute ssh VM_NAME --zone=ZONE --tunnel-through-iap
+</code>"
+What specific IP range must be allowed in firewall rules to enable <b>IAP SSH</b> access?	<b>35.235.240.0/20</b> on port 22.
+True or False: You can decrease the size of a Persistent Disk without recreating it.	<b>False.</b> You can only <b>increase</b> the size of a Persistent Disk.
+What is the primary difference between a <b>Snapshot</b> and a <b>Custom Image</b> in GCP?	<ul><li><b>Snapshots:</b> Incremental backups for disaster recovery.</li><li><b>Custom Images:</b> <i>Gold Masters</i> used to create new instances with pre-installed software.</li></ul>
+What happens to the data on a <b>Local SSD</b> if the VM instance is stopped or deleted?	The data is <b>permanently lost</b> (ephemeral storage).
+Are <b>Instance Templates</b> mutable or immutable?	They are <b>immutable</b>. To make changes, you must create a new template.
+Which resource is used to achieve high availability by automatically recreating failed VMs?	<b>Managed Instance Groups (MIGs)</b> using the <b>auto-healing</b> feature (Health Checks).
+What is the difference between a <b>Zonal</b> and a <b>Regional</b> MIG?	<ul><li><b>Zonal:</b> All VMs in one zone.</li><li><b>Regional:</b> VMs spread across multiple zones in a region (Higher Availability).</li></ul>
+What is the internal URL used to access the <b>Compute Engine Metadata Server</b>?	<code>http://metadata.google.internal/computeMetadata/v1/</code>
+What mandatory HTTP Header must be included when querying the Metadata Server?	<code>Metadata-Flavor: Google</code>
+What is the purpose of <b>Network Tags</b> on a VM?	To selectively apply <b>Firewall Rules</b> or <b>Routes</b> to specific groups of instances.
+What is a <b>Sole-Tenant Node</b> used for?	<ul><li>Compliance/Regulatory requirements.</li><li>BYOL (Bring Your Own License) for hardware-bound licenses.</li><li>Physical isolation from other customers.</li></ul>
+Which <code>gcloud</code> command is used to change the number of instances in a Managed Instance Group?	<code>gcloud compute instance-groups managed <b>resize</b> [NAME] --size=[NEW_SIZE]</code>
+What is the main difference between GKE <b>Autopilot</b> and <b>Standard</b> mode?	<ul><li><b>Autopilot:</b> Google manages the nodes, scaling, and security (per-pod billing).</li><li><b>Standard:</b> You manage the node infrastructure (VM billing).</li></ul>
+What command must you run to configure <code>kubectl</code> to talk to a specific GKE cluster?	<code>gcloud container clusters <b>get-credentials</b> [CLUSTER_NAME] --zone [ZONE]</code>
+What is the most secure way for GKE pods to authenticate to Google Cloud services (like Cloud Storage)?	<b>Workload Identity</b> (links a Kubernetes Service Account to a Google Cloud Service Account).
+Match the <b>scaling</b> type: <br><ol><li>Scales number of pods </li><li>Scales node pool size </li><li>Adjusts pod CPU/RAM requests</li></ol>	<ol><li><b>HPA</b> (Horizontal Pod Autoscaler) </li><li><b>Cluster Autoscaler</b></li><li><b>VPA</b> (Vertical Pod Autoscaler)</li></ol>
+What GKE feature ensures that only trusted container images are deployed?	<b>Binary Authorization</b>
+What is the default Service type in GKE, and what is its scope?	<b>ClusterIP</b>. It exposes the service on an <b>internal</b> IP only within the cluster.
+In a <b>Private GKE Cluster</b>, how do nodes without external IPs access the internet for updates?	By using <b>Cloud NAT</b> (Network Address Translation).
+What is the difference between <b>RBAC</b> and <b>IAM</b> in the context of GKE?	<ul><li><b>RBAC:</b> Manages permissions <i>inside</i> the cluster (e.g., <i>who can create a pod</i>).</li><li><b>IAM:</b> Manages permissions <i>outside</i> the cluster (e.g., <i>who can delete the cluster</i>).</li></ul>
+What is the benefit of a <b>Regional Cluster</b> over a Zonal Cluster?	The Control Plane and nodes are replicated across <b>multiple zones</b>, providing higher availability (99.95% SLA) during zone failures.
+Which Kubernetes resource manages external HTTP(S) access to services and provides path-based routing?	<b>Ingress</b>
+Cloud Run is built on which open-source standard?	<b>Knative</b>
+What is the primary cost-saving scaling feature of Cloud Run?	<b>Scale-to-zero</b> (when no requests are active, instances are stopped and billing for CPU/RAM stops).
+What is the maximum number of concurrent requests a single Cloud Run instance can handle?	Up to <b>1000</b> (default is 80).
+Are Cloud Run <b>Revisions</b> mutable or immutable?	<b>Immutable</b>. Any configuration change creates a new revision.
+How do you implement a <b>Canary Deployment</b> in Cloud Run?	By using <b>Traffic Splitting</b> to route a small percentage (e.g., 5%) of traffic to a new revision.
+Which scaling setting is used to minimize <i>cold start</i> latency in Cloud Run?	<b>Minimum Instances</b>
+What tool is required for a Cloud Run service to access a Cloud SQL instance via a <b>Private IP</b>?	<b>Direct VPC Egress</b><br>The <b>Serverless VPC Access Connector</b> is the <i>legacy</i> alternative.
+How do you make a Cloud Run service publicly accessible to the internet?	Grant the <code>roles/run.invoker</code> role to the <b>allUsers</b> principal.
+What is the difference between a Cloud Run <b>Service</b> and a Cloud Run <b>Job</b>?	<ul><li><b>Service:</b> Handles HTTP requests (long-running).</li><li><b>Job:</b> Performs work and exits when finished (batch processing).</li></ul>
+How can you give a Cloud Run service a <b>static outbound IP address</b>?	Route traffic through a <b>VPC Connector</b> and use <b>Cloud NAT</b>.
+Where should container images be stored for deployment to Cloud Run?	<b>Artifact Registry</b> (recommended) or Container Registry.
+Which <code>gcloud</code> command is used to split traffic between two revisions?	<code>gcloud run services <b>update-traffic</b> [NAME] --to-revisions [REV1=PERCENT,REV2=PERCENT]</code>
+True or False: Cloud Run instances are stateless.	<b>True.</b> Any persistent data must be stored externally (e.g., Cloud Storage, Cloud SQL).
+How do you securely pass API keys or passwords to a Cloud Run service?	Integrate with <b>Secret Manager</b> to mount them as environment variables or volumes.
+What is the behavior of <i>CPU allocated only during request processing</i> vs <i>CPU always allocated</i>?	<ul><li><b>Request Processing:</b> CPU is throttled and cheaper when no requests are active.</li><li><b>Always Allocated:</b> CPU is available for background tasks outside of requests.</li></ul>
+What is the underlying technology for Cloud Functions 2nd Generation?	<b>Cloud Run</b>.
+What is the primary benefit of Cloud Functions 2nd Generation concurrency?	A single instance can handle <b>multiple concurrent requests</b> (up to 1000), reducing cold starts and cost.
+How do you eliminate <i>cold start</i> latency in Cloud Functions?	By setting a <b>minimum number of instances</b> (min-instances).
+Which Google Cloud service manages event-driven triggers for Cloud Functions 2nd Generation?	<b>Eventarc</b>.
+What is the maximum timeout for an HTTP-triggered Cloud Function in 2nd Generation?	<b>60 minutes</b>.
+What tool must you use to allow a Cloud Function to access a Cloud SQL instance via a private IP address?	<b>Serverless VPC Access Connector</b>.
+Why should event-driven Cloud Functions be <b>idempotent</b>?	To ensure that <b>retries</b> of the same event do not result in duplicate side effects (e.g., charging a customer twice).
+Which IAM role is required to allow a user or service to trigger a 2nd Generation Cloud Function?	<b>Cloud Run Invoker</b> (<code>roles/run.invoker</code>).
+True or False: 2nd Generation Cloud Functions support traffic splitting between revisions.	<b>True.</b>
+Where are the container images for deployed Cloud Functions stored?	<b>Artifact Registry</b>.
+How do you provide a static outbound IP address to a Cloud Function?	Route traffic through a <b>VPC Connector</b> and use <b>Cloud NAT</b>.
+What is the default runtime service account for Cloud Functions?	The <b>App Engine default service account</b> (not recommended for production; use a custom SA).
+Which <code>gcloud</code> flag is required to deploy a 2nd Generation function?	<code>--gen2</code>
+How can you securely provide API keys to a Cloud Function without hardcoding them?	Integrate with <b>Secret Manager</b> to mount them as environment variables or volumes.
+True or False: Cloud Functions can handle background processing for Cloud Storage events.	<b>True.</b> (e.g., triggering on file upload/finalize).
+How many App Engine applications can you have per Google Cloud project?	<b>Exactly one.</b>
+True or False: You can change the region of an App Engine application after it is created.	<b>False.</b> You must create a new project to change the region.
+Which App Engine environment supports <b>scale-to-zero</b>?	The <b>Standard</b> environment.
+Which App Engine environment runs code in <b>Docker containers</b> and uses Compute Engine VMs?	The <b>Flexible</b> environment.
+List the App Engine hierarchy from top to bottom.	<b>Project</b> -&gt; <b>Application</b> -&gt; <b>Service</b> -&gt; <b>Version</b> -&gt; <b>Instance</b>.
+What are the three ways to split traffic between versions in App Engine?	<ol><li><b>IP Address</b></li><li><b>HTTP Cookie</b></li><li><b>Random</b></li></ol>
+What is the difference between <b>Traffic Splitting</b> and <b>Traffic Migration</b>?	<ul><li><b>Splitting:</b> Simultaneous routing to multiple versions.</li><li><b>Migration:</b> Gradually moving all traffic from one version to another.</li></ul>
+Which <code>gcloud</code> flag allows you to deploy a new App Engine version without routing traffic to it?	<code>--no-promote</code>
+Which configuration file is mandatory for deploying an App Engine application?	<code>app.yaml</code>
+True or False: You can SSH into an instance in the App Engine Standard environment.	<b>False.</b> SSH is only available in the <b>Flexible</b> environment.
+What is the <b>Standard</b> environment's limit on local file system access?	You can only write to the <b><code>/tmp</code></b> directory (in-memory).
+Which tool allows you to restrict access to an App Engine app based on user identity without changing code?	<b>Identity-Aware Proxy (IAP)</b>.
+What is <b>Basic Scaling</b> in App Engine Standard?	Instances are created only when a request is received and turned off when idle.
+How do you allow an App Engine Standard app to access a Cloud SQL instance with only a private IP?	By using a <b>Serverless VPC Access Connector</b>.
+Which scaling type is <b>not</b> supported by the App Engine Flexible environment?	<b>Basic Scaling</b> (Flexible only supports Automatic and Manual).
+Which component of a VPC network is global and which is regional?	The <b>VPC network</b> itself is global; <b>subnets</b> within it are regional.
+True or False: You can shrink the CIDR range of a subnet without downtime.	<b>False.</b> You can <b>expand</b> a CIDR range, but you cannot shrink it.
+What is <b>Private Google Access</b> used for?	Allows VM instances with only <b>internal IP addresses</b> to reach Google APIs and services (e.g., Cloud Storage, BigQuery).
+How does GCP resolve a conflict between two identical routes with different priority numbers?	The route with the <b>lowest priority number</b> wins.
+What is the routing rule used to determine the path for network traffic when multiple routes match a destination?	<b>Longest Prefix Match</b> (most specific CIDR range).
+True or False: Firewall rules in GCP are stateful.	<b>True.</b> If an initial connection is allowed, return traffic is automatically permitted regardless of other rules.
+What are the two implicit firewall rules that cannot be deleted?	1. <b>Allow Egress:</b> All outbound traffic allowed by default. <br>2. <b>Deny Ingress:</b> All inbound traffic blocked by default.
+What tool allows VMs without external IP addresses to access the internet for updates/downloads?	<b>Cloud NAT</b>.
+What is the purpose of <b>Network Tags</b> in firewall rules?	They allow you to apply firewall rules to <b>specific groups of VM instances</b> instead of all instances in a VPC.
+What is the difference between <b>VPC Network Peering</b> and <b>Shared VPC</b>?	<ul><li><b>Peering:</b> Connects two separate VPCs for internal IP communication.</li><li><b>Shared VPC:</b> Allows multiple projects to share a common VPC network from a central 'Host' project.</li></ul>
+In VPC routing, what does a destination of <code>0.0.0.0/0</code> represent?	The <b>Default Route</b> to the Internet.
+What is the range of priority numbers for firewall rules?	<b>0 to 65535</b> (0 is highest priority).
+What is required to allow a Cloud Run service to access a resource in a VPC with only a private IP?	A <b>Serverless VPC Access Connector</b>.
+True or False: In Auto Mode VPCs, subnets are automatically created in every region.	<b>True.</b>
+Which connectivity service provides a direct, physical connection to Google's network bypassing the public internet?	<b>Cloud Interconnect</b>.
+True or False: VPC Network Peering allows communication between networks with overlapping IP ranges.	<b>False.</b> Subnet IP ranges must <b>not overlap</b> for peering to be established.
+What does it mean that VPC Peering is <b>non-transitive</b>?	If VPC A is peered with VPC B, and VPC B is peered with VPC C, VPC A is <b>not</b> automatically peered with VPC C. You must create a direct peering between A and C.
+How many peering configurations are required to connect two VPC networks (Net A and Net B)?	<b>Two.</b> You must create a peering from Net A to Net B AND from Net B to Net A.
+What is the difference between a <b>Host Project</b> and a <b>Service Project</b> in Shared VPC?	<ul><li><b>Host Project:</b> Contains the shared VPC network and subnets.</li><li><b>Service Project:</b> Attached to the Host Project and uses its network resources.</li></ul>
+Which IAM role must be granted to a <b>Service Project Admin</b> to allow them to use a specific subnet in a Host Project?	<code>roles/compute.networkUser</code>
+True or False: Shared VPC and VPC Peering traffic stays within the Google private network.	<b>True.</b> Traffic does not traverse the public internet.
+Who is typically responsible for enabling a project as a <b>Shared VPC Host Project</b>?	An <b>Organization Admin</b> (using the Shared VPC Admin role).
+Can VPC Network Peering connect VPCs across different Google Cloud Organizations?	<b>Yes.</b>
+What is the primary benefit of <b>Shared VPC</b> over Peering for large organizations?	<b>Centralized administration</b> of networking, security, and connectivity in a single Host Project.
+If two peered VM instances cannot communicate, what are the first two things to check?	1. Verify both peering configurations are in the <b>ACTIVE</b> state. <br>2. Check for <b>Firewall Rules</b> blocking traffic in both networks.
+True or False: You can use VPC Peering to connect more than two VPC networks in a hub-and-spoke topology.	<b>True.</b> (But remember it is not transitive).
+In a Shared VPC environment, where are <b>Firewall Rules</b> managed?	In the <b>Host Project</b>.
+Does VPC Network Peering require a VPN or Interconnect?	<b>No.</b> It uses Google's internal software-defined networking.
+What happens if you try to delete a VPC network that has active peering connections?	The deletion will fail until all <b>peering connections are removed</b>.
+Can a Service Project be attached to multiple Host Projects?	<b>No.</b> A Service Project can only be attached to <b>one Host Project</b> at a time.
+What is the primary purpose of <b>Cloud NAT</b>?	To allow VM instances without external IP addresses to access the <b>public Internet</b> for outbound traffic (e.g., updates).
+Which mandatory resource must be created before you can configure a <b>Cloud NAT gateway</b>?	A <b>Cloud Router</b> in the same region.
+True or False: Cloud NAT allows unsolicited inbound connections from the internet to your private VMs.	<b>False.</b> Cloud NAT is <b>outbound-only</b>; it only allows return traffic for established connections.
+Is a Cloud NAT gateway a global or a regional resource?	It is a <b>regional</b> resource.
+What is the difference between <b>Private Google Access</b> and <b>Cloud NAT</b>?	<ul><li><b>Private Google Access:</b> Reaches Google APIs (GCS, BigQuery) internally.</li><li><b>Cloud NAT:</b> Reaches the general internet (non-Google services).</li></ul>
+What happens if a VM instance exhausts its allocated <b>NAT ports</b>?	New outbound connections from that VM will <b>fail</b> until existing ports are released.
+What is the <b>default</b> number of NAT ports reserved per VM instance?	<b>64</b> ports.
+True or False: Cloud NAT can provide services for GKE nodes in a private cluster.	<b>True.</b>
+How can you ensure that all traffic from your private VMs to the internet appears to come from a specific, unchanging IP address?	By assigning one or more <b>static external IP addresses</b> to the Cloud NAT gateway.
+Which <code>gcloud</code> command group is used to create a Cloud NAT gateway?	<code>gcloud compute <b>routers nats</b> create</code>
+True or False: Cloud NAT requires a dedicated VM instance to act as a gateway.	<b>False.</b> It is a <b>managed, software-defined</b> service, not a single instance.
+Can a single Cloud NAT gateway provide NAT services for multiple subnets in the same region?	<b>Yes.</b>
+Which tool allows you to see the source and destination IP/port for NAT connections?	<b>Cloud NAT Logging</b>.
+Does a VM with an <b>external IP address</b> use Cloud NAT for outbound traffic?	<b>No.</b> Instances with their own external IPs use their own IPs directly, bypassing Cloud NAT.
+True or False: Cloud NAT is automatically highly available within its region.	<b>True.</b>
+What is the maximum SLA for <b>HA VPN</b> in Google Cloud?	<b>99.99%</b>
+Which routing protocol is <b>mandatory</b> for HA VPN?	<b>Dynamic Routing (BGP)</b> via a Cloud Router.
+How many external IP addresses does a single <b>HA VPN Gateway</b> have?	<b>Two</b> (one per interface: Interface 0 and Interface 1).
+What is the standard <b>MTU</b> for Cloud VPN tunnels?	<b>1460 bytes</b> (standard ethernet is 1500; mismatch causes large packet drops).
+True or False: Classic VPN supports both static and dynamic routing.	<b>True.</b> (But it is deprecated for many production use cases).
+What is the difference between <b>Cloud VPN</b> and <b>Cloud Interconnect</b>?	<ul><li><b>Cloud VPN:</b> Encrypted traffic over the <b>public internet</b>.</li><li><b>Cloud Interconnect:</b> Dedicated <b>physical connection</b> bypassing the internet.</li></ul>
+Which Google Cloud resource is required to manage <b>BGP sessions</b> for a VPN tunnel?	<b>Cloud Router</b>.
+True or False: Cloud VPN traffic is encrypted using <b>IPsec</b>.	<b>True.</b>
+To achieve a 99.99% SLA, how many tunnels are required from an HA VPN gateway?	<b>Two tunnels</b> (one from each interface to the peer gateway).
+Which <code>gcloud</code> command group is used to create an HA VPN gateway?	<code>gcloud compute <b>vpn-gateways</b> create</code>
+On which ports must the on-premises firewall allow traffic for <b>IKE</b> (VPN negotiation)?	<b>UDP 500</b> and <b>UDP 4500</b>.
+True or False: You can use Cloud VPN to connect two different VPCs within Google Cloud.	<b>True.</b> (Though VPC Peering is often preferred for lower cost and latency).
+If a VPN tunnel is connected but <b>large file transfers fail</b> while small ones work, what is the likely cause?	An <b>MTU mismatch</b> (should be set to 1460 on the peer side).
+How many BGP sessions are typically configured for a high-availability VPN connection?	<b>Two</b> (one per tunnel).
+Can a single HA VPN gateway connect to two different peer gateways for redundancy?	<b>Yes.</b>
+What is the primary difference between <b>Dedicated Interconnect</b> and <b>Partner Interconnect</b>?	<ul><li><b>Dedicated:</b> Physical connection directly between your hardware and Google (10/100 Gbps).</li><li><b>Partner:</b> Connection through a third-party service provider (50 Mbps - 50 Gbps).</li></ul>
+True or False: Cloud Interconnect traffic is encrypted by default using IPsec.	<b>False.</b> Traffic is sent over a direct physical link but is <b>not encrypted</b> unless you run HA VPN over Interconnect.
+Which Google Cloud resource is mandatory for managing BGP sessions on a Cloud Interconnect connection?	<b>Cloud Router</b>.
+What is the logical resource that connects an Interconnect circuit to your VPC?	<b>VLAN Attachment</b>.
+To achieve a <b>99.99% SLA</b> for Cloud Interconnect, how many VLAN attachments and locations are required?	At least <b>four</b> VLAN attachments across <b>two</b> different Interconnect locations and two different Cloud Routers.
+True or False: Cloud Interconnect traffic travels over the public internet.	<b>False.</b> It uses a direct physical connection to Google's network.
+What is the minimum bandwidth available for a single <b>Dedicated Interconnect</b> circuit?	<b>10 Gbps</b> (options are 10 Gbps or 100 Gbps).
+Which connectivity service should you use to reach <b>Google Workspace (Gmail) or YouTube</b> over a direct peer connection (not part of a VPC)?	<b>Direct Peering</b> (or Carrier Peering).
+What is the <b>VLAN Attachment</b> used for in Cloud Interconnect?	It is the logical unit that associates a specific Interconnect circuit with a specific <b>Cloud Router</b> and <b>VPC network</b>.
+If an organization needs less than 10 Gbps of bandwidth, which Interconnect type should they choose?	<b>Partner Interconnect</b> (supports as low as 50 Mbps).
+Does Cloud Interconnect support <b>static routing</b>?	<b>No.</b> Dynamic Routing via <b>BGP</b> is required.
+Which <code>gcloud</code> command group is used to manage Interconnect attachments?	<code>gcloud compute <b>interconnects attachments</b></code>
+True or False: You must physically meet Google at a colocation facility to use <b>Dedicated Interconnect</b>.	<b>True.</b>
+What is <b>Carrier Peering</b>?	A way to reach Google Workspace apps through a <b>partner provider</b> (not VPC resources).
+How many Cloud Routers are required to achieve a <b>99.9% SLA</b> for Cloud Interconnect?	At least <b>two</b> Cloud Routers in a single location.
+Which load balancer type is required for <b>path-based routing</b> (e.g., /api vs /images)?	<b>Application Load Balancer</b> (Layer 7).
+True or False: The Global External Application Load Balancer supports HTTP/2 and gRPC.	<b>True.</b>
+Which load balancer is a <b>regional, passthrough</b> (non-proxy) L4 load balancer?	<b>External Passthrough Network Load Balancer</b>.
+How do you preserve the <b>original client IP address</b> all the way to the backend instance?	By using a <b>Passthrough Network Load Balancer</b> (not a Proxy Load Balancer).
+Which load balancers integrate with <b>Google Cloud Armor</b> and <b>Cloud CDN</b>?	Only the <b>Global External Application Load Balancer</b>.
+What is the purpose of a <b>URL Map</b> in load balancing?	To define rules that route traffic to different backend services based on the <b>request path or host</b>.
+What is a <b>Forwarding Rule</b> (Load Balancer)?	A resource that directs traffic (based on IP, protocol, and port) to a specific target proxy or pool.
+What is the difference between <b>Session Affinity</b> and <b>Load Balancing</b>?	Load balancing distributes traffic; <b>Session Affinity</b> ensures a specific client stays with the <b>same backend instance</b> for the duration of their session.
+True or False: Internal Load Balancers are only accessible within a VPC or via VPN/Interconnect.	<b>True.</b>
+What is the function of a <b>Health Check</b>?	To monitor the availability of backends; the load balancer stops sending traffic to any instance that <b>fails</b> health checks.
+Which load balancer should you use for internal, high-performance L4 traffic like database clusters?	<b>Internal Passthrough Network Load Balancer</b>.
+Can an <b>External Application Load Balancer</b> distribute traffic across multiple regions?	<b>Yes</b>, if it is the <b>Global</b> version.
+What is the <b>Backend Service</b> in a load balancer configuration?	A resource that manages backend instances (Instance Groups/NEGs), health checks, and traffic distribution policies.
+True or False: Google Cloud Load Balancing requires you to manage the underlying scaling of the load balancer itself.	<b>False.</b> It is a <b>fully managed service</b> that scales automatically.
+What happens to traffic if all backend instances in a group fail their health checks?	The load balancer will typically <b>fail open</b> and attempt to send traffic to all instances, or return an error (depending on configuration).
+Which type of load balancer is mandatory for enabling <b>Cloud CDN</b>?	Only the <b>Global External Application Load Balancer</b>.
+What is the primary benefit of <b>Cloud CDN</b> for high-traffic websites?	Reduces <b>latency</b> by serving content from edge locations and lowers <b>egress costs</b>.
+What is a <b>Cache Key</b> in Cloud CDN?	A set of request parameters (URL, query strings, headers) used to uniquely identify and cache a specific response.
+True or False: Cloud CDN can be enabled on an Internal Application Load Balancer.	<b>False.</b>
+Which feature should you use to serve <b>private content</b> to authorized users via Cloud CDN?	<b>Signed URLs</b> or <b>Signed Cookies</b>.
+What is the process of manually removing content from the CDN cache before its TTL expires called?	<b>Cache Invalidation</b>.
+What is the default <b>TTL (Time To Live)</b> for content in Cloud CDN if not specified by origin headers?	<b>3600 seconds</b> (1 hour).
+Where is content physically stored in the Cloud CDN infrastructure?	In <b>Edge Points of Presence (PoPs)</b> distributed globally.
+True or False: Cloud CDN can use a Cloud Storage bucket as a backend origin.	<b>True.</b>
+Which <code>gcloud</code> command group is used to <i>invalidate</i> a CDN cache path?	<code>gcloud compute <b>url-maps invalidate-cdn-cache</b></code>
+How do you enable Cloud CDN for an existing backend service?	Set the <code>--enable-cdn</code> flag on the <b>backend service</b> configuration.
+What is <b>Dynamic Compression</b> in Cloud CDN?	The ability to automatically compress text-based responses (like Gzip or Brotli) at the edge to save bandwidth.
+Can you use <b>Google Cloud Armor</b> with a CDN-enabled backend?	<b>Yes.</b> Cloud Armor can protect backends that are being served via Cloud CDN.
+What are the three main <b>Cache Modes</b> in Cloud CDN?	<ol><li><code>USE_ORIGIN_HEADERS</code></li><li><code>CACHE_ALL_STATIC</code></li><li><code>FORCE_CACHE_ALL</code></li></ol>
+True or False: Cloud CDN supports caching for external origins (backends outside of GCP).	<b>True.</b> (Using Internet Network Endpoint Groups).
+What is the difference between a <b>Public</b> and a <b>Private</b> DNS zone?	<ul><li><b>Public:</b> Records are visible to the entire internet.</li><li><b>Private:</b> Records are visible only to specified VPC networks.</li></ul>
+What is the availability <b>SLA</b> for Cloud DNS authoritative name servers?	<b>100%</b>
+Does Cloud DNS support <b>DNSSEC</b> for Private Zones?	<b>No.</b> DNSSEC is only available for <b>Public Zones</b>.
+What is <b>Split-Horizon DNS</b>?	When you have both a public and a private zone with the same name, but they return different IP addresses depending on whether the request comes from the internet or a VPC.
+Which DNS record type maps a hostname to an <b>IPv4 address</b>?	<b><code>A</code></b> record.
+What is the purpose of <b>DNS Peering</b>?	To allow one VPC to resolve DNS records defined in another VPC's <b>private zone</b> (does not affect network connectivity).
+How do you resolve on-premises DNS names from within a GCP VPC?	By using a <b>Forwarding Zone</b> that points to the on-premises DNS servers.
+How do on-premises clients resolve GCP private DNS records?	By using an <b>Inbound DNS Forwarding Policy</b> on the VPC.
+True or False: Cloud DNS is a domain name registrar.	<b>False.</b> You must register your domain with a registrar (like Squarespace) and point its name servers to Cloud DNS.
+What is a <b>CNAME</b> record?	A record that maps an <b>alias name</b> to a canonical (real) domain name.<br><br><b>Example:</b><br><br>Name: <code>blog.example.com</code> (this is an alias)<br><br>Type: <code>CNAME</code><br><br>Data: <code>custom-blog.com</code> (the canonical name)
+What does <b>TTL (Time To Live)</b> represent in a DNS record?	The duration (in seconds) that a DNS resolver should <b>cache</b> the record before requesting it again.
+Which <code>gcloud</code> command group is used to manage DNS records?	<code>gcloud dns <b>record-sets</b></code>
+Why does Cloud DNS use <b>Anycast</b> IP addresses for its name servers?	To route DNS queries to the <b>geographically closest</b> Google name server, reducing latency.
+What is a <b>Transaction</b> in Cloud DNS record management?	A way to group multiple record changes (add/remove) so they are applied <b>atomically</b>.
+Which IAM role is required to manage all Cloud DNS resources in a project?	<code>roles/dns.admin</code>
+What is the primary purpose of a <b>Serverless VPC Access Connector</b>?	To allow serverless services (Cloud Run, Functions, App Engine) to connect to resources in a <b>VPC network</b> using <b>internal (private) IP addresses</b>.<br><br>In 2026, <b>Direct VPC Egress</b> is preferred for <i>Cloud Run</i> and <i>Cloud Functions</i> (2nd Gen) as it avoids managing connector VM instances.
+What is the mandatory CIDR range size for a Serverless VPC Access Connector's subnet?	Exactly a <b><code>/28</code></b> subnet.
+True or False: A Serverless VPC Access Connector is a global resource.	<b>False.</b> It is a <b>regional</b> resource and can only be used by services in the same region.
+Which three serverless compute services support Serverless VPC Access?	<ol><li><b>Cloud Run</b></li><li><b>Cloud Functions</b></li><li><b>App Engine Standard</b></li></ol>
+How do you provide a <b>static outbound IP address</b> to a Cloud Run service for use with a third-party firewall?	Route <b>all traffic</b> through a <b>Serverless VPC Access Connector</b> and use a <b>Cloud NAT</b> gateway.
+Which IAM role is required for a developer to deploy a Cloud Run service that uses an existing VPC connector?	<b>VPC Access User</b> (<code>roles/vpcaccess.user</code>).
+What happens if the dedicated <code>/28</code> subnet for a connector overlaps with an existing subnet in the VPC?	The creation of the connector will <b>fail</b>.
+What is the difference between <i>Private ranges only</i> and <i>All traffic</i> egress settings for a connector?	<ul><li><b>Private ranges:</b> Only internal IP traffic (RFC 1918) goes through the VPC.</li><li><b>All traffic:</b> Every request, including internet, goes through the VPC/Connector.</li></ul>
+Can a Serverless VPC Access Connector be used to access a <b>Cloud SQL</b> instance with only a private IP?	<b>Yes.</b>
+True or False: Serverless VPC Access Connectors incur costs even when no traffic is being sent.	<b>True.</b> Because the connector is backed by underlying VM instances that remain running.
+In a <b>Shared VPC</b> environment, where must the Serverless VPC Access Connector be created?	In the <b>Host Project</b>.
+What is the typical throughput provided by a single instance of a VPC Connector?	Approximately <b>200-300 Mbps</b> (depending on the machine type used).
+Which <code>gcloud</code> command group is used to manage VPC connectors?	<code>gcloud compute <b>vpc-access connectors</b></code>
+True or False: You can use a VPC Connector to reach resources on-premises via Cloud VPN.	<b>True.</b> As long as the on-premises routes are available in the VPC.
+Does App Engine <b>Flexible</b> environment require a Serverless VPC Access Connector to reach private IPs?	<b>No.</b> Only the <b>Standard</b> environment requires it; Flexible runs inside the VPC natively.
+Which log sink destination is best for long-term, low-cost <b>archival</b> (years)?	<b>Cloud Storage</b>.
+Which log sink destination is best for <b>SQL-based analysis</b> and querying?	<b>BigQuery</b>.
+Which log sink destination is best for <b>real-time streaming</b> to third-party tools like Splunk?	<b>Pub/Sub</b>.
+What is the difference between <b>Counter Metrics</b> and <b>Distribution Metrics</b> in Cloud Logging?	<ul><li><b>Counter:</b> Counts the number of occurrences of a specific log entry.</li><li><b>Distribution:</b> Extracts numerical values (like latency) from log entries for statistical analysis.</li></ul>
+What is the standard <b>retention period</b> for logs in the <code>_Default</code> bucket?	<b>30 days</b>.
+Which type of Audit Log is <b>always on</b> and provided at no extra cost?	<b>Admin Activity</b> Audit Logs.
+Which type of Audit Log records when a user <b>reads or writes</b> data (e.g., reading a file in GCS) and must be manually enabled?	<b>Data Access</b> Audit Logs.
+True or False: The <code>_Required</code> log bucket can be deleted to save costs.	<b>False.</b> It contains essential security logs and cannot be disabled or deleted.
+Which IAM role allows a user to see logs that contain <b>sensitive information</b>?	<code>roles/logging.privateLogViewer</code>
+How can you prevent specific, high-volume logs from being stored in Cloud Logging to <b>reduce costs</b>?	By using <b>Exclusion Filters</b>.
+What is the function of a <b>Log Sink</b>?	To <b>export</b> specific logs (filtered by a query) to an external destination like Cloud Storage, BigQuery, or Pub/Sub.
+Which <code>gcloud</code> command group is used to create a Log-based Metric?	<code>gcloud <b>logging metrics</b> create</code>
+True or False: Log Sinks are retrospective and will export all past logs once created.	<b>False.</b> Sinks only export <b>new logs</b> received after the sink was created.
+What is the purpose of the <b>Logs Explorer</b>?	To search, sort, and visualize log entries using the <b>Logging Query Language (LQL)</b>.
+Can you create an <b>Alerting Policy</b> based on a Log-based Metric?	<b>Yes.</b> Once a metric is created, it appears in Cloud Monitoring for alerting.
+What is the difference between <b>System Metrics</b> and <b>Custom Metrics</b> in Cloud Monitoring?	<ul><li><b>System Metrics:</b> Automatically collected from GCP services (e.g., CPU, Disk I/O).</li><li><b>Custom Metrics:</b> User-defined metrics sent via the Monitoring API (e.g., number of active users in an app).</li></ul>
+True or False: You can monitor memory usage and disk space inside a VM without installing an agent.	<b>False.</b> You must install the <b>Ops Agent</b> (formerly Stackdriver Agent) to collect 'inside-the-OS' metrics like memory usage.
+What are the three core components of an <b>Alerting Policy</b>?	<ol><li><b>Condition:</b> What triggers the alert. </li><li><b>Notification Channel:</b> How you are notified. </li><li><b>Documentation:</b> Instructions for responding to the alert.</li></ol>
+Which feature is used to verify that a web server is accessible from multiple global locations?	<b>Uptime Checks</b>.
+What is a <b>Notification Channel</b> in Cloud Monitoring?	A medium used to deliver alert notifications (e.g., Email, SMS, Slack, PagerDuty, or Webhooks).
+True or False: Cloud Monitoring can monitor resources in AWS.	<b>True.</b> Cloud Monitoring supports multi-cloud environments including AWS.
+What is the purpose of <b>Monitoring Groups</b>?	To organize and monitor a set of resources as a single entity based on criteria like tags, regions, or names.
+Which tool allows you to manually trigger a Cloud Function or an automated script when an alert is fired?	A <b>Webhook</b> notification channel.
+What is the difference between <b>Monitoring</b> and <b>Logging</b>?	<ul><li><b>Monitoring:</b> Tracks numerical metrics and performance over time.</li><li><b>Logging:</b> Records discrete events and text-based messages.</li></ul>
+What is <b>MQL</b> in the context of Cloud Monitoring?	<b>Monitoring Query Language</b>: A powerful language used to retrieve, filter, and transform time-series data for charts and alerts.
+How can you create a metric based on the number of '404' errors appearing in your web server logs?	By creating a <b>Log-based Metric</b> in Cloud Logging and then using it in Cloud Monitoring.
+True or False: Cloud Monitoring dashboards are always custom-built.	<b>False.</b> Google Cloud provides <b>pre-defined dashboards</b> automatically for every service you use.
+What happens to an alert after the condition that triggered it returns to normal?	The associated <b>incident</b> is automatically closed.
+Which <code>gcloud</code> command group is used to manage alerting policies?	<code>gcloud <b>monitoring policies</b></code>
+What is an <b>Incident</b> in Cloud Monitoring?	A record created when an alerting policy's condition is met; it tracks the alert until it is resolved.
+What is the primary purpose of <b>Cloud Trace</b>?	To identify <b>latency bottlenecks</b> and understand how requests travel through a microservices architecture.
+What is the difference between a <b>Trace</b> and a <b>Span</b>?	<ul><li><b>Trace:</b> The complete path of a single request through the entire system.</li><li><b>Span:</b> A single operation within that trace (e.g., a specific database query or RPC call).</li></ul>
+Which GCP services have <b>automatic</b> integration with Cloud Trace?	<b>App Engine</b> (Standard and Flexible), <b>Cloud Run</b>, and <b>Cloud Functions</b>.
+What is required to collect trace data from applications running on <b>Compute Engine</b> or <b>GKE</b>?	The application must be <b>instrumented</b> using an SDK (like <b>OpenTelemetry</b>) or an agent.
+What is the name of the HTTP header used to propagate trace context between services?	<code>X-Cloud-Trace-Context</code>
+True or False: Cloud Trace captures the full body of every request and response by default.	<b>False.</b> It primarily captures <b>metadata</b>, timestamps, and status codes to analyze latency.
+How can you compare the performance of your application between two different versions or time periods?	By using <b>Analysis Reports</b> in the Cloud Trace console.
+What is the <b>Trace Explorer</b> used for?	To search for and visualize <b>individual traces</b> using filters like request URI, latency, or status code.
+Which IAM role is required to allow an application to <b>send</b> trace data to the Trace API?	<code>roles/cloudtrace.user</code>
+How can you manage the <b>cost</b> of Cloud Trace in a high-traffic application?	By adjusting the <b>sampling rate</b> to only capture a percentage of total requests.
+What does a <b>Waterfall Chart</b> in Cloud Trace help you visualize?	The <b>sequence and duration</b> of spans within a single trace to identify serial vs. parallel execution delays.
+True or False: Cloud Trace is a global service.	<b>True.</b>
+How do Cloud Trace and Cloud Monitoring differ?	<ul><li><b>Cloud Monitoring:</b> Tracks aggregate <b>numerical metrics</b> (e.g., total CPU usage).</li><li><b>Cloud Trace:</b> Tracks individual <b>request latency</b> across service boundaries.</li></ul>
+What is the <b>Root Span</b> in a trace?	The <b>first span</b> in a trace, representing the initial request entering the system.
+If a request to a frontend service is slow, how can Cloud Trace help?	It shows exactly which <b>backend service</b> or database call within that request path is responsible for the delay.
+What is the primary purpose of <b>Cloud Profiler</b>?	To identify which specific <b>functions or lines of code</b> consume the most resources (CPU, Memory) to optimize performance.
+What does the <b>width</b> of a bar in a Profiler <b>Flame Graph</b> represent?	The percentage of the resource (e.g., CPU time) consumed by that function and its children.
+Is Cloud Profiler designed for development or production use?	It is specifically designed for <b>always-on production use</b> with extremely low overhead (typically &lt; 5%).
+How do Cloud Trace and Cloud Profiler differ?	<ul><li><b>Cloud Trace:</b> Finds latency bottlenecks <b>between</b> services.</li><li><b>Cloud Profiler:</b> Finds performance issues <b>within</b> a service's code.</li></ul>
+What is the difference between <b>CPU Time</b> and <b>Wall Time</b> in a profile?	<ul><li><b>CPU Time:</b> Time the CPU spent actually executing code.</li><li><b>Wall Time:</b> Total elapsed time (includes waiting for I/O, locks, etc.).</li></ul>
+Which IAM role is required to allow an application to <b>send</b> profiling data to the API?	<code>roles/cloudprofiler.agent</code>
+True or False: Cloud Profiler requires an agent or library to be included in your application code.	<b>True.</b> It is not an agentless service.
+What are the main resource types Cloud Profiler can analyze?	<b>CPU</b>, <b>Heap</b> (memory), <b>Wall Time</b>, and <b>Threads</b>.
+How can Cloud Profiler directly help in <b>reducing GCP costs</b>?	By identifying <i>hot spots</i> in code that can be optimized, allowing the application to run on <b>smaller machine types</b> or fewer instances.
+What does the <b>vertical axis</b> in a Flame Graph represent?	The <b>call stack</b> (which function called which).
+Can Cloud Profiler be used to monitor applications on <b>Google Kubernetes Engine (GKE)</b>?	<b>Yes.</b> It supports GKE, Compute Engine, and all serverless platforms.
+What is a <b>Profile</b> in Cloud Profiler?	A collection of resource usage data from an application, typically captured over a <b>10-second</b> interval.
+True or False: Cloud Profiler captures sensitive variable values and user data.	<b>False.</b> It only captures function names and resource metrics.
+Which visualization tool is used to analyze Cloud Profiler data in the console?	<b>Flame Graphs</b>.
+Can Cloud Profiler be used for <b>Node.js</b> applications?	<b>Yes.</b> It supports Go, Java, Python, Node.js, and C++.
+What is the primary function of <b>Cloud Error Reporting</b>?	To aggregate, group, and display exceptions and crashes from your applications for centralized management.
+How does Cloud Error Reporting group individual error occurrences?	It uses <b>stack trace</b> and context analysis to group similar errors into a single <b>Error Group</b>.
+What are the four resolution statuses for an Error Group?	1. <b>Open</b> <br>2. <b>Acknowledged</b> <br>3. <b>Resolved</b> <br>4. <b>Muted</b>.
+True or False: Cloud Error Reporting is integrated automatically with App Engine.	<b>True.</b> It captures errors from App Engine applications without additional configuration.
+How can Cloud Error Reporting ingest errors from <b>Compute Engine</b> or <b>GKE</b>?	By parsing logs in <b>Cloud Logging</b> (if they match a specific format) or by using the <b>Error Reporting API</b>.
+What is the most effective way to be notified when a <b>new type of error</b> is detected?	By enabling the built-in <b>Error Notifications</b> feature in the Cloud Console.
+True or False: Cloud Error Reporting can link specific error groups to external issue trackers like Jira or GitHub.	<b>True.</b>
+Which IAM role is required to allow an application to <b>send</b> error data to the API?	<code>roles/errorreporting.writer</code>
+How do Cloud Logging and Error Reporting differ?	<ul><li><b>Cloud Logging:</b> Stores individual text-based log entries.</li><li><b>Error Reporting:</b> Aggregates and groups stack traces and exceptions to identify recurring bugs.</li></ul>
+What information is provided in the <b>Impact Analysis</b> of an error group?	The number of <b>affected users</b> and the total number of error <b>occurrences</b>.
+True or False: Cloud Error Reporting supports applications written in Python, Node.js, and Java.	<b>True.</b>
+Can you create an alerting policy in <b>Cloud Monitoring</b> based on error frequency from Error Reporting?	<b>Yes.</b>
+What does the <b>First Seen</b> timestamp in an error group tell a developer?	The time when the first instance of that specific error was detected (helping to identify when a bug was introduced).
+Does Cloud Error Reporting capture the full body of an HTTP request that caused an error?	<b>No.</b> It primarily captures stack traces, exceptions, and specific metadata.
+Which IAM role is required to <b>manage</b> (resolve/mute) error groups in a project?	<code>roles/errorreporting.admin</code>
+What is the core unit of a <b>Cloud Build</b> process?	A <b>Build Step</b>, which is executed as a separate <b>Docker container</b>.
+Which configuration file is used to define the steps in a Cloud Build process?	<code>cloudbuild.yaml</code> (or <code>cloudbuild.json</code>).
+What is the default <b>Service Account</b> used by Cloud Build to execute builds and deployments?	<code>[PROJECT_NUMBER]@cloudbuild.gserviceaccount.com</code>
+If a Cloud Build step fails with a <b>Permission Denied</b> error while deploying to Cloud Run, what is the most likely cause?	The <b>Cloud Build Service Account</b> lacks the <code>roles/run.admin</code> (or similar) IAM role.
+Where are <b>container images</b> typically stored after a successful Cloud Build?	<b>Artifact Registry</b> (formerly Container Registry).
+Which <code>gcloud</code> command is used to manually submit a build to Cloud Build?	<code>gcloud builds submit --config cloudbuild.yaml .</code>
+What is a <b>Build Trigger</b> in Cloud Build?	An automated mechanism that starts a build when code is pushed to a repository (GitHub, Bitbucket, or Cloud Source Repositories).
+What are <b>Substitution Variables</b> in Cloud Build?	Dynamic variables (like <code>$COMMIT_SHA</code> or user-defined <code>_VAR_NAME</code>) used to pass information into the build config.
+True or False: Cloud Build can only build container images.	<b>False.</b> Cloud Build can build any artifact (binaries, ZIPs, etc.) and store them in Cloud Storage.
+How can you run build steps in <b>parallel</b> in a <code>cloudbuild.yaml</code> file?	By using the <b><code>waitFor: ['-']</code></b> field in a build step.
+What is the difference between the <b>Default Pool</b> and a <b>Private Pool</b> in Cloud Build?	<ul><li><b>Default:</b> Shared, multi-tenant pool.</li><li><b>Private:</b> Dedicated workers that can access resources in your VPC via peering.</li></ul>
+True or False: Every build step in Cloud Build has its own independent filesystem.	<b>True</b>, but Cloud Build provides a persistent <b><code>/workspace</code></b> directory shared across all steps in a single build.
+Which <code>gcloud</code> flag is used to build and tag a Docker image directly without a <code>cloudbuild.yaml</code> file?	<code>gcloud builds submit <b>--tag</b> [IMAGE_PATH] .</code>
+How do you specify which images should be pushed to Artifact Registry after a successful build in <code>cloudbuild.yaml</code>?	By adding them to the <b><code>images:</code></b> section at the end of the file.
+What is the purpose of <b>Binary Authorization</b> in relation to Cloud Build?	To ensure that only container images <b>built and signed</b> by Cloud Build are allowed to be deployed to a GKE cluster.
+What is the primary difference between <b>Container Registry (GCR)</b>&nbsp;(legacy) and <b>Artifact Registry</b> (recommended)?	<ul><li><b>GCR:</b> Project-wide, Docker-only, stored in a single GCS bucket.</li><li><b>Artifact Registry:</b> Regional, multi-format (Docker, npm, Maven, PyPI, etc.), and supports repository-level IAM.</li></ul>
+What is the correct <b>URL format</b> for a Docker image stored in Artifact Registry?	<code>[LOCATION]-docker.pkg.dev/[PROJECT_ID]/[REPO_NAME]/[IMAGE_NAME]:[TAG]</code>
+Which <code>gcloud</code> command group is used to create and manage Artifact Registry repositories?	<code>gcloud artifacts <b>repositories</b></code>
+True or False: Artifact Registry supports vulnerability scanning for container images.	<b>True.</b> It can automatically scan images for known security vulnerabilities.
+What are the three main <b>Repository Types</b> in Artifact Registry?	<ol><li><b>Standard:</b> Private artifacts. </li><li><b>Remote:</b> Caching proxy for external repos (e.g., Docker Hub). </li><li><b>Virtual:</b> Single endpoint for multiple repos.</li></ol>
+How do you configure the <b>Docker CLI</b> to authenticate with a specific Artifact Registry location?	<code>gcloud auth <b>configure-docker</b> [LOCATION]-docker.pkg.dev</code>
+Which IAM role is required to <b>pull</b> (read) images from an Artifact Registry repository?	<code>roles/artifactregistry.reader</code>
+Can Artifact Registry store <b>Python (PyPI)</b> or <b>Node.js (npm)</b> packages?	<b>Yes.</b> It is a multi-format registry.
+True or False: Artifact Registry permissions can be applied at the <b>repository level</b>.	<b>True.</b> (Unlike GCR which uses bucket-level permissions).
+What is a <b>Virtual Repository</b> used for?	To combine multiple standard and remote repositories into a single, simplified endpoint for your build tools.
+Which service works with Artifact Registry to ensure only <b>signed and trusted</b> images are deployed to GKE?	<b>Binary Authorization</b>.
+True or False: Artifact Registry is the recommended service for new projects over Container Registry (GCR).	<b>True.</b>
+What is a <b>Cleanup Policy</b> in Artifact Registry?	A set of rules that automatically <b>deletes old or unused</b> package versions to manage storage costs.
+In which scope do Artifact Registry repositories exist: Global, Regional, or Zonal?	<b>Regional</b> (or Multi-regional).
+Which IAM role is required to <b>upload</b> (push) artifacts to a repository?	<code>roles/artifactregistry.writer</code>
+What is the primary function of <b>Deployment Manager</b>?	To automate the creation and management of Google Cloud resources using <b>Infrastructure as Code (IaC)</b>.
+What are the two languages supported for <b>Deployment Manager templates</b>?	<b>Jinja2</b> and <b>Python</b>.
+What is the file format used for the main <b>Configuration file</b> in Deployment Manager?	<b>YAML</b>.
+True or False: Deployment Manager is a declarative tool.	<b>True.</b> You define the desired state, and the service handles the resource creation.
+What is the purpose of <b>Preview Mode</b> in Deployment Manager?	To see the changes that will be made to resources without actually applying them (using the <code>--preview</code> flag).
+Which IAM identity does Deployment Manager use by default to create resources on your behalf?	"The <b>Google Cloud APIs Service Agent</b>.
+
+<code>[PROJECT_NUMBER]@cloudservices.gserviceaccount.com</code>"
+In a <code>cloudbuild.yaml</code> configuration, what does a <b>Resource</b> represent?	An individual Google Cloud service or component (e.g., a Compute Engine VM or a Cloud Storage bucket).
+How can you make a Deployment Manager configuration <b>reusable and dynamic</b>?	By using <b>Templates</b> (Jinja2 or Python) that can take input parameters.
+What is a <b>Type</b> in a Deployment Manager configuration?	The specific resource kind being created (e.g., <code>compute.v1.instance</code>).
+True or False: Deleting a deployment in Deployment Manager will also delete all resources created by that deployment.	<b>True.</b>
+Which <code>gcloud</code> command group is used to manage deployments?	<code>gcloud <b>deployment-manager deployments</b></code>
+How do you provide input values to a template in the main configuration file?	Using the <b><code>properties:</code></b> section under the resource that calls the template.
+What is the difference between <b>Jinja2</b> and <b>Python</b> for templates?	<ul><li><b>Jinja2:</b> Simpler, logic-based templating.</li><li><b>Python:</b> Full programming language for complex calculations and logic.</li></ul>
+If a deployment fails to create a resource due to a permissions error, which service account's IAM roles should you verify?	The <b>Google Cloud APIs Service Agent</b> (<code>project-number@cloudservices.gserviceaccount.com</code>).
+True or False: You can use Deployment Manager to update existing resources that were not originally created by it.	<b>False.</b> Deployment Manager only manages resources created as part of a deployment.
+What is the primary function of <b>Cloud Scheduler</b>?	A fully managed, serverless <b>enterprise cron job</b> service for scheduling tasks.
+What are the three supported <b>Target Types</b> for Cloud Scheduler?	<ol><li><b>HTTP/S</b></li><li><b>Pub/Sub</b></li><li><b>App Engine HTTP</b></li></ol>
+What is the delivery guarantee of Cloud Scheduler?	<b>At-least-once delivery</b> (meaning your application logic must be <b>idempotent</b>).
+Which 5-field syntax is used to define schedules in Cloud Scheduler?	<b>Unix cron format</b> (Minute Hour Day-of-month Month Day-of-week).
+How do you authenticate an <b>HTTP target</b> (like Cloud Run) triggered by Cloud Scheduler?	By specifying a <b>Service Account</b> and an <b>OIDC</b> (or OAuth) token in the job configuration.
+True or False: Cloud Scheduler requires an App Engine application to be initialized in the project.	<b>True.</b> It uses the same location as the project's App Engine app.
+Which IAM role is required to allow Cloud Scheduler to trigger a <b>Cloud Function</b>?	<b>Cloud Functions Invoker</b> (<code>roles/cloudfunctions.invoker</code>) granted to the job's service account.
+What is the default <b>Timezone</b> for Cloud Scheduler if none is specified?	<b>UTC</b>.
+Which <code>gcloud</code> command group is used to manage scheduled jobs?	<code>gcloud <b>scheduler jobs</b></code>
+How can you manually trigger a scheduled job for testing without waiting for the next cron interval?	By using the <b><code>gcloud scheduler jobs run</code></b> command or clicking 'Run Now' in the console.
+True or False: Cloud Scheduler can trigger services located on-premises.	<b>True</b>, if the on-premises service is exposed via a public <b>HTTP/S endpoint</b>.
+What happens if a Cloud Scheduler job target returns an error code?	The job will follow the configured <b>Retry Policy</b> (max retries, backoff interval) until it succeeds or reaches the limit.
+Which target type is best for triggering <b>multiple decoupled services</b> <i>simultaneously</i>?	<b>Pub/Sub</b> (services subscribe to the topic where the message is published).
+Does Cloud Scheduler support <b>Private IP</b> targets inside a VPC directly?	<b>No.</b> It typically triggers public HTTP endpoints or internal services via Pub/Sub or VPC Access (if applicable).
+Which IAM role allows a user to <b>force-run</b> a scheduler job but not modify its configuration?	<b>Cloud Scheduler Job Runner</b> (<code>roles/cloudscheduler.jobRunner</code>).
+What is the primary function of <b>Cloud Pub/Sub</b>?	A global, serverless <b>asynchronous messaging</b> service that decouples services by sending and receiving events.
+What is the difference between a <b>Topic</b> and a <b>Subscription</b>?	<ul><li><b>Topic:</b> A resource where publishers send messages.</li><li><b>Subscription:</b> A resource where subscribers receive messages from a specific topic.</li></ul>
+What delivery guarantee does Pub/Sub provide by default?	<b>At-least-once delivery</b> (applications must be <b>idempotent</b> to handle potential duplicates).
+True or False: Pub/Sub is a regional service.	<b>False.</b> It is a <b>Global</b> service; topics and subscriptions are global resources.
+What is the difference between <b>Pull</b> and <b>Push</b> subscriptions?	<ul><li><b>Pull:</b> The subscriber initiates a request to fetch messages (best for high volume).</li><li><b>Push:</b> Pub/Sub sends an HTTP POST request to a webhook endpoint (best for serverless like Cloud Run).</li></ul>
+What is a <b>Dead Letter Topic</b>?	A topic used to store messages that <b>failed to be processed</b> after a specific number of delivery attempts.
+How long does Pub/Sub retain unacknowledged messages in a subscription by default?	<b>7 days</b>.
+What is the <b>Ack Deadline</b>?	The amount of time a subscriber has to acknowledge a message before Pub/Sub attempts <b>redelivery</b>.
+Which IAM role is required to <b>pull</b> messages from a subscription?	<b>Pub/Sub Subscriber</b> (<code>roles/pubsub.subscriber</code>).
+Which IAM role is required to <b>send</b> messages to a topic?	<b>Pub/Sub Publisher</b> (<code>roles/pubsub.publisher</code>).
+What is <b>Fan-out</b> in Pub/Sub?	The ability of a single topic to deliver the <b>same message</b> to multiple independent subscriptions simultaneously.
+What is a <b>BigQuery Subscription</b>?	A specialized subscription type that writes messages <b>directly into a BigQuery table</b> without requiring a separate subscriber application.
+How can you ensure messages are processed in the <b>exact order</b> they were published?	By enabling <b>Message Ordering</b> on the subscription and providing an <b>Ordering Key</b> in the message attributes.
+What is <b>Message Filtering</b> in a subscription?	A feature that allows a subscription to receive only the messages that match specific <b>attribute criteria</b>, ignoring all others.
+Which <code>gcloud</code> command group is used to manage Pub/Sub resources?	<code>gcloud <b>pubsub</b></code>
+What is the primary function of <b>Eventarc</b>?	A fully managed service that routes <b>events</b> from various sources to specific destinations to build <b>event-driven architectures</b>.
+Which standardized specification does Eventarc use for its event format?	The <b>CloudEvents</b> (v1.0) specification.
+What is an Eventarc <b>Trigger</b>?	A <b>filter</b> that defines which specific events should be routed to a specific destination.
+What is the most common destination for Eventarc events?	<b>Cloud Run</b> services.
+How can you trigger an event for a service that does not have <b>direct</b> Eventarc support?	By using <b>Cloud Audit Logs</b> as the event source.
+Are Eventarc triggers <b>global</b> or <b>regional</b> resources?	They are <b>regional</b> resources.
+What is the <b>delivery guarantee</b> for Eventarc events?	<b>At-least-once delivery</b> (destination services must be <b>idempotent</b>).
+What role does Eventarc play for <b>2nd Gen Cloud Functions</b>?	It is the underlying engine that manages and routes <b>event triggers</b> for the functions.
+Which IAM role must be granted to the Eventarc service account to call a Cloud Run destination?	<b>Cloud Run Invoker</b> (<code>roles/run.invoker</code>).
+What are Eventarc <b>Channels</b> used for?	Receiving events from <b>external (third-party) SaaS providers</b> like Datadog or PagerDuty.
+In what format are Eventarc events typically delivered to their destination?	As <b>HTTP POST</b> requests with a <b>JSON</b> payload.
+True or False: Eventarc can trigger a Google Cloud <b>Workflow</b>.	<b>True.</b>
+True or False: Eventarc can route events to services running on <b>GKE</b> (Google Kubernetes Engine).	<b>True.</b>
+What is the difference between Pub/Sub and Eventarc for the exam?	<ul><li><b>Pub/Sub:</b> A general-purpose messaging queue for decoupling.</li><li><b>Eventarc:</b> A centralized <b>routing layer</b> specifically for standardized events (CloudEvents) across many sources.</li></ul>
+Which <code>gcloud</code> command group is used to manage Eventarc triggers?	<code>gcloud <b>eventarc triggers</b></code>
+What are the three types of GCP IAM Roles?	<ul><li><b>Basic (Primitive) Roles:</b> Owner, Editor, Viewer. Highly permissive, avoid in production.</li><li><b>Predefined Roles:</b> Google-managed roles providing granular access to specific services.</li><li><b>Custom Roles:</b> User-defined roles for specific needs, cannot be applied at Folder/Org level.</li></ul>
+Explain the Principle of Least Privilege (PoLP).	PoLP states that a principal should have only the <b>minimum permissions</b> necessary to perform their task. Implementation involves:<ul><li>Using Predefined Roles over Basic Roles.</li><li>Granting roles at the lowest possible level in the hierarchy.</li><li>Using IAM Conditions for time/resource-based restrictions.</li></ul>
+How does IAM policy inheritance and the additive nature of permissions work?	Policies flow downward: <b>Organization &gt; Folder &gt; Project &gt; Resource</b>. Permissions are <b>additive</b>, you cannot 'deny' a permission at a lower level if it was granted at a higher level in the hierarchy.
+What role is required for a user to attach a service account to a VM or 'act as' that account?	The <b><code>roles/iam.serviceAccountUser</code></b> role.
+What is the best practice for managing IAM permissions for multiple users with similar job functions?	Assign roles to a <b>Google Group</b> rather than individual users to simplify administration and auditing.
+Why are Custom Service Accounts preferred over Default Service Accounts (e.g., Compute Engine default SA)?	Default Service Accounts are often granted the <b>Editor</b> role by default, violating the Principle of Least Privilege. Custom Service Accounts allow for granular, task-specific permissions.
+What is the recommended method for GKE workloads to securely access Google Cloud services?	<b>Workload Identity</b>, which maps Kubernetes service accounts to GCP IAM service accounts.
+Which <code>gcloud</code> command displays the IAM policy for a specific project?	<code>gcloud projects get-iam-policy [PROJECT_ID]</code>
+What are the limitations of Custom Roles in GCP IAM?	<ul><li>They cannot be applied at the Folder or Organization level (project-specific or org-wide only).</li><li>They require manual maintenance as GCP adds new permissions.</li><li>Some permissions are not supported for use in custom roles.</li></ul>
+Describe the Cloud KMS resource hierarchy.	<ul><li><b>Project</b></li><li><b>Location</b> (Regional/Multi-regional)</li><li><b>Key Ring</b> (Logical grouping)</li><li><b>CryptoKey</b> (Named resource)</li><li><b>CryptoKeyVersion</b> (Actual key material)</li></ul>
+What is the difference between Cloud KMS Admin and Cloud KMS CryptoKey Encrypter/Decrypter roles?	<ul><li><b>Cloud KMS Admin:</b> Manages key rings and keys (create, delete, permissions) but <b>cannot</b> encrypt/decrypt data.</li><li><b>Cloud KMS CryptoKey Encrypter/Decrypter:</b> Can encrypt and decrypt data but <b>cannot</b> manage the keys.</li></ul>
+What is the 'Separation of Duties' principle in Cloud KMS?	Ensuring that the principal who manages the keys (KMS Admin) is <b>not</b> the same principal who has permission to use the keys (KMS Encrypter/Decrypter).
+What permission is required for a Service Agent to use a Customer-Managed Encryption Key (CMEK)?	The <b>roles/cloudkms.cryptoKeyEncrypterDecrypter</b> role must be granted to the specific Service Agent (e.g., GCS Service Agent).
+Contrast CMEK, CSEK, and Google-managed encryption.	<ul><li><b>Google-managed:</b> Default; Google handles all keys.</li><li><b>CMEK (Customer-Managed):</b> Keys are managed by the customer in Cloud KMS.</li><li><b>CSEK (Customer-Supplied):</b> Customer provides raw key material for each request; Google does not store the key.</li></ul>
+When should you use Secret Manager instead of Cloud KMS?	<ul><li><b>Secret Manager</b>&nbsp;- for sensitive strings like API keys, passwords, and certificates.</li><li><b>Cloud KMS</b>&nbsp;- for managing cryptographic keys used to encrypt large datasets or disks.</li></ul>
+What happens when a <code>CryptoKeyVersion</code> is <i>Scheduled for destruction</i>?	The key is marked for deletion and unusable. There is a <b>24-hour waiting period</b> before permanent destruction, during which it can be restored.
+What is the difference between a <i>Secret</i> and a <i>Secret Version</i> in <b>Secret Manager</b>?	<ul><li><b>Secret:</b> The logical container that holds metadata, replication policies, and IAM bindings.</li><li><b>Secret Version:</b> The actual immutable payload (the sensitive data) stored within a secret.</li></ul>
+Which IAM role is required for an application to retrieve the sensitive payload of a secret?	The <code>roles/secretmanager.secretAccessor</code> role.
+Contrast the Secret Accessor role with the Secret Manager Viewer role.	<ul><li><b>Secret Accessor:</b> Can read the sensitive data (payload).</li><li><b>Viewer:</b> Can only see metadata (secret names, replication settings) but <b>cannot</b> access the sensitive data.</li></ul>
+What are the two replication policies available in Secret Manager?	<ul><li><b>Automatic:</b> Google manages replication across multiple regions for high availability.</li><li><b>User-managed:</b> The user explicitly selects specific regions for replication (often for compliance).</li></ul>
+How can Cloud Run or Cloud Functions consume secrets securely?	Secrets can be mounted as <b>volumes</b> (files) or mapped to <b>environment variables</b> directly in the service configuration.
+What is the <code>gcloud</code> command to retrieve the payload of the most recent version of a secret?	"<code>gcloud secrets versions access latest --secret=""[SECRET_ID]""</code>"
+True or False: Secret versions are mutable.	<b>False.</b> Secret versions are immutable. To change the sensitive data, you must create a new version.
+What is the primary difference between <i>IAM</i> and <i>Organization Policies</i>?	<ul><li><b>IAM:</b> Focuses on <b>who</b> (identity) has access to a resource.</li><li><b>Organization Policy:</b> Focuses on <b>what</b> (resource-based constraints) can be done with a resource.</li></ul>
+True or False: An IAM <i>Owner</i>&nbsp;can bypass an Organization Policy constraint?	<b>False.</b> Organization Policies act as guardrails that override all IAM permissions. If a policy denies an action, it is blocked for everyone.
+Describe the difference between List and Boolean constraints in Organization Policies.	<ul><li><b>List Constraints:</b> Allow or deny specific values from a list (e.g., allowed locations or allowed Shared VPC host projects).</li><li><b>Boolean Constraints:</b> Enforce or disable a specific behavior (e.g., disable serial port access or disable external IP addresses).</li></ul>
+What are the two main inheritance behaviors for Organization Policies?	<ul><li><b>Override:</b> The resource sets its own policy, replacing the parent's settings.</li><li><b>Inherit from parent:</b> The resource's policy is merged with or inherited directly from the parent resource.</li></ul>
+What is the purpose of <i>Dry-run Mode</i> in Organization Policies?	It allows you to test a policy's impact without enforcing it. It generates <b>audit logs</b> to show what would have been blocked.
+What is the first thing you should check if a user with <i>Owner</i> permissions is unable to create a resource in a specific region?	Check for an <b>Organization Policy constraint</b> (e.g., Resource Location Restriction) at the Project, Folder, or Organization level.
+How can you conditionally apply Organization Policies using resource metadata?	By using <b>Tags</b> to apply policies conditionally (e.g., enforcing a stricter policy only on folders or projects tagged as 'Environment: Production').
+Which <code>gcloud</code> command allows you to view the current policy for a specific constraint?	<code>gcloud resource-manager org-policies describe [CONSTRAINT_NAME] --project=[PROJECT_ID]</code>
+What is the primary purpose of VPC Service Controls?	To mitigate <b>data exfiltration</b> risks by creating a security perimeter around Google-managed services (like Cloud Storage and BigQuery).
+Contrast IAM and VPC Service Controls.	<ul><li><b>IAM:</b> Determines <b>who</b> can access a resource (identity-based).</li><li><b>VPC SC:</b> Determines <b>where</b> the request can come from (context-based).</li></ul>
+What is an <i>Access Level</i> in VPC Service Controls?	A set of conditions (e.g., source IP, user identity, or device type) defined in <b>Access Context Manager</b> that allows a request to cross a service perimeter.
+How can you allow communication between two distinct service perimeters?	By using a <b>Service Perimeter Bridge</b> or specific <b>Ingress and Egress rules</b>.
+What is the recommended method for testing a new VPC SC perimeter before moving to enforcement?	Use <b>Dry-Run Mode</b> to monitor audit logs for potential blocked traffic without actually denying requests.
+True or False: A Project Owner can bypass a VPC Service Control perimeter.	<b>False.</b> VPC SC perimeters act as guardrails that override all IAM permissions, including those of Owners.
+Which tool is used to diagnose why a request was blocked by VPC Service Controls?	The <b>VPC Service Controls Troubleshooter</b> in the Google Cloud Console.
+Identify three common services that can be protected by VPC Service Controls.	<ul><li>Cloud Storage (GCS)</li><li>BigQuery</li><li>Cloud SQL</li></ul> (Also Pub/Sub, Spanner, etc.)
+What is the primary role of GCP Cloud Armor in a cloud architecture?	Cloud Armor acts as a <b>Web Application Firewall (WAF)</b> and <b>DDoS protection</b> service to secure applications from external threats.
+Where are Cloud Armor security policies applied in Google Cloud?	They are applied to the <b>Backend Services</b> of a <b>Global External HTTP(S) Load Balancer</b>.
+How is rule evaluation priority handled in a Cloud Armor security policy?	Rules are evaluated from <b>lowest numerical value to highest</b> (e.g., priority 0 is evaluated before priority 1000). Evaluation stops after the first matching rule.
+What are some examples of preconfigured WAF rules available in Cloud Armor?	<ul><li>SQL Injection (SQLi)</li><li>Cross-Site Scripting (XSS)</li><li>Remote File Inclusion (RFI)</li><li>Local File Inclusion (LFI)</li></ul>
+What is the <i>Preview Mode</i> in Cloud Armor security policies?	It allows you to test a rule's impact without actually enforcing the action. <b>Logs</b> are generated, but traffic is not blocked or modified.
+Explain the main difference between Cloud Armor Standard and Cloud Armor Enterprise.	<ul><li><b>Standard:</b> Basic <i>pay-as-you-go</i> DDoS and WAF protection.</li><li><b>Enterprise:</b> Managed protection including <b>Adaptive Protection</b> (ML-based), Bot Management, and DDoS cost protection.</li></ul>
+Which Cloud Armor attribute is used to filter traffic based on the user's geographical location?	The <b><code>origin.region_code</code></b> attribute.
+True or False: Cloud Armor can protect internal-only HTTP(S) load balancers.	<b>False.</b> Cloud Armor is primarily designed for <b>External HTTP(S) Load Balancers</b> (Global and Regional).
+What is the current name of the service previously known as <i>Migrate for Compute Engine</i> for the GCP ACE exam?	<b>Migrate to Virtual Machines (M2VM)</b>
+What are the primary supported source environments for <i>Migrate to Virtual Machines</i> (M2VM)?	<ul><li>VMware vSphere (on-premises)</li><li>AWS (EC2)</li><li>Azure (VMs)</li></ul>
+Which GCP service is now the unified platform for discovery, assessment, and planning before a migration?	<b>Migration Center</b>
+What is the purpose of the <i>Migrate Connector</i> in an on-premises migration?	It is an appliance (OVA) installed in the source environment (e.g., vSphere) to facilitate discovery and data replication to GCP.
+"Define the difference between ""Host Project"" and ""Target Project"" in M2VM."	<ul><li><b>Host Project:</b> Where the Migration API is enabled and the process is managed.</li><li><b>Target Project:</b> Where the migrated Compute Engine instances are actually created and run.</li></ul>
+"In the migration lifecycle, what is the key difference between a ""Test Clone"" and a ""Cutover""?"	<ul><li><b>Test Clone:</b> Creates a sandbox VM in GCP without stopping the source VM.</li><li><b>Cutover:</b> Shuts down the source VM, performs a final sync, and starts the production VM in GCP.</li></ul>
+Which IAM role provides full control over the Migrate to Virtual Machines process?	<b><code>vmmigration.admin</code></b>
+What is the typical downtime expected during a migration using M2VM?	Minimal downtime, occurring only during the <b>Cutover</b> phase when the source VM is stopped and the new instance is started in GCP.
+Which networking tool is preferred for large-scale data replication from on-premises to GCP during migration?	<b>Cloud Interconnect</b> (Cloud VPN is used for smaller workloads).
+True or False: Migrate to Virtual Machines is the correct tool for migrating a standalone MySQL database to Cloud SQL.	<b>False</b> (Use Database Migration Service (DMS) for databases
+What is the primary purpose of GCP <i>Database Migration Service</i> (DMS)?	DMS is used for <b>homogeneous</b> (same engine) and <b>heterogeneous</b> (different engine) database migrations into Google Cloud with minimal downtime.
+Which GCP services are common target destinations for DMS?	<ul><li>Cloud SQL (MySQL, PostgreSQL, SQL Server)</li><li>AlloyDB for PostgreSQL</li></ul>
+"What is a ""Connection Profile"" in the context of DMS?"	A reusable configuration containing <b>connectivity information</b> (IP, port, credentials) for either the source or destination database.
+"In DMS, what does the ""Promote"" action perform?"	It stops replication, <b>disconnects</b> the destination from the source, and makes the destination a standalone production database. This action is permanent.
+What is the mandatory prerequisite for tables during a PostgreSQL migration using DMS?	All tables must have <b>primary keys</b> to be replicated during the continuous phase.
+What specific logging must be enabled on a source MySQL database for DMS to perform a continuous migration?	<b>Binary logging (binlog)</b> must be enabled and the <code>server_id</code> must be configured.
+What is the difference between DMS and Migrate to Virtual Machines (M2VM) for the ACE exam?	"<ul><li><b>DMS:</b> Used specifically for <b>databases</b> (Cloud SQL/AlloyDB).</li><li><b>M2VM:</b> Used for <b>full VM ""lift-and-shift""</b> of OS and disks.</li></ul>"
+Which connectivity option is recommended for DMS if you cannot modify on-premises firewall rules easily?	<b>Reverse SSH Tunneling</b>
+Which IAM role is required to manage and execute migration jobs in DMS?	<code>roles/datamigration.admin</code>
+What is the primary purpose of GCP Storage Transfer Service (STS)?	STS is used to move large volumes of data into <b>Cloud Storage (GCS)</b> from other cloud providers (AWS, Azure), HTTP/HTTPS locations, or within GCS.
+In which scenario should you choose Storage Transfer Service (STS) over Transfer Appliance?	Choose <b>STS</b> for <b>online</b> cloud-to-cloud or on-premises transfers (1TB+). Use <b>Transfer Appliance</b> for <b>offline</b> transfers (60TB+) where bandwidth is limited.
+What is the role of a <i>Transfer Agent</i> in STS?	Lightweight software installed <b>on-premises</b> to facilitate and accelerate data transfer from local storage to GCP.
+How does STS determine which objects to copy during an incremental transfer?	It uses <b>checksums</b> and <b>file sizes</b> to identify new or modified objects, avoiding redundant data movement.
+Which identity method is preferred in 2026 for STS to access AWS or Azure buckets?	<b>Identity Federation (OIDC)</b> is preferred over using long-lived access keys for better security.
+What is the primary troubleshooting step if an STS transfer job fails with <i>Permission Denied</i>?	Verify that the <b>STS Service Account</b> has been granted the necessary IAM permissions (e.g., <code>storage.admin</code>) on both source and destination.
+True or False: STS can be configured to delete source objects after a successful transfer to Cloud Storage.	<b>True</b> (Useful for moving logs or temporary files to long-term storage).
+How can STS be used for real-time data synchronization between AWS S3 and GCS?	By configuring <b>Event-Driven Transfers</b>, which trigger the transfer job as soon as a new object is created in the source.
+What is the purpose of a <i>Manifest File</i> in STS?	A <b>CSV file</b> that lists specific objects to be transferred, allowing for granular control over which files are moved.
+For small, one-time, ad-hoc data transfers (&lt; 1TB) between local storage and GCS, what tool is recommended?	The <code>gcloud storage cp</code> (formerly <code>gsutil cp</code>) command-line tool.
+What is the primary use case for GCP Transfer Appliance?	It is used for <b>offline</b> migration of massive datasets (typically above 20TB) when internet bandwidth is a bottleneck.
+List the high-level workflow of a Transfer Appliance migration.	<ul><li>Order appliance</li><li>Receive &amp; connect to network</li><li>Capture/Copy data</li><li>Ship back to Google</li><li>Data upload to GCS</li><li>Verify &amp; Secure Wipe</li></ul>
+In the context of the ACE exam, when should you choose Transfer Appliance over Storage Transfer Service (STS)?	Choose <b>Transfer Appliance</b> for <b>offline</b> transfers of 20TB+ when an online upload would take too long due to low bandwidth.
+What is the final destination for all data migrated via Transfer Appliance?	All data is uploaded to a <b>Google Cloud Storage (GCS)</b> bucket.
+How is data secured on the Transfer Appliance during transit?	Data is encrypted with <b>AES-256</b> using a <b>Customer-Managed Encryption Key (CMEK)</b> before being written to the disks.
+What happens to the data on the Transfer Appliance disks after the upload to Cloud Storage is complete?	Google performs a <b>secure wipe</b> of the disks according to NIST 800-88 standards once the customer verifies the data.
+Does Transfer Appliance support continuous, real-time data synchronization?	<b>No</b>. It is designed for <b>one-time</b>, large-scale migrations. Use Storage Transfer Service (STS) for recurring sync.
+What is the minimum data size typically recommended for using a Transfer Appliance?	Usually <b>20TB or more</b>, depending on available network bandwidth.
+What is the primary role of <b>Vertex AI</b> in the Google Cloud ecosystem?	It is a <b>unified platform</b> that integrates all ML services for building, deploying, and scaling machine learning models (AutoML and Custom Training).
+What is the difference between <b>AutoML</b> and <b>Custom Training</b> in Vertex AI?	<ul><li><b>AutoML:</b> No-code/low-code approach for high-quality models using Google's automated tools.</li><li><b>Custom Training:</b> For data scientists who write their own code using frameworks like TensorFlow or PyTorch.</li></ul>
+In Vertex AI, what is required to receive <b>online (real-time) predictions</b> from a model?	The model must be deployed to an <b>Endpoint</b>.
+Which Vertex AI feature allows you to access a curated collection of first-party and open-source models, including <b>Gemini</b>?	<b>Model Garden</b>.
+Which specific AI API would you use to perform <b>OCR (Optical Character Recognition)</b> on images?	<b>Cloud Vision API</b>.
+What are the three recognition modes for <b>Speech-to-Text (STT)</b>?	<ul><li><b>Synchronous:</b> For short audio (&lt; 1 min).</li><li><b>Asynchronous:</b> For long audio (stored in GCS).</li><li><b>Streaming:</b> For real-time audio.</li></ul>
+What is a key feature of <b>Cloud Translation API Advanced (v3)</b> that ensures specific industry terms are translated correctly?	<b>Glossaries</b>.
+Which IAM role grants full access to all Vertex AI resources?	<code>roles/aiplatform.admin</code>
+True or False: For <b>Asynchronous Speech-to-Text</b>, the audio files must be stored in a Cloud Storage (GCS) bucket.	<b>True</b>.
+When should you use <b>Vertex AI Search and Conversation</b> instead of the raw Vision or Translation APIs?	When you need to build managed, <b>AI-powered search or chat interfaces</b> with minimal custom coding.
+What is <b>Cloud Router</b>?	A fully managed BGP routing service that dynamically exchanges routes between your Google Cloud VPC and on-premises networks, eliminating the need for static routes.
+What is <b>BGP (Border Gateway Protocol)</b>?	The core routing protocol of the internet that allows different networks to exchange reachability information. It uses TCP port 179 and maintains connections between autonomous systems to share routing tables.
+What is an <b>ASN (Autonomous System Number)</b>?	A unique identifier assigned to an autonomous system (AS) for BGP routing. Private ASNs range from 64512-65534. Each network on both sides of a BGP peering must have an ASN to establish the session.
+When is <b>Cloud Router required</b>?	<ul><li><b>HA VPN</b> - Both classic and HA VPN implementations</li><li><b>Dedicated Interconnect</b> - For dynamic routing to on-premises</li><li><b>Partner Interconnect</b> - When using a service provider for hybrid connectivity</li></ul>
+What are the <b>key features</b> of Cloud Router?	<ul><li><b>BGP Protocol</b> - MD5-authenticated sessions for secure route exchange</li><li><b>Dynamic Updates</b> - Automatically learns new VPC subnets</li><li><b>High Availability</b> - Managed redundancy across zones</li><li><b>Custom Advertisements</b> - Control which routes are advertised</li><li><b>Route Priority</b> - Configurable for traffic engineering</li></ul>
+What is the difference between <b>DEFAULT</b> and <b>CUSTOM</b> route advertisement modes?	<ul><li><b>DEFAULT</b>: Advertises all VPC subnets with RFC 1918 ranges</li><li><b>CUSTOM</b>: Only advertises prefixes you explicitly configure</li></ul>
+What does <b>DEFAULT</b> mode automatically advertise in Cloud Router?	<ul><li>All connected subnets in the VPC</li><li>Static routes you've configured</li><li>Routes from Cloud NAT</li></ul>
+What are the <b>BGP session details</b> for Cloud Router?	<ul><li><b>BGP Port</b>: TCP 179</li><li><b>Keepalive Interval</b>: 20 seconds (default)</li><li><b>Hold Timer</b>: 60 seconds (default)</li><li><b>MD5 Authentication</b>: Supported and recommended</li><li><b>Peer IP Addresses</b>: Use <code>169.254.0.0/30</code> link-local range</li></ul>
+What Cloud Router <b>doesn't</b> do?	<ul><li>It does <b>not</b> route traffic itself - it only manages route exchange</li><li>It is <b>not</b> used for VPC-to-VPC routing (use VPC Peering or TGW)</li></ul>
+What are common <b>troubleshooting steps</b> for Cloud Router?	<ul><li><b>Routes not exchanged</b>: Check BGP session state; verify firewall allows port 179</li><li><b>One direction only</b>: Check route advertisements match expected prefixes</li><li><b>Flapping connection</b>: Verify BGP timers (hold-time should be &gt;= 3x keepalive)</li></ul>
+How does Cloud Router compare to <b>Static Routes</b>, <b>VPC Peering</b>, and <b>Cloud NAT</b>?	<ul><li><b>Cloud Router</b>: Hybrid cloud connectivity, Dynamic (BGP)</li><li><b>Static Routes</b>: Simple single-hops, Manual</li><li><b>VPC Peering</b>: VPC-to-VPC, no BGP needed</li><li><b>Cloud NAT</b>: Outbound internet for private VMs, no BGP</li></ul>
+What is the <code>hold-time</code> vs <code>keepalive</code> relationship in Cloud Router?	The <b>hold-time</b> should be at least <b>3x the keepalive interval</b>.<br>Defaults:<br><ul><br><li><code>keepalive=20s,</code></li><br><li><code>hold-time=60s.</code></li><br></ul>
+Can Cloud Router be used for <b>VPC-to-VPC routing</b>?	<b>No.</b> Use VPC Peering or Cloud VPN for VPC-to-VPC connectivity. Cloud Router is for hybrid (on-premises to GCP) connectivity.
+What happens if BGP hold-timer expires in Cloud Router?	The BGP session is considered <b>down</b> and routes learned via that session are <b>withdrawn</b>, triggering failover to alternate paths.
+What happens when a <b>VPN tunnel fails</b> in an HA VPN setup with Cloud Router?	Cloud Router automatically detects the failure via BGP and <b>failover</b> to the remaining tunnel occurs without manual intervention.
+True or False: Cloud Router requires a <b>static external IP address</b> on the Cloud Router itself.	<b>False.</b> Cloud Router uses <b>link-local addresses</b> (<code>169.254.0.0/30</code>) for BGP peering, not static external IPs.
+What is the range of <b>private ASNs</b> that can be used with Cloud Router?	<b>64512 to 65534</b>.
+Can Cloud Router advertise <b>custom IP ranges</b> that are not in your VPC?	<b>Yes.</b> In <code>CUSTOM</code> advertisement mode, you can advertise any prefix, including ranges not in your VPC (e.g., 172.16.0.0/12).
+Is Cloud Router a <b>global</b> or <b>regional</b> resource?	Cloud Router is a <b>regional</b> resource. You must create separate Cloud Routers in each region where you need dynamic routing.
+What is the relationship between <b>Cloud Router</b> and <b>Cloud NAT</b>?	Cloud Router is <b>required</b> to create a Cloud NAT gateway. Cloud Router manages the routes while Cloud NAT provides outbound internet for private VMs.
+What are the minimum and maximum size limits for Persistent Disk?	Min: 10 GB<br>Max: 257 TB
+You need storage that survives VM deletion. What type should you use?	Persistent Disk (local SSD is ephemeral)
+A VM needs maximum IOPS for a database. What disk type should you choose?	<code>pd-extreme</code> (or <code>pd-ssd</code> if not extreme performance needed)
+You stopped a VM with a Local SSD attached. Is the data still there?	No, Local SSD data is lost when VM stops or is preempted.<br>Local SSD is ephemeral.
+Can you decrease the size of a Persistent Disk after creation?	No, you can only increase disk size
+A disk needs to be attached to multiple VMs simultaneously in read-write mode. What mode/type is required?	Hyperdisk with multi-writer mode
+What happens to the boot disk when you delete a VM by default?	It is deleted automatically
+What type of Persistent Disk provides high availability across zones?	Regional Persistent Disk
+Persistent Disk snapshots are what type of backups?	Incremental
+When a Persistent Disk is attached to a VM, what must be true about their zones?	Both (Persistent Disk and VM) must be in the same zone
+What is the default encryption for Persistent Disk?	Google-managed (AES-256)
+Which Kubernetes access mode allows a <code>PersistentVolume</code> to be mounted as <i>read-only</i> by multiple nodes?	<code>ReadOnlyMany</code>
+In GKE, which storage class provisions <code>pd-standard</code> Persistent Disk?	<code>standard</code>
+Which Persistent Disk type balances cost and performance for general purpose workloads?	<code>pd-balanced</code>
+What database engine is AlloyDB fully compatible with?	100% PostgreSQL-compatible; existing PostgreSQL apps run without code changes.
+What are the two AlloyDB editions available for the 2026 GCP ACE exam?	<ol><li>AlloyDB for PostgreSQL (managed cloud service)</li><li>AlloyDB Omni (on-prem/edge/hybrid deployable)</li></ol>
+"What is AlloyDB&#x27;s core architectural differentiator from Cloud SQL?"	Separated compute and storage layers: compute nodes access a shared, elastic storage layer, enabling fast failover and minimal downtime scaling.
+What is the typical automatic failover time for an AlloyDB High Availability (HA) configuration?	Under 60 seconds with no data loss.
+"Where are AlloyDB&#x27;s primary and standby instances located in a regional HA setup?"	Different zones within the same region (both access the shared storage layer).
+Do AlloyDB read replicas experience replication lag for data consistency?	No, all read replicas access the same shared storage layer as the primary, so there is no replication lag.
+What is the maximum retention period for AlloyDB automated backups?	Up to 365 days.
+What is the maximum storage capacity AlloyDB can automatically scale to, and does this require downtime?	64 TB per instance, with no downtime for scaling up.
+Can AlloyDB storage be scaled down after it has been scaled up?	No, AlloyDB storage cannot scale down (same restriction as Cloud SQL).
+What optional AlloyDB feature enables hybrid transactional/analytical (HTAP) workloads?	Optional columnar storage layer that accelerates analytical queries without duplicating data.
+What is the recommended secure connection method for AlloyDB, and what does it handle automatically?	"AlloyDB Auth Proxy:
+<ul><li>uses IAM for authentication,</li><li>automatically handles TLS/SSL,</li><li>and eliminates IP whitelisting needs.</li></ul>"
+What IAM feature allows users to log into AlloyDB using their Google Cloud identity instead of static database passwords?	IAM Database Authentication
+What is the primary tool for migrating large PostgreSQL workloads to AlloyDB with minimal downtime?	Database Migration Service (DMS), which supports continuous replication.
+When should you choose AlloyDB over Cloud SQL for PostgreSQL per the ACE exam decision tree?	For high-performance PostgreSQL workloads, HTAP (OLTP + OLAP) use cases, or demanding throughput/latency requirements.
+What is the downtime impact of AlloyDB maintenance updates?	Near-zero downtime, due to the separated compute and storage architecture.

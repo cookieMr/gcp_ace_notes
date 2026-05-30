@@ -21,6 +21,10 @@ Notes in this repository are compiled into a highly readable, searchable online 
 
 If you preffer the offline mode you can download [epub](https://github.com/cookieMr/gcp_ace_notes/releases/download/latest/GCP.ACE.Study.Guide.2026.epub) file.
 
+### Flash cards
+
+You can download [flash cards](https://github.com/cookieMr/gcp_ace_notes/gpc_ace_anki_cards.txt) (for [Anki application](https://apps.ankiweb.net/)) for study for thie GCP ACE.
+
 ## Project Structure
 
 The study material is organized into specific Google Cloud services and concepts. All source material is written in Markdown and located in the `src/` directory. Key areas covered include:
